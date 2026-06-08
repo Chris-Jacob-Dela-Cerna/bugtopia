@@ -1,5 +1,8 @@
 
 
+import sys
+
+
 def main():
     show_title()
     menu()
@@ -26,11 +29,21 @@ def menu():
             "a": "Play 1v1",
             "b": "Credits",
             "c": "Quit"
+        },
+        "route": {
+            "a": play_1v1,
+            "b": credits,
+            "c": quit_game
         }
     }
     menu_ui = convertData_ui(menuData)
-    display(menu_ui)
-    
+
+    while True:
+        display(menu_ui)
+        chosen = input("                 >>> ")
+        if chosen in menuData["options"]:
+            if menuData["route"][chosen]():
+                break
 
 
 def convertData_ui(uiData):
@@ -53,6 +66,18 @@ def convertData_ui(uiData):
 def display(ui):
     for row in ui:
         print(row)
+
+
+def play_1v1():
+    print("Play 1v1")
+
+
+def credits():
+    print("Credits")
+
+
+def quit_game():
+    sys.exit()
 
 
 if __name__ == "__main__":
