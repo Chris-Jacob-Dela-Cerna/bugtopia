@@ -33,5 +33,75 @@
                 "healSelf"
             ]
         }
+    },
+    "archer": {
+        "normal": {
+            "stats": {
+                "health": 100,
+                "defence": 12,
+                "attack": 22
+            },
+            "abilities": [
+                "attack",
+                "healSelf"
+            ]
+        },
+        "sniper": {
+            "stats": {
+                "health": 80,
+                "defence": 5,
+                "attack": 45
+            },
+            "abilities": [
+                "attack",
+                "healSelf"
+            ]
+        },
+        "evasive": {
+            "stats": {
+                "health": 110,
+                "defence": 18,
+                "attack": 20
+            },
+            "abilities": [
+                "attack",
+                "healSelf"
+            ]
+        }
+    },
+    "giant": {
+        "normal": {
+            "stats": {
+                "health": 160,
+                "defence": 10,
+                "attack": 28
+            },
+            "abilities": [
+                "attack",
+                "healSelf"
+            ]
+        },
+        "brawler": {
+            "stats": {
+                "health": 140,
+                "defence": 8,
+                "attack": 40
+            },
+            "abilities": [
+                "attack",
+                "healSelf"
+            ]
+        },
+        "colossus": {
+            "stats": {
+                "health": 200,
+                "defence": 22,
+                "attack": 15
+            },
+            "abilities": [
+                "attack",
+                "healSelf"
+            ]
+        }
     }
 }
