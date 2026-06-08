@@ -1,10 +1,10 @@
 
 
-from src import game_loop as gl
+from src import game
 
 
 def main():
-    gl.main_loop()
+    game.main_menu()
 
 
 if __name__ == "__main__":

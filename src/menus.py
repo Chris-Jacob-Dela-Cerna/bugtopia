@@ -4,6 +4,7 @@ import sys
 
 
 def get_main_menu():
+    from src.game import player_menu
     return {
         "header": "Main Menu",
         "options": {
@@ -12,8 +13,8 @@ def get_main_menu():
             "c": "Quit"
         },
         "route": {
-            "a": get_play_menu,
-            "b": lambda: True,
+            "a": player_menu,
+            "b": lambda: print("To be implemented."),
             "c": sys.exit
         }
     }
@@ -21,15 +22,15 @@ def get_main_menu():
 
 def get_play_menu():
     return {
-        "header": "Main Menu",
+        "header": "Player 1",
         "options": {
             "a": "Create a Deck",
             "b": "Select an Existing Deck",
             "c": "Back"
         },
         "route": {
-            "a": lambda: True,
-            "b": lambda: True,
+            "a": lambda: print("To be implemented."),
+            "b": lambda: print("To be implemented."),
             "c": lambda: True
         }
     }
