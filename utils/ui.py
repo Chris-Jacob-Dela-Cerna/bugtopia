@@ -32,5 +32,4 @@ def convert_data_ui(ui_data):
 
 
 def display(ui):
-    for row in ui:
-        print(row)
+    print("\n".join(ui))
