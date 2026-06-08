@@ -23,7 +23,7 @@ def show_title():
 
 
 def menu():
-    menuData = {
+    ui_data = {
         "header": "Main Menu",
         "options": {
             "a": "Play 1v1",
@@ -33,27 +33,28 @@ def menu():
         "route": {
             "a": play_1v1,
             "b": credits,
-            "c": quit_game
+            "c": sys.exit
         }
     }
-    menu_ui = convertData_ui(menuData)
+    menu_ui = convert_data_ui(ui_data)
 
     while True:
         display(menu_ui)
         chosen = input("                 >>> ")
-        if chosen in menuData["options"]:
-            if menuData["route"][chosen]():
+        if chosen in ui_data["options"]:
+            while True:
+                ui_data["route"][chosen]()
                 break
 
 
-def convertData_ui(uiData):
+def convert_data_ui(ui_data):
     ui = []
     ui.append("               ╭──────────────────────────────╮")
-    ui.append("               │ " + uiData["header"] + ((28 - len(uiData["header"])) * " ") + " |")
+    ui.append("               │ " + ui_data["header"] + ((28 - len(ui_data["header"])) * " ") + " |")
     ui.append("               |──────────────────────────────|")
 
     space = 5
-    for letter, option in uiData["options"].items():
+    for letter, option in ui_data["options"].items():
         space -= 1
         ui.append("               │ " + letter + ". " + option + ((25 - len(option)) * " ") + " |")
 
@@ -69,15 +70,30 @@ def display(ui):
 
 
 def play_1v1():
-    print("Play 1v1")
+    ui_data = {
+        "header": "Main Menu",
+        "options": {
+            "a": "Create a Deck",
+            "b": "Select an Existing Deck",
+            "c": "Back"
+        },
+        "route": {
+            "a": create_deck,
+            "b": select_deck,
+        }
+    }
 
 
 def credits():
-    print("Credits")
+    print("To be implemented.")
 
 
-def quit_game():
-    sys.exit()
+def create_deck():
+    ...
+
+
+def select_deck():
+    print("To be implemented.")
 
 
 if __name__ == "__main__":
