@@ -107,8 +107,8 @@ Battle UI
   ╰────────────────────────────────────────────────────────╯
   ╭────────────────────────────────────────────────────────╮
   | Choose:          | Action:          | Attack:          |
-  | a. 1-Warrior     |(a) Attack        | a. 1-Warrior     |
-  |(b) 3-Giant       | b. Heal          | b. 2-Archer      |
+  | a. 1-Warrior     | a. Attack <      | a. 1-Warrior     |
+  | b. 3-Giant <     | b. Heal          | b. 2-Archer      |
   |                  |                  | c. 3-Giant       |
   |                  |                  |                  |
   |                  | e. Back          | e. Back          |

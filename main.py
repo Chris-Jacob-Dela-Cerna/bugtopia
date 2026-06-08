@@ -2,6 +2,7 @@
 
 def main():
     show_title()
+    menu()
 
 
 def show_title():
@@ -16,6 +17,18 @@ def show_title():
     r"                \__/                       \ \_\         \__/" "\n"
     r"                                            \/_/" 
     )
+
+
+def menu():
+    menuData = {
+        "header": "Main Menu",
+        "options": {
+            "a": "Play 1v1",
+            "b": "Credits",
+            "c": "Quit"
+        }
+    }
+
 
 
 if __name__ == "__main__":
