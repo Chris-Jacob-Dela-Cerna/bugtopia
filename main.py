@@ -28,20 +28,31 @@ def menu():
             "c": "Quit"
         }
     }
-    menu_ui = convertTo_ui(menuData)
-    for _ in menu_ui:
-        print(_)
+    menu_ui = convertData_ui(menuData)
+    display(menu_ui)
+    
 
 
-def convertTo_ui(uiData):
-    display = []
-    display.append("               ╭──────────────────────────────╮")
-    display.append("               │ " + uiData["header"] + ((28 - len(uiData["header"])) * " ") + " |")
-    display.append("               |──────────────────────────────|")
+def convertData_ui(uiData):
+    ui = []
+    ui.append("               ╭──────────────────────────────╮")
+    ui.append("               │ " + uiData["header"] + ((28 - len(uiData["header"])) * " ") + " |")
+    ui.append("               |──────────────────────────────|")
+
+    space = 5
     for letter, option in uiData["options"].items():
-        display.append("               │ " + letter + ". " + option + ((25 - len(option)) * " ") + " |")
-    display.append("               ╰──────────────────────────────╯")
-    return display
+        space -= 1
+        ui.append("               │ " + letter + ". " + option + ((25 - len(option)) * " ") + " |")
+
+    for _ in range(space):
+        ui.append("               │                              |")
+    ui.append("               ╰──────────────────────────────╯")
+    return ui
+
+
+def display(ui):
+    for row in ui:
+        print(row)
 
 
 if __name__ == "__main__":
