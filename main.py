@@ -5,7 +5,14 @@ import sys
 
 def main():
     show_title()
-    menu()
+    menu_data, menu_ui = menu()
+    while True:
+        display(menu_ui)
+        chosen = input("                 >>> ")
+        if chosen in menu_data["options"]:
+            while True:
+                if menu_data["route"][chosen]():
+                    break
 
 
 def show_title():
@@ -23,7 +30,7 @@ def show_title():
 
 
 def menu():
-    ui_data = {
+    menu_data = {
         "header": "Main Menu",
         "options": {
             "a": "Play 1v1",
@@ -36,15 +43,8 @@ def menu():
             "c": sys.exit
         }
     }
-    menu_ui = convert_data_ui(ui_data)
-
-    while True:
-        display(menu_ui)
-        chosen = input("                 >>> ")
-        if chosen in ui_data["options"]:
-            while True:
-                ui_data["route"][chosen]()
-                break
+    menu_ui = convert_data_ui(menu_data)
+    return menu_data, menu_ui
 
 
 def convert_data_ui(ui_data):
@@ -69,6 +69,11 @@ def display(ui):
         print(row)
 
 
+def credits():
+    print("To be implemented.")
+    return True
+
+
 def play_1v1():
     ui_data = {
         "header": "Main Menu",
@@ -84,16 +89,14 @@ def play_1v1():
     }
 
 
-def credits():
-    print("To be implemented.")
-
-
 def create_deck():
-    ...
+    print("To be implemented.")
+    return True
 
 
 def select_deck():
     print("To be implemented.")
+    return True
 
 
 if __name__ == "__main__":
