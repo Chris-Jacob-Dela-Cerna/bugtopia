@@ -1,0 +1,37 @@
+{
+    "warrior": {
+        "normal": {
+            "stats": {
+                "health": 120,
+                "defence": 15,
+                "attack": 25
+            },
+            "abilities": [
+                "attack",
+                "healSelf"
+            ]
+        },
+        "agile": {
+            "stats": {
+                "health": 100,
+                "defence": 10,
+                "attack": 35
+            },
+            "abilities": [
+                "attack",
+                "healSelf"
+            ]
+        },
+        "tanky": {
+            "stats": {
+                "health": 150,
+                "defence": 25,
+                "attack": 18
+            },
+            "abilities": [
+                "attack",
+                "healSelf"
+            ]
+        }
+    }
+}
