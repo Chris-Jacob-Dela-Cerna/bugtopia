@@ -1,8 +1,9 @@
 
 
 import sys
-from src import default_units as du
+from src import extract_units as eu
 from src import menus as mn
+from src import pages as pg
 from utils import ui
 
 
@@ -32,7 +33,7 @@ def player_menu():
         chosen = input("                 >>> ").strip()
         if chosen in player_menu_data["options"]:
             route = {
-            "a": create_deck_ui,
+            "a": create_deck,
             "b": lambda: print("To be implemented."),
             "c": lambda: True
             }
@@ -40,7 +41,6 @@ def player_menu():
                 break
 
 
-def create_deck_ui():
-    units_data = du.get_default_units()
-    pages_data = du.get_pages_data(units_data)
-    
+def create_deck():
+    units_data = eu.get_units_data()
+    pages_data = pg.get_pages_data(units_data)
