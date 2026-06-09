@@ -31,7 +31,7 @@ def player_menu():
         chosen = input("                 >>> ")
         if chosen in player_menu_data["options"]:
             route = {
-            "a": create_deck_menu,
+            "a": create_deck,
             "b": lambda: print("To be implemented."),
             "c": lambda: True
             }
@@ -39,10 +39,15 @@ def player_menu():
                 break
 
 
-def create_deck_menu():
+def create_deck():
     ui_data = {
-        "name": "Marck",
-        "number": "1"
+        "header": {
+            "name": "Marck",
+            "number": "1",
+        },
+        "contents": {
+
+        }
     }
     menu_data = ui.convert_data_ui_player(ui_data)
     ui.display(menu_data)

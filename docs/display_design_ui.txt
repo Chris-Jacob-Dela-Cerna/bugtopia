@@ -38,18 +38,21 @@ Deck Creation UI
   ╭────────────────────────────────────────────────────────╮
   | Create your deck:                                      |
   |────────────────────────────────────────────────────────|
-  | 4) Warrior       | 5) Archer        | 6) Giant         |
+  | 2) Warrior                                             |
+  | Trait:                                                 |
+  | a. Normal        | b. Agile         | c. Tanky         |
   | HP: 100          | HP: 100          | HP: 200          |
   | DEF: 15          | DEF: 5           | DEF: 20          |
   | ATK: 25          | ATK: 35          | ATK: 20          |
-  | Traits:          | Traits:          | Traits:          |
-  | a. Normal        | a. Normal        | a. Normal        |
-  | b. ...           | b. ...           | b. ...           |
-  | c. ...           | c. ...           | c. ...           |
+  | Ability:                                               |
+  | - attack         | - attack         | - attack         |
+  | - healSelf       | - healSelf       | - healSelf       |
+  |                  |                  |                  |
+  |                  |                  |                  |
   |────────────────────────────────────────────────────────|
   | Page 2/3         |     <<< Back (k) | Next (l) >>>     |
   |────────────────────────────────────────────────────────|
-  | 1) Warrior(T1)   | ---              | ---              |
+  | T1-Warrior       | ---              | ---              |
   ╰────────────────────────────────────────────────────────╯
     Example: 3-b              Type 'bb' to undo selection.
     >>> 
