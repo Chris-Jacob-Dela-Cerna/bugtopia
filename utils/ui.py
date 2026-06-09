@@ -56,22 +56,23 @@ def convert_data_ui_player(ui_data, idx=0):
         rowAtk += " " + "ATK: " + str(curStat["attack"]) + ((11 - len(str(curStat["attack"]))) * " ") + " |"
         tempAbi = [_ for _ in curTrait["abilities"]]
         listAbi.append(tempAbi)
-    
     ui.append(rowTrait)
     ui.append(rowHp)
     ui.append(rowDef)
     ui.append(rowAtk)
+
     ui.append("  | Abilities:                                             |")
-    
     displayAbi = ["  |", "  |", "  |", "  |"]
     for z in range(3):
         for y in range(len(listAbi[z])):
-            if listAbi[z][y] == None:
+            if len(listAbi[z][y]) == 0:
                 displayAbi[y] += "                  |"
                 continue
             displayAbi[y] += " - " + listAbi[z][y] + ((14 - len(listAbi[z][y])) * " ") + " |"
+    for ability in displayAbi:
+        ui.append(ability)
 
-    print(displayAbi)
+    ui.append("  |────────────────────────────────────────────────────────|")
     return ui
 
 
