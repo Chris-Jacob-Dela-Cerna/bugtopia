@@ -1,5 +1,6 @@
 
 
+import sys
 from src import menus as mn
 from utils import ui
 
@@ -14,7 +15,12 @@ def main_menu():
         ui.display(menu_ui)
         chosen = input("                 >>> ")
         if chosen in menu_data["options"]:
-            menu_data["route"][chosen]()
+            route = {
+            "a": player_menu,
+            "b": lambda: print("To be implemented."),
+            "c": sys.exit
+            }
+            route[chosen]()
 
 
 def player_menu():
@@ -25,5 +31,10 @@ def player_menu():
         ui.display(player_menu_ui)
         chosen = input("                 >>> ")
         if chosen in player_menu_data["options"]:
-            if player_menu_data["route"][chosen]():
+            route = {
+            "a": lambda: print("To be implemented."),
+            "b": lambda: print("To be implemented."),
+            "c": lambda: True
+            }
+            if route[chosen]():
                 break
