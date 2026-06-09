@@ -34,7 +34,7 @@ def convert_data_ui_menu(ui_data):
 def convert_data_ui_player(ui_data):
     ui = []
     ui.append("  ╭────────────────────────────────────────────────────────╮")
-    ui.append("  | ")
+    ui.append("  | Create your deck:                                      |")
     ui.append("  |────────────────────────────────────────────────────────|")
 
     return ui

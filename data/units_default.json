@@ -1,8 +1,9 @@
 [
     {
         "name": "Warrior",
-        "traits": {
-            "normal": {
+        "traits": [
+            {
+                "trait": "normal",
                 "stats": {
                     "health": 120,
                     "defence": 15,
@@ -13,7 +14,8 @@
                     "healSelf"
                 ]
             },
-            "agile": {
+            {
+                "trait": "agile",
                 "stats": {
                     "health": 100,
                     "defence": 10,
@@ -24,7 +26,8 @@
                     "healSelf"
                 ]
             },
-            "tanky": {
+            {
+                "trait": "tanky",
                 "stats": {
                     "health": 150,
                     "defence": 25,
@@ -35,12 +38,13 @@
                     "healSelf"
                 ]
             }
-        }
+        ]
     },
     {
         "name": "Archer",
-        "traits": {
-            "normal": {
+        "traits": [
+            {
+                "trait": "normal",
                 "stats": {
                     "health": 100,
                     "defence": 12,
@@ -51,7 +55,8 @@
                     "healSelf"
                 ]
             },
-            "sniper": {
+            {
+                "trait": "sniper",
                 "stats": {
                     "health": 80,
                     "defence": 5,
@@ -62,7 +67,8 @@
                     "healSelf"
                 ]
             },
-            "evasive": {
+            {
+                "trait": "evasive",
                 "stats": {
                     "health": 110,
                     "defence": 18,
@@ -73,12 +79,13 @@
                     "healSelf"
                 ]
             }
-        }
+        ]
     },
     {
         "name": "Giant",
-        "traits": {
-            "normal": {
+        "traits": [
+            {
+                "trait": "normal",
                 "stats": {
                     "health": 160,
                     "defence": 10,
@@ -89,7 +96,8 @@
                     "healSelf"
                 ]
             },
-            "brawler": {
+            {
+                "trait": "brawler",
                 "stats": {
                     "health": 140,
                     "defence": 8,
@@ -100,7 +108,8 @@
                     "healSelf"
                 ]
             },
-            "colossus": {
+            {
+                "trait": "colossus",
                 "stats": {
                     "health": 200,
                     "defence": 22,
@@ -111,6 +120,6 @@
                     "healSelf"
                 ]
             }
-        }
+        ]
     }
 ]

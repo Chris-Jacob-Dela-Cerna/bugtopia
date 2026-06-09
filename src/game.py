@@ -43,7 +43,7 @@ def player_menu():
 def create_deck_ui():
     unit_data = du.get_default_units()
     while True:
-        ui_data = du.get_page_data(unit_data)
+        ui_data = du.get_page_data(0, unit_data)
         menu_data = ui.convert_data_ui_player(ui_data)
         ui.display(menu_data)
         chosen = input("                 >>> ").strip()

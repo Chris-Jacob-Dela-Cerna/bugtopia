@@ -16,12 +16,10 @@ def get_default_units():
     return data
 
 
-def get_page_data(data):
-    print(data[0])
-
-    return {
-        "header": {
-            "name": "Marck",
-            "number": "1",
+def get_page_data(data, idx=0):
+    page = data[idx]
+    {
+        "contents": {
+            "a": page["name"],
         }
     }
