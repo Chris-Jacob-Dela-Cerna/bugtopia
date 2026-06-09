@@ -8,7 +8,7 @@ from utils import ui
 def main_menu():
     ui.show_title()
     main_menu_data = mn.get_main_menu()
-    main_menu_ui = ui.convert_data_ui(main_menu_data)
+    main_menu_ui = ui.convert_data_ui_menu(main_menu_data)
 
     while True:
         ui.display(main_menu_ui)
@@ -24,16 +24,25 @@ def main_menu():
 
 def player_menu():
     player_menu_data = mn.get_play_menu()
-    player_menu_ui = ui.convert_data_ui(player_menu_data)
+    player_menu_ui = ui.convert_data_ui_menu(player_menu_data)
 
     while True:
         ui.display(player_menu_ui)
         chosen = input("                 >>> ")
         if chosen in player_menu_data["options"]:
             route = {
-            "a": lambda: print("To be implemented."),
+            "a": create_deck_menu,
             "b": lambda: print("To be implemented."),
             "c": lambda: True
             }
             if route[chosen]():
                 break
+
+
+def create_deck_menu():
+    ui_data = {
+        "name": "Marck",
+        "number": "1"
+    }
+    menu_data = ui.convert_data_ui_player(ui_data)
+    ui.display(menu_data)

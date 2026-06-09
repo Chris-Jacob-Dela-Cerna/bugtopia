@@ -14,7 +14,7 @@ def show_title():
     )
 
 
-def convert_data_ui(ui_data):
+def convert_data_ui_menu(ui_data):
     ui = []
     ui.append("               ╭──────────────────────────────╮")
     ui.append("               │ " + ui_data["header"] + ((28 - len(ui_data["header"])) * " ") + " |")
@@ -28,6 +28,15 @@ def convert_data_ui(ui_data):
     for _ in range(space):
         ui.append("               │                              |")
     ui.append("               ╰──────────────────────────────╯")
+    return ui
+
+
+def convert_data_ui_player(ui_data):
+    ui = []
+    ui.append("  ╭────────────────────────────────────────────────────────╮")
+    ui.append("  | Player " + ui_data["number"] + ": " + ui_data["name"] + ((44 - len(ui_data["name"])) * " ") + " |")
+    ui.append("  |────────────────────────────────────────────────────────|")
+
     return ui
 
 
