@@ -20,40 +20,21 @@ def get_default_units():
 def get_pages_data(data):
     pages = []
     for idx, unit in enumerate(data):
-        page = {}
-        page["name"] = unit["name"]
-        page["idx"] = idx
-
-        page["traits"] = []
-        for trait in unit["traits"]:
-            perTrait = {}
-            perTrait["trait"] = trait["trait"]
-            perTrait["abilities"] = trait["abilities"]
-
-            perStat = {
-                "HP": trait["stats"]["health"],
-                "DEF": trait["stats"]["defence"],
-                "ATK": trait["stats"]["attack"]
-            }
-            perTrait["stats"] = perStat
-
-            page["traits"].append(perTrait)
-
-        pages.append(page)
-        
-    [
-        {
-            "name": "Archer",
-            "idx": 1,
-            "traits": [
-                {
-                "trait": "Normal",
-                "stats": {
-                    "HP": 100,
-                    "DEF": 10,
-                    "ATK": 35
-                    }
-                },
-            ]
+        page = {
+            "name": unit["name"],
+            "idx": idx,
+            "traits": []
         }
-    ]
+        for trait in unit["traits"]:
+            perTrait = {
+                "trait": trait["trait"],
+                "abilities": trait["abilities"],
+                "stats": {
+                    "HP": trait["stats"]["health"],
+                    "DEF": trait["stats"]["defence"],
+                    "ATK": trait["stats"]["attack"]
+                }
+            }
+            page["traits"].append(perTrait)
+        pages.append(page)
+    return pages
