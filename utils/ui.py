@@ -37,8 +37,26 @@ def convert_data_ui_player(ui_data, idx=0):
     ui.append("  ╭────────────────────────────────────────────────────────╮")
     ui.append("  | Create your deck:                                      |")
     ui.append("  |────────────────────────────────────────────────────────|")
-    ui.append("  | " + str(page["idx"] + 1) + ") " + page["name"] + (((52 - len(page["name"])) - len(str(page["idx"])))) * " " + " |")
+    ui.append("  | " + str(page["idx"] + 1) + ") " + page["name"] + ((((52 - len(page["name"])) - len(str(page["idx"])))) * " ") + " |")
     ui.append("  | Traits:                                                |")
+
+    letters = "abc"
+    rowTrait = "  |"
+    rowHp = "  |"
+    rowDef = "  |"
+    rowAtk = "  |"
+    for x in range(3):
+        curTrait = page["traits"][x]
+        rowTrait += " " + letters[x] + ". " + curTrait["trait"].title() + ((13 - len(curTrait["trait"])) * " ") + " |"
+        curStat = curTrait["stats"]
+        rowHp += " " + "HP: " + str(curStat["health"]) + ((12 - len(str(curStat["health"]))) * " ") + " |"
+        rowDef += " " + "DEF: " + str(curStat["defence"]) + ((11 - len(str(curStat["defence"]))) * " ") + " |"
+        rowAtk += " " + "ATK: " + str(curStat["attack"]) + ((11 - len(str(curStat["attack"]))) * " ") + " |"
+
+    ui.append(rowTrait)
+    ui.append(rowHp)
+    ui.append(rowDef)
+    ui.append(rowAtk)
 
     return ui
 
