@@ -1,107 +1,116 @@
-{
-    "warrior": {
-        "normal": {
-            "stats": {
-                "health": 120,
-                "defence": 15,
-                "attack": 25
+[
+    {
+        "name": "Warrior",
+        "traits": {
+            "normal": {
+                "stats": {
+                    "health": 120,
+                    "defence": 15,
+                    "attack": 25
+                },
+                "abilities": [
+                    "attack",
+                    "healSelf"
+                ]
             },
-            "abilities": [
-                "attack",
-                "healSelf"
-            ]
-        },
-        "agile": {
-            "stats": {
-                "health": 100,
-                "defence": 10,
-                "attack": 35
+            "agile": {
+                "stats": {
+                    "health": 100,
+                    "defence": 10,
+                    "attack": 35
+                },
+                "abilities": [
+                    "attack",
+                    "healSelf"
+                ]
             },
-            "abilities": [
-                "attack",
-                "healSelf"
-            ]
-        },
-        "tanky": {
-            "stats": {
-                "health": 150,
-                "defence": 25,
-                "attack": 18
-            },
-            "abilities": [
-                "attack",
-                "healSelf"
-            ]
+            "tanky": {
+                "stats": {
+                    "health": 150,
+                    "defence": 25,
+                    "attack": 18
+                },
+                "abilities": [
+                    "attack",
+                    "healSelf"
+                ]
+            }
         }
     },
-    "archer": {
-        "normal": {
-            "stats": {
-                "health": 100,
-                "defence": 12,
-                "attack": 22
+    {
+        "name": "Archer",
+        "traits": {
+            "normal": {
+                "stats": {
+                    "health": 100,
+                    "defence": 12,
+                    "attack": 22
+                },
+                "abilities": [
+                    "attack",
+                    "healSelf"
+                ]
             },
-            "abilities": [
-                "attack",
-                "healSelf"
-            ]
-        },
-        "sniper": {
-            "stats": {
-                "health": 80,
-                "defence": 5,
-                "attack": 45
+            "sniper": {
+                "stats": {
+                    "health": 80,
+                    "defence": 5,
+                    "attack": 45
+                },
+                "abilities": [
+                    "attack",
+                    "healSelf"
+                ]
             },
-            "abilities": [
-                "attack",
-                "healSelf"
-            ]
-        },
-        "evasive": {
-            "stats": {
-                "health": 110,
-                "defence": 18,
-                "attack": 20
-            },
-            "abilities": [
-                "attack",
-                "healSelf"
-            ]
+            "evasive": {
+                "stats": {
+                    "health": 110,
+                    "defence": 18,
+                    "attack": 20
+                },
+                "abilities": [
+                    "attack",
+                    "healSelf"
+                ]
+            }
         }
     },
-    "giant": {
-        "normal": {
-            "stats": {
-                "health": 160,
-                "defence": 10,
-                "attack": 28
+    {
+        "name": "Giant",
+        "traits": {
+            "normal": {
+                "stats": {
+                    "health": 160,
+                    "defence": 10,
+                    "attack": 28
+                },
+                "abilities": [
+                    "attack",
+                    "healSelf"
+                ]
             },
-            "abilities": [
-                "attack",
-                "healSelf"
-            ]
-        },
-        "brawler": {
-            "stats": {
-                "health": 140,
-                "defence": 8,
-                "attack": 40
+            "brawler": {
+                "stats": {
+                    "health": 140,
+                    "defence": 8,
+                    "attack": 40
+                },
+                "abilities": [
+                    "attack",
+                    "healSelf"
+                ]
             },
-            "abilities": [
-                "attack",
-                "healSelf"
-            ]
-        },
-        "colossus": {
-            "stats": {
-                "health": 200,
-                "defence": 22,
-                "attack": 15
-            },
-            "abilities": [
-                "attack",
-                "healSelf"
-            ]
+            "colossus": {
+                "stats": {
+                    "health": 200,
+                    "defence": 22,
+                    "attack": 15
+                },
+                "abilities": [
+                    "attack",
+                    "healSelf"
+                ]
+            }
         }
     }
-}
+]

@@ -1,7 +1,7 @@
 
 
 import sys
-from src import create_deck as cd
+from src import default_units as du
 from src import menus as mn
 from utils import ui
 
@@ -13,7 +13,7 @@ def main_menu():
 
     while True:
         ui.display(main_menu_ui)
-        chosen = input("                 >>> ")
+        chosen = input("                 >>> ").strip()
         if chosen in main_menu_data["options"]:
             route = {
             "a": player_menu,
@@ -29,7 +29,7 @@ def player_menu():
 
     while True:
         ui.display(player_menu_ui)
-        chosen = input("                 >>> ")
+        chosen = input("                 >>> ").strip()
         if chosen in player_menu_data["options"]:
             route = {
             "a": create_deck_ui,
@@ -41,6 +41,9 @@ def player_menu():
 
 
 def create_deck_ui():
-    ui_data = cd.get_create_deck()
-    menu_data = ui.convert_data_ui_player(ui_data)
-    ui.display(menu_data)
+    unit_data = du.get_default_units()
+    while True:
+        ui_data = du.get_page_data(unit_data)
+        menu_data = ui.convert_data_ui_player(ui_data)
+        ui.display(menu_data)
+        chosen = input("                 >>> ").strip()
