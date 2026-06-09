@@ -39,12 +39,12 @@ Deck Creation UI
   | Create your deck:                                      |
   |────────────────────────────────────────────────────────|
   | 2) Warrior                                             |
-  | Trait:                                                 |
+  | Traits:                                                |
   | a. Normal        | b. Agile         | c. Tanky         |
   | HP: 100          | HP: 100          | HP: 200          |
   | DEF: 15          | DEF: 5           | DEF: 20          |
   | ATK: 25          | ATK: 35          | ATK: 20          |
-  | Ability:                                               |
+  | Abilities:                                             |
   | - attack         | - attack         | - attack         |
   | - healSelf       | - healSelf       | - healSelf       |
   |                  |                  |                  |

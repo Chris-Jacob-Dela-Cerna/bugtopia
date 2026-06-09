@@ -11,7 +11,7 @@ def get_main_menu():
     }
 
 
-def get_play_menu():
+def get_player_menu():
     return {
         "header": "Player 1",
         "options": {

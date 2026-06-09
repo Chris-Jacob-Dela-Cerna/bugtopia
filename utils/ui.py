@@ -34,7 +34,7 @@ def convert_data_ui_menu(ui_data):
 def convert_data_ui_player(ui_data):
     ui = []
     ui.append("  ╭────────────────────────────────────────────────────────╮")
-    ui.append("  | Player " + ui_data["number"] + ": " + ui_data["name"] + ((44 - len(ui_data["name"])) * " ") + " |")
+    ui.append("  | ")
     ui.append("  |────────────────────────────────────────────────────────|")
 
     return ui

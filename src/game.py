@@ -1,6 +1,7 @@
 
 
 import sys
+from src import create_deck as cd
 from src import menus as mn
 from utils import ui
 
@@ -23,7 +24,7 @@ def main_menu():
 
 
 def player_menu():
-    player_menu_data = mn.get_play_menu()
+    player_menu_data = mn.get_player_menu()
     player_menu_ui = ui.convert_data_ui_menu(player_menu_data)
 
     while True:
@@ -31,7 +32,7 @@ def player_menu():
         chosen = input("                 >>> ")
         if chosen in player_menu_data["options"]:
             route = {
-            "a": create_deck,
+            "a": create_deck_ui,
             "b": lambda: print("To be implemented."),
             "c": lambda: True
             }
@@ -39,15 +40,7 @@ def player_menu():
                 break
 
 
-def create_deck():
-    ui_data = {
-        "header": {
-            "name": "Marck",
-            "number": "1",
-        },
-        "contents": {
-
-        }
-    }
+def create_deck_ui():
+    ui_data = cd.get_create_deck()
     menu_data = ui.convert_data_ui_player(ui_data)
     ui.display(menu_data)
