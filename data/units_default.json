@@ -11,7 +11,9 @@
                 },
                 "abilities": [
                     "attack",
-                    "healSelf"
+                    "healSelf",
+                    "",
+                    ""
                 ]
             },
             {
@@ -23,7 +25,9 @@
                 },
                 "abilities": [
                     "attack",
-                    "healSelf"
+                    "healSelf",
+                    "healOthers",
+                    ""
                 ]
             },
             {

@@ -33,6 +33,7 @@ def convert_data_ui_menu(ui_data):
 
 def convert_data_ui_player(ui_data, idx=0):
     page = ui_data[idx]
+
     ui = []
     ui.append("  ╭────────────────────────────────────────────────────────╮")
     ui.append("  | Create your deck:                                      |")
@@ -45,6 +46,7 @@ def convert_data_ui_player(ui_data, idx=0):
     rowHp = "  |"
     rowDef = "  |"
     rowAtk = "  |"
+    listAbi = []
     for x in range(3):
         curTrait = page["traits"][x]
         rowTrait += " " + letters[x] + ". " + curTrait["trait"].title() + ((13 - len(curTrait["trait"])) * " ") + " |"
@@ -52,12 +54,24 @@ def convert_data_ui_player(ui_data, idx=0):
         rowHp += " " + "HP: " + str(curStat["health"]) + ((12 - len(str(curStat["health"]))) * " ") + " |"
         rowDef += " " + "DEF: " + str(curStat["defence"]) + ((11 - len(str(curStat["defence"]))) * " ") + " |"
         rowAtk += " " + "ATK: " + str(curStat["attack"]) + ((11 - len(str(curStat["attack"]))) * " ") + " |"
-
+        tempAbi = [_ for _ in curTrait["abilities"]]
+        listAbi.append(tempAbi)
+    
     ui.append(rowTrait)
     ui.append(rowHp)
     ui.append(rowDef)
     ui.append(rowAtk)
+    ui.append("  | Abilities:                                             |")
+    
+    displayAbi = ["  |", "  |", "  |", "  |"]
+    for z in range(3):
+        for y in range(len(listAbi[z])):
+            if listAbi[z][y] == None:
+                displayAbi[y] += "                  |"
+                continue
+            displayAbi[y] += " - " + listAbi[z][y] + ((14 - len(listAbi[z][y])) * " ") + " |"
 
+    print(displayAbi)
     return ui
 
 
