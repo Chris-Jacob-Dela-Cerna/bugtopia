@@ -31,11 +31,20 @@ def convert_data_ui_menu(ui_data):
     return ui
 
 
-def convert_data_ui_player(ui_data):
+def convert_data_ui_player(ui_data, idx=0):
+    page = ui_data[idx]
     ui = []
     ui.append("  ╭────────────────────────────────────────────────────────╮")
     ui.append("  | Create your deck:                                      |")
     ui.append("  |────────────────────────────────────────────────────────|")
+
+    spc = 52
+    ui.append("  | " + str(page["idx"] + 1) + ") " + page["name"] + (((spc - len(page["name"])) - len(str(page["idx"])))) * " " + " |")
+    ui.append("  | Traits:                                                |")
+
+    for num in range(3):
+        print(page["traits"][num - 1])
+
 
     return ui
 

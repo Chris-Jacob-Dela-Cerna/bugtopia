@@ -44,3 +44,5 @@ def player_menu():
 def create_deck():
     units_data = eu.get_units_data()
     pages_data = pg.get_pages_data(units_data)
+    page_ui = ui.convert_data_ui_player(pages_data)
+    ui.display(page_ui)
