@@ -1,8 +1,5 @@
 
 
-from src.game import player_menu
-
-
 def get_main_menu():
     return {
         "header": "Main Menu",

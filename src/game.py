@@ -7,14 +7,13 @@ from utils import ui
 
 def main_menu():
     ui.show_title()
-    input()
-    menu_data = mn.get_main_menu()
-    menu_ui = ui.convert_data_ui(menu_data)
+    main_menu_data = mn.get_main_menu()
+    main_menu_ui = ui.convert_data_ui(main_menu_data)
 
     while True:
-        ui.display(menu_ui)
+        ui.display(main_menu_ui)
         chosen = input("                 >>> ")
-        if chosen in menu_data["options"]:
+        if chosen in main_menu_data["options"]:
             route = {
             "a": player_menu,
             "b": lambda: print("To be implemented."),
