@@ -1,8 +1,5 @@
 
 
-from pprint import pprint
-
-
 def get_pages_data(data):
     pages = []
     for idx, unit in enumerate(data):
@@ -12,16 +9,6 @@ def get_pages_data(data):
             "traits": []
         }
         for trait in unit["traits"]:
-            perTrait = {
-                "trait": trait["trait"],
-                "abilities": trait["abilities"],
-                "stats": {
-                    "HP": trait["stats"]["health"],
-                    "DEF": trait["stats"]["defence"],
-                    "ATK": trait["stats"]["attack"]
-                }
-            }
-            page["traits"].append(perTrait)
+            page["traits"].append(trait)
         pages.append(page)
-    pprint(pages)
     return pages

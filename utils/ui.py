@@ -37,14 +37,8 @@ def convert_data_ui_player(ui_data, idx=0):
     ui.append("  ╭────────────────────────────────────────────────────────╮")
     ui.append("  | Create your deck:                                      |")
     ui.append("  |────────────────────────────────────────────────────────|")
-
-    spc = 52
-    ui.append("  | " + str(page["idx"] + 1) + ") " + page["name"] + (((spc - len(page["name"])) - len(str(page["idx"])))) * " " + " |")
+    ui.append("  | " + str(page["idx"] + 1) + ") " + page["name"] + (((52 - len(page["name"])) - len(str(page["idx"])))) * " " + " |")
     ui.append("  | Traits:                                                |")
-
-    for num in range(3):
-        print(page["traits"][num - 1])
-
 
     return ui
 
