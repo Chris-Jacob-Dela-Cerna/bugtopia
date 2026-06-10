@@ -50,28 +50,33 @@ def create_deck():
     pages_data = pg.get_pages_data(units_data)
     total_pages = len(pages_data)
     page = 0
+    visible_page = page + 1
+    deck = ["T1-Warrior"]
     show_help = False
     while True:
-        page_ui = ucd.convert_page_ui(pages_data, page, ["T1-Warrior", "T3-Archer"], show_help)
+        page_ui = ucd.convert_page_ui(ui_data=pages_data, idx=page, deck=deck, show_help=show_help)
         uh.display(page_ui)
         chosen = input("    >>> ").strip().lower()
+
+        show_help = False
         if not chosen:
             continue
-        show_help = False
+
         if chosen == "help":
             show_help = True
 
-        if chosen == "e" and page > 0:
+        if chosen == "e" and visible_page > 1:
             page -= 1
-        if chosen == "r" and page < total_pages - 1:
+        if chosen == "r" and visible_page < total_pages:
             page += 1
 
         if page_number := re.search(r"^([0-9]{1,3})$", chosen):
-            page_idx = int(page_number.group(1)) - 1
-            if 0 <= page_idx < total_pages:
-                page = page_idx
+            selected_page = int(page_number.group(1)) - 1
+            if 0 <= selected_page < total_pages:
+                page = selected_page
 
         if re.search(r"^([0-9]{1,3})-([a-c])$", chosen):
             print("Unit-Trait")
-        if chosen == "bb":
-            print("Undo")
+
+        if chosen == "bb" and bool(deck):
+            del deck[-1]
