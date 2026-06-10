@@ -2,8 +2,8 @@
 
 import sys
 from src import extract_units as eu
-from src import menus as mn
-from src import pages as pg
+from src import get_menus as mn
+from src import get_pages as pg
 from utils import ui
 from utils import ui_create_deck as ucd
 from utils import ui_helpers as uh
@@ -47,5 +47,5 @@ def player_menu():
 def create_deck():
     units_data = eu.get_units_data()
     pages_data = pg.get_pages_data(units_data)
-    page_ui = ucd.convert_data_ui_player(pages_data)
+    page_ui = ucd.convert_page_ui(pages_data)
     uh.display(page_ui)

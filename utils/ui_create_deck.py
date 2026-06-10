@@ -3,7 +3,7 @@
 from utils.ui_helpers import fit
 
 
-def convert_data_ui_player(ui_data, idx=0, deck=[]):
+def convert_page_ui(ui_data, idx=0, deck=[]):
     page = ui_data[idx]
     ui = []
     ui.append("  ╭────────────────────────────────────────────────────────╮")
