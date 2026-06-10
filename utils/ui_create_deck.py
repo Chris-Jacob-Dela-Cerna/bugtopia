@@ -3,7 +3,7 @@
 from utils.ui_helpers import fit
 
 
-def convert_page_ui(ui_data, idx=0, deck=[]):
+def convert_page_ui(ui_data, idx=0, deck=[], help_=False):
     page = ui_data[idx]
     ui = []
     ui.append("  ╭────────────────────────────────────────────────────────╮")
@@ -30,6 +30,21 @@ def convert_page_ui(ui_data, idx=0, deck=[]):
     page_space = fit(10, f"{current_page}{total_pages}")
     back_option, next_option = get_page_option(current_page, total_pages)
     ui.append(f"  | Page {current_page}/{total_pages}{page_space} | {back_option} | {next_option} |")
+    ui.append("  |────────────────────────────────────────────────────────|")
+
+    slots = []
+    
+    for slot in deck:
+        slot_space = fit(16, slot)
+        slots.append(f"{slot}{slot_space}")
+    empty_slot = 3 - len(deck)
+    if empty_slot != 0:
+        for _ in range(empty_slot):
+            slots.append("---             ")
+
+    ui.append(f"  | {slots[0]} | {slots[1]} | {slots[2]} |")
+    ui.append("  ╰────────────────────────────────────────────────────────╯")
+
 
     return ui
 
