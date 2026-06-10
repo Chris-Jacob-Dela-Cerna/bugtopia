@@ -58,6 +58,11 @@ def convert_data_ui_player(ui_data, idx=0, deck=[]):
     ui.extend(abilities)
     ui.append("  |────────────────────────────────────────────────────────|")
 
+    total_pages = len(ui_data)
+    page_space = fit(10, f"{current_page}{total_pages}")
+    back_option, next_option = get_page_option(current_page, total_pages)
+    ui.append(f"  | Page {current_page}/{total_pages}{page_space} | {back_option} | {next_option} |")
+
     return ui
 
 
@@ -108,6 +113,18 @@ def convert_abilities_ui(ability_list):
             ability_space = fit(14, current_ability)
             abilities[y] += f" - {current_ability}{ability_space} |"
     return abilities
+
+
+def get_page_option(current_page, total_pages):
+    if current_page == 1:
+        back_option = "                "
+    else:
+        back_option = "    <<< Back (k)"
+    if current_page == total_pages:
+        next_option = "                "
+    else:
+        next_option = "Next (l) >>>    "
+    return back_option, next_option
 
 
 def display(ui):
