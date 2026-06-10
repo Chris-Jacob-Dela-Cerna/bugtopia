@@ -35,35 +35,45 @@ def convert_data_ui_menu(ui_data):
     return ui
 
 
-def convert_data_ui_player(ui_data, idx=1, deck=[]):
+def convert_data_ui_player(ui_data, idx=0, deck=[]):
     page = ui_data[idx]
-
     ui = []
     ui.append("  ╭────────────────────────────────────────────────────────╮")
     ui.append("  | Create your deck:                                      |")
     ui.append("  |────────────────────────────────────────────────────────|")
 
-    page_idx = page['idx'] + 1
-    page_name = page['name']
-    unit_space = fit(52, f"{page_idx}{page_name}")
-    ui.append(f"  | {page_idx}) {page_name}{unit_space} |")
+    current_page = page['idx'] + 1
+    unit_name = page['name']
+    unit_space = fit(52, f"{current_page}{unit_name}")
+    ui.append(f"  | {current_page}) {unit_name}{unit_space} |")
     ui.append("  | Traits:                                                |")
 
+    rows = convert_trait_stats_ui(page)
+    ui.extend(rows)
+
+    ability_list = get_abilities(page)
+    ui.append("  | Abilities:                                             |")
+
+    abilities = convert_abilities_ui(ability_list)
+    ui.extend(abilities)
+    ui.append("  |────────────────────────────────────────────────────────|")
+
+    return ui
+
+
+def fit(max_length, text_length):
+    return (max_length - len(str(text_length))) * " "
+
+
+def convert_trait_stats_ui(page):
     options = "abc"
     rows = ["  |", "  |", "  |", "  |"]
-    rowTrait = "  |"
-    rowHp = "  |"
-    rowDef = "  |"
-    rowAtk = "  |"
-    ability_list = []
-
-
 
     for x in range(3):
         current_trait = page['traits'][x]
         trait = current_trait['trait']
         trait_space = fit(13, trait)
-        rowTrait += f" {options[x]}. {trait.title()}{trait_space} |"
+        rows[0] += f" {options[x]}. {trait.title()}{trait_space} |"
 
         health = current_trait['stats']['health']
         defence = current_trait['stats']['defence']
@@ -71,36 +81,33 @@ def convert_data_ui_player(ui_data, idx=1, deck=[]):
         health_space = fit(12, health)
         defence_space = fit(11, defence)
         attack_space = fit(11, attack)
-        rowHp += f" HP: {health}{health_space} |"
-        rowDef += f" DEF: {defence}{defence_space} |"
-        rowAtk += f" ATK: {attack}{attack_space} |"
 
-        abilities = current_trait['abilities']
+        rows[1] += f" HP: {health}{health_space} |"
+        rows[2] += f" DEF: {defence}{defence_space} |"
+        rows[3] += f" ATK: {attack}{attack_space} |"
+
+    return rows
+
+
+def get_abilities(page):
+    ability_list = []
+    for x in range(3):
+        abilities = page['traits'][x]['abilities']
         ability_list.append([_ for _ in abilities])
+    return ability_list
 
-    ui.append(rowTrait)
-    ui.append(rowHp)
-    ui.append(rowDef)
-    ui.append(rowAtk)
 
-    ui.append("  | Abilities:                                             |")
-    displayAbi = ["  |", "  |", "  |", "  |"]
-    for z in range(3):
-        for y in range(len(ability_list[z])):
-            if len(ability_list[z][y]) == 0:
-                displayAbi[y] += "                  |"
+def convert_abilities_ui(ability_list):
+    abilities = ["  |", "  |", "  |", "  |"]
+    for x in range(3):
+        for y in range(len(ability_list[x])):
+            current_ability = ability_list[x][y]
+            if not bool(current_ability):
+                abilities[y] += "                  |"
                 continue
-            displayAbi[y] += " - " + ability_list[z][y] + ((14 - len(ability_list[z][y])) * " ") + " |"
-    for ability in displayAbi:
-        ui.append(ability)
-    ui.append("  |────────────────────────────────────────────────────────|")
-
-
-    return ui
-
-
-def fit(max_length, text_length):
-    return (max_length - len(str(text_length))) * " "
+            ability_space = fit(14, current_ability)
+            abilities[y] += f" - {current_ability}{ability_space} |"
+    return abilities
 
 
 def display(ui):
