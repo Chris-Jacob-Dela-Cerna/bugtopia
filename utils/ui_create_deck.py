@@ -3,7 +3,7 @@
 from utils.ui_helpers import fit
 
 
-def convert_page_ui(ui_data, idx=0, deck=[], help_=False):
+def convert_page_ui(ui_data, idx=0, deck=[], show_help=False):
     page = ui_data[idx]
     ui = []
     ui.append("  ╭────────────────────────────────────────────────────────╮")
@@ -45,7 +45,7 @@ def convert_page_ui(ui_data, idx=0, deck=[], help_=False):
     ui.append(f"  | {slots[0]} | {slots[1]} | {slots[2]} |")
     ui.append("  ╰────────────────────────────────────────────────────────╯")
 
-    if help_:
+    if show_help:
         ui.append("    To select -> type unit-trait, ex: 1-b or 2-a")
         ui.append("    To undo -> type 'bb'")
         ui.append("    To change page -> type 'e', 'r', or the page number")
@@ -104,9 +104,9 @@ def get_page_option(current_page, total_pages):
     if current_page == 1:
         back_option = "                "
     else:
-        back_option = "    <<< Back (k)"
+        back_option = "    <<< Back (e)"
     if current_page == total_pages:
         next_option = "                "
     else:
-        next_option = "Next (l) >>>    "
+        next_option = "Next (r) >>>    "
     return back_option, next_option

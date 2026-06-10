@@ -1,5 +1,6 @@
 
 
+import re
 import sys
 from src import extract_units as eu
 from src import get_menus as mn
@@ -47,6 +48,30 @@ def player_menu():
 def create_deck():
     units_data = eu.get_units_data()
     pages_data = pg.get_pages_data(units_data)
-    page_ui = ucd.convert_page_ui(pages_data, 0, ["T1-Warrior", "T3-Archer"])
-    uh.display(page_ui)
-    chosen = input("    >>> ").strip()
+    total_pages = len(pages_data)
+    page = 0
+    show_help = False
+    while True:
+        page_ui = ucd.convert_page_ui(pages_data, page, ["T1-Warrior", "T3-Archer"], show_help)
+        uh.display(page_ui)
+        chosen = input("    >>> ").strip().lower()
+        if not chosen:
+            continue
+        show_help = False
+        if chosen == "help":
+            show_help = True
+
+        if chosen == "e" and page > 0:
+            page -= 1
+        if chosen == "r" and page < total_pages - 1:
+            page += 1
+
+        if page_number := re.search(r"^([0-9]{1,3})$", chosen):
+            page_idx = int(page_number.group(1)) - 1
+            if 0 <= page_idx < total_pages:
+                page = page_idx
+
+        if re.search(r"^([0-9]{1,3})-([a-c])$", chosen):
+            print("Unit-Trait")
+        if chosen == "bb":
+            print("Undo")
