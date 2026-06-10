@@ -57,7 +57,7 @@ Deck Creation UI
     To select -> type unit-trait, ex: 1-b or 2-a
     To undo -> type 'bb'
     To change page -> type 'e', 'r', or the page number
-    Type '/help' to view all options.
+    Type 'help' to view all options.
     >>> 
 
 Save Deck UI

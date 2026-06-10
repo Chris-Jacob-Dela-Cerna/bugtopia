@@ -45,6 +45,12 @@ def convert_page_ui(ui_data, idx=0, deck=[], help_=False):
     ui.append(f"  | {slots[0]} | {slots[1]} | {slots[2]} |")
     ui.append("  ╰────────────────────────────────────────────────────────╯")
 
+    if help_:
+        ui.append("    To select -> type unit-trait, ex: 1-b or 2-a")
+        ui.append("    To undo -> type 'bb'")
+        ui.append("    To change page -> type 'e', 'r', or the page number")
+    else:
+        ui.append("    Type 'help' to view all options.")
 
     return ui
 

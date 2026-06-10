@@ -49,3 +49,4 @@ def create_deck():
     pages_data = pg.get_pages_data(units_data)
     page_ui = ucd.convert_page_ui(pages_data, 0, ["T1-Warrior", "T3-Archer"])
     uh.display(page_ui)
+    chosen = input("    >>> ").strip()
