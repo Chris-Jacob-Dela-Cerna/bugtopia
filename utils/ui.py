@@ -16,22 +16,26 @@ def show_title():
 
 def convert_data_ui_menu(ui_data):
     ui = []
+    header = ui_data["header"]
+    header_space = fit(28, ui_data["header"])
     ui.append("               ╭──────────────────────────────╮")
-    ui.append("               │ " + ui_data["header"] + ((28 - len(ui_data["header"])) * " ") + " |")
+    ui.append(f"               │ {header}{header_space} |")
     ui.append("               |──────────────────────────────|")
 
-    space = 5
-    for letter, option in ui_data["options"].items():
-        space -= 1
-        ui.append("               │ " + letter + ". " + option + ((25 - len(option)) * " ") + " |")
+    blank_option = 5
+    options = ui_data["options"].items()
+    for letter, option in options:
+        blank_option -= 1
+        option_space = fit(25, option)
+        ui.append(f"               │ {letter}. {option}{option_space} |")
 
-    for _ in range(space):
+    for _ in range(blank_option):
         ui.append("               │                              |")
     ui.append("               ╰──────────────────────────────╯")
     return ui
 
 
-def convert_data_ui_player(ui_data, idx=0):
+def convert_data_ui_player(ui_data, idx=0, deck=[]):
     page = ui_data[idx]
 
     ui = []
@@ -71,9 +75,14 @@ def convert_data_ui_player(ui_data, idx=0):
             displayAbi[y] += " - " + listAbi[z][y] + ((14 - len(listAbi[z][y])) * " ") + " |"
     for ability in displayAbi:
         ui.append(ability)
-
     ui.append("  |────────────────────────────────────────────────────────|")
+
+
     return ui
+
+
+def fit(max_length, text_length):
+    return (max_length - len(text_length)) * " "
 
 
 def display(ui):
