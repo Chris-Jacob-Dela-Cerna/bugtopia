@@ -11,14 +11,19 @@ def convert_data_ui_menu(ui_data):
     ui.append(f"               │ {header}{header_space} |")
     ui.append("               |──────────────────────────────|")
 
-    blank_option = 5
-    options = ui_data['options'].items()
-    for letter, option in options:
-        blank_option -= 1
-        option_space = fit(25, option)
-        ui.append(f"               │ {letter}. {option}{option_space} |")
+    option_list = get_options(ui_data)
+    ui.extend(option_list)
 
-    for _ in range(blank_option):
-        ui.append("               │                              |")
+    blank_option = 5 - len(option_list)
+    ui.extend(["               │                              |" for _ in range(blank_option)])
     ui.append("               ╰──────────────────────────────╯")
     return ui
+
+
+def get_options(ui_data):
+    option_list = []
+    options = ui_data['options'].items()
+    for letter, option in options:
+        option_space = fit(25, option)
+        option_list.append(f"               │ {letter}. {option}{option_space} |")
+    return option_list
