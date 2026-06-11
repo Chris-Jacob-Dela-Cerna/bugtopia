@@ -26,10 +26,10 @@ def main_menu():
 
 
 def player_deck_creation():
-    deck_1 = player_menu_1()
-    if not deck_1:
+    if not (deck_1 := player_menu_1()):
         return
-    deck_2 = player_menu_2()
+    if not (deck_2 := player_menu_2()):
+        return
 
 
 def player_menu_1():
@@ -43,10 +43,13 @@ def player_menu_1():
             route = {
             "a": cd.create_deck,
             "b": lambda: print("To be implemented."),
-            "c": lambda: True
+            "c": lambda: "Back"
             }
-            if route[chosen]():
+            result = route[chosen]()
+            if result == "Back":
                 break
+            elif result:
+                return result
 
 
 def player_menu_2():
@@ -60,7 +63,10 @@ def player_menu_2():
             route = {
             "a": cd.create_deck,
             "b": lambda: print("To be implemented."),
-            "c": lambda: True
+            "c": lambda: "Back"
             }
-            if route[chosen]():
+            result = route[chosen]()
+            if result == "Back":
                 break
+            elif result:
+                return result

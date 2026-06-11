@@ -54,3 +54,6 @@ def create_deck():
 
         if chosen == "b":
             break
+
+        if chosen == "f" and len(deck) == 3:
+            return deck

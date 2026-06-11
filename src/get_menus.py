@@ -17,6 +17,6 @@ def get_player_menu(player_number):
         "options": {
             "a": "Create a Deck",
             "b": "Select an Existing Deck",
-            "c": "Back"
+            "c": "Back to Main Menu"
         }
     }
