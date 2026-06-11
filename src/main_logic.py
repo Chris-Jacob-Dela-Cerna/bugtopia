@@ -18,15 +18,37 @@ def main_menu():
         chosen = input("                 >>> ").strip()
         if chosen in main_menu_data["options"]:
             route = {
-            "a": player_menu,
+            "a": player_deck_creation,
             "b": lambda: print("To be implemented."),
             "c": sys.exit
             }
             route[chosen]()
 
 
-def player_menu():
-    player_menu_data = mn.get_player_menu()
+def player_deck_creation():
+    player_menu_1()
+    player_menu_2()
+
+
+def player_menu_1():
+    player_menu_data = mn.get_player_menu(1)
+    player_menu_ui = um.convert_data_ui_menu(player_menu_data)
+
+    while True:
+        uh.display(player_menu_ui)
+        chosen = input("                 >>> ").strip()
+        if chosen in player_menu_data["options"]:
+            route = {
+            "a": cd.create_deck,
+            "b": lambda: print("To be implemented."),
+            "c": lambda: True
+            }
+            if route[chosen]():
+                break
+
+
+def player_menu_2():
+    player_menu_data = mn.get_player_menu(2)
     player_menu_ui = um.convert_data_ui_menu(player_menu_data)
 
     while True:

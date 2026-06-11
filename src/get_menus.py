@@ -11,9 +11,9 @@ def get_main_menu():
     }
 
 
-def get_player_menu():
+def get_player_menu(player_number):
     return {
-        "header": "Player 1",
+        "header": f"Player {player_number}",
         "options": {
             "a": "Create a Deck",
             "b": "Select an Existing Deck",
