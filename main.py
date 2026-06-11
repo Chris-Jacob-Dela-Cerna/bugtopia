@@ -1,10 +1,10 @@
 
 
-from src import game_logic
+from src import main_logic
 
 
 def main():
-    game_logic.main_menu()
+    main_logic.main_menu()
 
 
 if __name__ == "__main__":
