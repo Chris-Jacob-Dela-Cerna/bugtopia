@@ -55,7 +55,7 @@ Deck Creation UI
   | T1-Warrior       | ---              | ---              |
   ╰────────────────────────────────────────────────────────╯
     To select -> type unit-trait, ex: 1-b or 2-a
-    To undo -> type 'bb'
+    To undo -> type 'd'
     To change page -> type 'e', 'r', or the page number
     Type 'help' to view all options.
     >>> 

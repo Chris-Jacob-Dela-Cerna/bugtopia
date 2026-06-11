@@ -37,8 +37,8 @@ def create_deck():
             selected_page = int(page_number.group(1)) - 1
             if 0 <= selected_page < total_pages:
                 page = selected_page
-
-        if len(deck) <= 3:
+        
+        if len(deck) <= 2:
             if unit_code := re.search(r"^([0-9]{1,3})-([a-c])$", chosen):
                 unit_number = int(unit_code.group(1)) - 1
                 unit_trait = unit_code.group(2)
@@ -49,5 +49,5 @@ def create_deck():
                 }
                 deck.append(f"{options[unit_trait]}-{pages_data[unit_number]["name"].title()}")
 
-        if chosen == "bb" and bool(deck):
+        if chosen == "d" and bool(deck):
             del deck[-1]

@@ -114,7 +114,7 @@ def get_slots(deck):
 def get_help_state(show_help):
     if show_help:
         return ["    To select -> type unit-trait, ex: 1-b or 2-a", 
-                "    To undo -> type 'bb'", 
+                "    To undo -> type 'd'", 
                 "    To change page -> type 'e', 'r', or the page number"]
     else:
         return ["    Type 'h' to view all options."]
