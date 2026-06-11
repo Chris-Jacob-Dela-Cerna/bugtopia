@@ -47,6 +47,6 @@ def player_menu(player_number):
             }
             result = route[chosen]()
             if result == "Back":
-                break
+                return
             elif result:
                 return result

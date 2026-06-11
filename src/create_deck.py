@@ -1,14 +1,14 @@
 
 
 import re
-from src import extract_units as eu
+from src import extract_data as eu
 from src import get_pages as pg
 from utils import ui_create_deck as ucd
 from utils import ui_helpers as uh
 
 
 def create_deck():
-    units_data = eu.get_units_data()
+    units_data = eu.get_json_data("units_default.json")
     pages_data = pg.get_pages_data(units_data)
     total_pages = len(pages_data)
     page = 0
@@ -37,7 +37,7 @@ def create_deck():
             selected_page = int(page_number.group(1)) - 1
             if 0 <= selected_page < total_pages:
                 page = selected_page
-        
+
         if len(deck) <= 2:
             if unit_code := re.search(r"^([0-9]{1,3})([a-c])$", chosen):
                 unit_number = int(unit_code.group(1)) - 1
@@ -53,7 +53,7 @@ def create_deck():
             del deck[-1]
 
         if chosen == "b":
-            break
+            return
 
         if chosen == "f" and len(deck) == 3:
             return deck
