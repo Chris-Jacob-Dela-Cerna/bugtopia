@@ -26,8 +26,10 @@ def main_menu():
 
 
 def player_deck_creation():
-    player_menu_1()
-    player_menu_2()
+    deck_1 = player_menu_1()
+    if not deck_1:
+        return
+    deck_2 = player_menu_2()
 
 
 def player_menu_1():

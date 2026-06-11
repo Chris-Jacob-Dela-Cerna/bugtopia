@@ -51,3 +51,6 @@ def create_deck():
 
         if chosen == "d" and bool(deck):
             del deck[-1]
+
+        if chosen == "b":
+            break
