@@ -32,25 +32,12 @@ def convert_page_ui(ui_data, idx=0, deck=[], show_help=False):
     ui.append(f"  | Page {current_page}/{total_pages}{page_space} | {back_option} | {next_option} |")
     ui.append("  |────────────────────────────────────────────────────────|")
 
-    slots = []
-    
-    for slot in deck:
-        slot_space = fit(16, slot)
-        slots.append(f"{slot}{slot_space}")
-    empty_slot = 3 - len(deck)
-    if empty_slot != 0:
-        for _ in range(empty_slot):
-            slots.append("---             ")
-
+    slots = get_slots(deck)
     ui.append(f"  | {slots[0]} | {slots[1]} | {slots[2]} |")
     ui.append("  ╰────────────────────────────────────────────────────────╯")
 
-    if show_help:
-        ui.append("    To select -> type unit-trait, ex: 1-b or 2-a")
-        ui.append("    To undo -> type 'bb'")
-        ui.append("    To change page -> type 'e', 'r', or the page number")
-    else:
-        ui.append("    Type 'h' to view all options.")
+    help_state = get_help_state(show_help)
+    ui.extend(help_state)
 
     return ui
 
@@ -110,3 +97,24 @@ def get_page_option(current_page, total_pages):
     else:
         next_option = "Next (r) >>>    "
     return back_option, next_option
+
+
+def get_slots(deck):
+    slots = []
+    for slot in deck:
+        slot_space = fit(16, slot)
+        slots.append(f"{slot}{slot_space}")
+    empty_slot = 3 - len(deck)
+    if empty_slot != 0:
+        for _ in range(empty_slot):
+            slots.append("---             ")
+    return slots
+
+
+def get_help_state(show_help):
+    if show_help:
+        return ["    To select -> type unit-trait, ex: 1-b or 2-a", 
+                "    To undo -> type 'bb'", 
+                "    To change page -> type 'e', 'r', or the page number"]
+    else:
+        return ["    Type 'h' to view all options."]

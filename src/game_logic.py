@@ -59,6 +59,7 @@ def create_deck():
 
         visible_page = page + 1
         show_help = False
+
         if not chosen:
             continue
 
