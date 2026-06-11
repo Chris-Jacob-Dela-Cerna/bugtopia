@@ -39,7 +39,7 @@ def create_deck():
                 page = selected_page
         
         if len(deck) <= 2:
-            if unit_code := re.search(r"^([0-9]{1,3})-([a-c])$", chosen):
+            if unit_code := re.search(r"^([0-9]{1,3})([a-c])$", chosen):
                 unit_number = int(unit_code.group(1)) - 1
                 unit_trait = unit_code.group(2)
                 options = {
