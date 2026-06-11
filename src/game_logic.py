@@ -62,12 +62,11 @@ def create_deck():
         if not chosen:
             continue
 
-        if chosen == "help":
+        if chosen == "h":
             show_help = True
 
         if chosen == "e" and visible_page > 1:
             page -= 1
-        print(visible_page)
         if chosen == "r" and visible_page < total_pages:
             page += 1
 

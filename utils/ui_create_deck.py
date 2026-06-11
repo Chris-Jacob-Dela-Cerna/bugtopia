@@ -50,7 +50,7 @@ def convert_page_ui(ui_data, idx=0, deck=[], show_help=False):
         ui.append("    To undo -> type 'bb'")
         ui.append("    To change page -> type 'e', 'r', or the page number")
     else:
-        ui.append("    Type 'help' to view all options.")
+        ui.append("    Type 'h' to view all options.")
 
     return ui
 
