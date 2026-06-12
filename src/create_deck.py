@@ -1,21 +1,21 @@
 
 
 import re
-from src import access_json as eu
-from src import get_pages as pg
-from utils import ui_create_deck as ucd
+from src import access_json as aj
+from src import get_pages as gp
+from ui import create_deck as cd
 from utils import ui_helpers as uh
 
 
 def create_deck():
-    units_data = eu.load_json_data("units_default.json")
-    pages_data = pg.get_pages_data(units_data)
+    units_data = aj.load_json_data("units_default.json")
+    pages_data = gp.get_pages_data(units_data)
     total_pages = len(pages_data)
     page = 0
     deck = []
     show_help = False
     while True:
-        page_ui = ucd.convert_page_ui(ui_data=pages_data, idx=page, deck=deck, show_help=show_help)
+        page_ui = cd.convert_page_ui(ui_data=pages_data, idx=page, deck=deck, show_help=show_help)
         uh.display(page_ui)
         chosen = input("    >>> ").strip().lower()
 

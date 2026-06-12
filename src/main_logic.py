@@ -2,16 +2,16 @@
 
 import sys
 from src import create_deck as cd
-from src import get_menus as mn
-from utils import ui
+from src import get_menus as gm
+from ui import menu as mn
+from ui import title as tt
 from utils import ui_helpers as uh
-from utils import ui_menu as um
 
 
 def main_menu():
-    ui.show_title()
-    main_menu_data = mn.get_main_menu()
-    main_menu_ui = um.convert_data_ui_menu(main_menu_data)
+    tt.show_title()
+    main_menu_data = gm.get_main_menu()
+    main_menu_ui = mn.convert_data_ui_menu(main_menu_data)
 
     while True:
         uh.display(main_menu_ui)
@@ -33,8 +33,8 @@ def player_deck_creation():
 
 
 def player_menu(player_number):
-    player_menu_data = mn.get_player_menu(player_number)
-    player_menu_ui = um.convert_data_ui_menu(player_menu_data)
+    player_menu_data = gm.get_player_menu(player_number)
+    player_menu_ui = mn.convert_data_ui_menu(player_menu_data)
 
     while True:
         uh.display(player_menu_ui)
