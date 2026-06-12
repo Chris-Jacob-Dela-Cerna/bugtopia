@@ -22,7 +22,7 @@ def get_player_menu(player_number):
     }
 
 
-def get_save_menu():
+def get_save_deck_menu():
     return {
         "header": "Save deck?",
         "options": {

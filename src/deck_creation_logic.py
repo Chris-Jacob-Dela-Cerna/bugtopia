@@ -5,6 +5,7 @@ from src import get_menus as gm
 from src import get_pages as gp
 from ui import deck_creation as cd
 from ui import menu as mn
+from ui import prompt as pr
 from utils import access_json as aj
 from utils import ui_helpers as uh
 
@@ -84,4 +85,7 @@ def deck_creator(pages_data):
 
 
 def save_deck():
-    return True
+    decks_data = aj.load_json_data("saved_decks.json")
+    prompt_name_ui = pr.prompt("Enter a name for your deck")
+    while True:
+        uh.display(prompt_name_ui)
