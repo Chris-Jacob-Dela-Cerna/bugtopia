@@ -1,14 +1,14 @@
 
 
 import re
-from src import extract_data as eu
+from src import access_json as eu
 from src import get_pages as pg
 from utils import ui_create_deck as ucd
 from utils import ui_helpers as uh
 
 
 def create_deck():
-    units_data = eu.get_json_data("units_default.json")
+    units_data = eu.load_json_data("units_default.json")
     pages_data = pg.get_pages_data(units_data)
     total_pages = len(pages_data)
     page = 0
