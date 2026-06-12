@@ -1,18 +1,35 @@
 
 
 import re
+from src import get_menus as gm
 from src import get_pages as gp
-from ui import create_deck as cd
+from ui import deck_creation as cd
+from ui import menu as mn
 from utils import access_json as aj
 from utils import ui_helpers as uh
 
 
-def create_deck_logic():
+def deck_creation_logic():
     units_data = aj.load_json_data("units_default.json")
     pages_data = gp.get_pages_data(units_data)
     deck = deck_creator(pages_data)
     if not deck:
         return
+
+    menu_data = gm.get_save_deck_menu()
+    menu_ui = mn.convert_menu_ui(menu_data)
+
+    while True:
+        uh.display(menu_ui)
+        chosen = input("                 >>> ").strip()
+        if chosen in menu_data["options"]:
+            route = {
+            "a": save_deck,
+            "b": lambda: True,
+            }
+            if route[chosen]():
+                break
+
     return deck
 
 
@@ -64,3 +81,7 @@ def deck_creator(pages_data):
 
         if chosen == "f" and len(deck) == 3:
             return deck
+
+
+def save_deck():
+    return True

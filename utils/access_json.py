@@ -9,7 +9,6 @@ def get_data_path(file_name):
     dir = os.path.dirname(abs)
     dir2 = os.path.dirname(dir)
     path = os.path.join(dir2, "data", file_name)
-
     return path
 
 

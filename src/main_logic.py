@@ -1,7 +1,7 @@
 
 
 import sys
-from src import create_deck as cd
+from src import deck_creation_logic as dc
 from src import get_menus as gm
 from ui import menu as mn
 from ui import title as tt
@@ -18,14 +18,14 @@ def main_menu():
         chosen = input("                 >>> ").strip()
         if chosen in menu_data["options"]:
             route = {
-            "a": player_deck_creation,
+            "a": player_decks_creation,
             "b": lambda: print("To be implemented."),
             "c": sys.exit
             }
             route[chosen]()
 
 
-def player_deck_creation():
+def player_decks_creation():
     if not (deck_1 := player_menu(1)):
         return
     if not (deck_2 := player_menu(2)):
@@ -41,7 +41,7 @@ def player_menu(player_number):
         chosen = input("                 >>> ").strip()
         if chosen in menu_data["options"]:
             route = {
-            "a": cd.create_deck_logic,
+            "a": dc.deck_creation_logic,
             "b": lambda: print("To be implemented."),
             "c": lambda: "Back"
             }

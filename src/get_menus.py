@@ -20,3 +20,13 @@ def get_player_menu(player_number):
             "c": "Back to Main Menu"
         }
     }
+
+
+def get_save_menu():
+    return {
+        "header": "Save deck?",
+        "options": {
+            "a": "Yes",
+            "b": "No"
+        }
+    }
