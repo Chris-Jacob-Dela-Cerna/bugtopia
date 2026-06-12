@@ -1,15 +1,22 @@
 
 
 import re
-from src import access_json as aj
 from src import get_pages as gp
 from ui import create_deck as cd
+from utils import access_json as aj
 from utils import ui_helpers as uh
 
 
-def create_deck():
+def create_deck_logic():
     units_data = aj.load_json_data("units_default.json")
     pages_data = gp.get_pages_data(units_data)
+    deck = deck_creator(pages_data)
+    if not deck:
+        return
+    return deck
+
+
+def deck_creator(pages_data):
     total_pages = len(pages_data)
     page = 0
     deck = []

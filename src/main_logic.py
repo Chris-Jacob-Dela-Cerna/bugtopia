@@ -10,13 +10,13 @@ from utils import ui_helpers as uh
 
 def main_menu():
     tt.show_title()
-    main_menu_data = gm.get_main_menu()
-    main_menu_ui = mn.convert_data_ui_menu(main_menu_data)
+    menu_data = gm.get_main_menu()
+    menu_ui = mn.convert_menu_ui(menu_data)
 
     while True:
-        uh.display(main_menu_ui)
+        uh.display(menu_ui)
         chosen = input("                 >>> ").strip()
-        if chosen in main_menu_data["options"]:
+        if chosen in menu_data["options"]:
             route = {
             "a": player_deck_creation,
             "b": lambda: print("To be implemented."),
@@ -33,15 +33,15 @@ def player_deck_creation():
 
 
 def player_menu(player_number):
-    player_menu_data = gm.get_player_menu(player_number)
-    player_menu_ui = mn.convert_data_ui_menu(player_menu_data)
+    menu_data = gm.get_player_menu(player_number)
+    menu_ui = mn.convert_menu_ui(menu_data)
 
     while True:
-        uh.display(player_menu_ui)
+        uh.display(menu_ui)
         chosen = input("                 >>> ").strip()
-        if chosen in player_menu_data["options"]:
+        if chosen in menu_data["options"]:
             route = {
-            "a": cd.create_deck,
+            "a": cd.create_deck_logic,
             "b": lambda: print("To be implemented."),
             "c": lambda: "Back"
             }

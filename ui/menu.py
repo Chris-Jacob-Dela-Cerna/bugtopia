@@ -3,7 +3,7 @@
 from utils.ui_helpers import fit
 
 
-def convert_data_ui_menu(ui_data):
+def convert_menu_ui(ui_data):
     ui = []
     header = ui_data['header']
     header_space = fit(28, ui_data['header'])
