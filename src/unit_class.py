@@ -85,12 +85,17 @@ class Unit:
     @property
     def attack(self):
         return self._attack
+    
+    @property
+    def is_alive(self):
+        return self._is_alive
 
     def damage(self, attack):
         residual_damage = attack - self._defence
         if residual_damage <= 0:
             residual_damage = 1
         self._health -= residual_damage
+        self.check_if_alive
 
     def heal(self):
         max_heal = self._max_health / 2
@@ -104,3 +109,8 @@ class Unit:
             self._health = self._max_health
         else:
             self._health = healed_hp
+
+    def check_if_alive(self):
+        if self._health <= 0:
+            self._health = 0
+            self._is_alive = False
