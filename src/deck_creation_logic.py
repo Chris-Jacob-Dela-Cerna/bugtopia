@@ -44,42 +44,46 @@ def deck_creator(pages_data):
 
         visible_page = page + 1
         show_help = False
-
         if not chosen:
             continue
 
         if chosen == "h":
             show_help = True
-
-        if chosen == "e" and visible_page > 1:
-            page -= 1
-        if chosen == "r" and visible_page < total_pages:
-            page += 1
-
-        if page_number := re.search(r"^([0-9]{1,3})$", chosen):
-            selected_page = int(page_number.group(1)) - 1
-            if 0 <= selected_page < total_pages:
-                page = selected_page
-
-        if len(deck) <= 2:
-            if unit_code := re.search(r"^([0-9]{1,3})([a-c])$", chosen):
-                unit_number = int(unit_code.group(1)) - 1
-                unit_trait = unit_code.group(2)
-                options = {
-                    "a": "T1",
-                    "b": "T2",
-                    "c": "T3"
-                }
-                deck.append(f"{options[unit_trait]}-{pages_data[unit_number]["name"].title()}")
-
-        if chosen == "d" and bool(deck):
-            del deck[-1]
-
         if chosen == "b":
             return
-
         if chosen == "f" and len(deck) == 3:
             return deck
+        
+        page = handle_page(chosen, page, visible_page, total_pages)
+        deck = handle_deck(chosen, deck, pages_data)
+
+
+def handle_page(chosen, page, visible_page, total_pages):
+    if chosen == "e" and visible_page > 1:
+        page -= 1
+    if chosen == "r" and visible_page < total_pages:
+        page += 1
+    if page_number := re.search(r"^([0-9]{1,3})$", chosen):
+        selected_page = int(page_number.group(1)) - 1
+        if 0 <= selected_page < total_pages:
+            page = selected_page
+    return page
+
+
+def handle_deck(chosen, deck, pages_data):
+    if len(deck) <= 2:
+        if unit_code := re.search(r"^([0-9]{1,3})([a-c])$", chosen):
+            unit_number = int(unit_code.group(1)) - 1
+            unit_trait = unit_code.group(2)
+            options = {
+                "a": "T1",
+                "b": "T2",
+                "c": "T3"
+            }
+            deck.append(f"{options[unit_trait]}-{pages_data[unit_number]["name"].title()}")
+    if chosen == "d" and bool(deck):
+        del deck[-1]
+    return deck
 
 
 def save_deck(deck):
