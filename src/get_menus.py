@@ -4,7 +4,7 @@ def get_main_menu():
     return {
         "header": "Main Menu",
         "options": {
-            "a": "Play 1v1",
+            "a": "Play",
             "b": "Credits",
             "c": "Quit"
         }

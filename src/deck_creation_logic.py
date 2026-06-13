@@ -1,6 +1,7 @@
 
 
 import re
+from src import deck_saving_logic as ds
 from src import get_pages as gp
 from ui import deck_creation as cd
 from utils import access_json as aj
@@ -13,6 +14,7 @@ def deck_creation_logic():
     deck = deck_creator(pages_data)
     if not deck:
         return
+    ds.deck_saving_logic(deck)
     return deck
 
 
