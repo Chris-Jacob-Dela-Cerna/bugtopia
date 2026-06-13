@@ -24,12 +24,10 @@ def deck_creation_logic():
         uh.display(menu_ui)
         chosen = input("                 >>> ").strip()
         if chosen in menu_data["options"]:
-            route = {
-            "a": save_deck,
-            "b": lambda: True,
-            }
-            if route[chosen]():
+            if chosen == "a":
+                save_deck(deck)
                 break
+            break
 
     return deck
 
@@ -84,8 +82,16 @@ def deck_creator(pages_data):
             return deck
 
 
-def save_deck():
+def save_deck(deck):
     decks_data = aj.load_json_data("saved_decks.json")
     prompt_name_ui = pr.prompt("Enter a name for your deck")
     while True:
         uh.display(prompt_name_ui)
+        deck_name = input("                 >>> ").strip()
+        if deck_name:
+            decks_data.append({
+                "name": deck_name,
+                "slots": deck
+            })
+            aj.dump_json_data("saved_decks.json", decks_data)
+            break
