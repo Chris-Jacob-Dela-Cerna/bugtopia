@@ -32,4 +32,7 @@ def save_deck(deck):
                 "slots": deck
             })
             aj.dump_json_data("saved_decks.json", decks_data)
+            starting_battle_ui = pr.prompt("Deck saved.")
+            uh.display(starting_battle_ui)
+            input("                ")
             break

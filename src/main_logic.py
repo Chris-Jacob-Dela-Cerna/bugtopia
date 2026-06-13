@@ -4,6 +4,7 @@ import sys
 from src import deck_creation_logic as dc
 from src import get_menus as gm
 from ui import menu as mn
+from ui import prompt as pr
 from ui import title as tt
 from utils import ui_helpers as uh
 
@@ -30,6 +31,7 @@ def player_decks():
         return
     if not (deck_2 := player_menu(2)):
         return
+    battle(deck_1, deck_2)
 
 
 def player_menu(player_number):
@@ -50,3 +52,9 @@ def player_menu(player_number):
                 return
             elif result:
                 return result
+
+
+def battle(deck_1, deck_2):
+    starting_battle_ui = pr.prompt("Starting battle...")
+    uh.display(starting_battle_ui)
+    input("                ")
