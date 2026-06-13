@@ -1,5 +1,8 @@
 
 
+from millify import millify
+
+
 class Unit:
     def __init__(self, unit_idx, trait_idx, units_data):
         unit = units_data[unit_idx]
@@ -53,11 +56,11 @@ class Unit:
 
     @property
     def max_health(self):
-        return self._max_health
+        return millify(self._max_health, precision=1)
 
     @property
     def health(self):
-        return self._health
+        return millify(self._health, precision=1)
 
     @property
     def defence(self):
