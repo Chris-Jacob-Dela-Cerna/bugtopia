@@ -11,9 +11,9 @@ from utils import ui_helpers as uh
 
 def main_menu():
     tt.show_title()
+
     menu_data = gm.get_main_menu()
     menu_ui = mn.convert_menu_ui(menu_data)
-
     while True:
         uh.display(menu_ui)
         chosen = input("                 >>> ").strip()
@@ -37,7 +37,6 @@ def player_decks():
 def player_menu(player_number):
     menu_data = gm.get_player_menu(player_number)
     menu_ui = mn.convert_menu_ui(menu_data)
-
     while True:
         uh.display(menu_ui)
         chosen = input("                 >>> ").strip()
