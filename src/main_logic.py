@@ -2,6 +2,7 @@
 
 import sys
 from src import deck_creation_logic as dc
+from src import deck_saving_logic as ds
 from src import get_menus as gm
 from ui import menu as mn
 from ui import title as tt
@@ -28,8 +29,10 @@ def main_menu():
 def player_decks_creation():
     if not (deck_1 := player_menu(1)):
         return
+    ds.deck_saving_logic(deck_1)
     if not (deck_2 := player_menu(2)):
         return
+    ds.deck_saving_logic(deck_2)
 
 
 def player_menu(player_number):

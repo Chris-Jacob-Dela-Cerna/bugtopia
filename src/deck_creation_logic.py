@@ -1,11 +1,8 @@
 
 
 import re
-from src import get_menus as gm
 from src import get_pages as gp
 from ui import deck_creation as cd
-from ui import menu as mn
-from ui import prompt as pr
 from utils import access_json as aj
 from utils import ui_helpers as uh
 
@@ -16,19 +13,6 @@ def deck_creation_logic():
     deck = deck_creator(pages_data)
     if not deck:
         return
-
-    menu_data = gm.get_save_deck_menu()
-    menu_ui = mn.convert_menu_ui(menu_data)
-
-    while True:
-        uh.display(menu_ui)
-        chosen = input("                 >>> ").strip()
-        if chosen in menu_data["options"]:
-            if chosen == "a":
-                save_deck(deck)
-                break
-            break
-
     return deck
 
 
@@ -84,18 +68,3 @@ def handle_deck(chosen, deck, pages_data):
     if chosen == "d" and bool(deck):
         del deck[-1]
     return deck
-
-
-def save_deck(deck):
-    decks_data = aj.load_json_data("saved_decks.json")
-    prompt_name_ui = pr.prompt("Enter a name for your deck")
-    while True:
-        uh.display(prompt_name_ui)
-        deck_name = input("                 >>> ").strip()
-        if deck_name:
-            decks_data.append({
-                "name": deck_name,
-                "slots": deck
-            })
-            aj.dump_json_data("saved_decks.json", decks_data)
-            break
