@@ -39,17 +39,18 @@ class Unit:
         health = trait['stats']['health']
         if health < 1 or health > 9999999:
             raise ValueError("Invalid health value. Range: 1-9999999")
-        self.health = health
+        self._max_health = health
+        self._health = health
 
         defence = trait['stats']['defence']
         if defence < 1 or defence > 9999999:
             raise ValueError("Invalid defence value. Range: 1-9999999")
-        self.defence = defence
+        self._defence = defence
 
         attack = trait['stats']['attack']
         if attack < 1 or attack > 9999999:
             raise ValueError("Invalid attack value. Range: 1-9999999")
-        self.attack = attack
+        self._attack = attack
 
         abilities = trait['abilities']
         self.can_attack = False
@@ -59,10 +60,34 @@ class Unit:
         if "healSelf" in abilities:
             self.can_healSelf = True
 
+        self._is_alive = True
+
     @property
     def unit(self):
         return self._unit
-    
+
     @property
     def trait(self):
         return self._trait
+
+    @property
+    def max_health(self):
+        return self._max_health
+
+    @property
+    def health(self):
+        return self._health
+
+    @property
+    def defence(self):
+        return self._defence
+
+    @property
+    def attack(self):
+        return self._attack
+
+    def damage(self, attack):
+        residual_damage = attack - self._defence
+        if residual_damage <= 0:
+            residual_damage = 1
+        self._health -= residual_damage
