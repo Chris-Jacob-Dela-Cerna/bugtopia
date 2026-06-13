@@ -61,6 +61,7 @@ class Unit:
             self.can_healSelf = True
 
         self._is_alive = True
+        self._can_heal = False
 
     @property
     def unit(self):
@@ -107,8 +108,15 @@ class Unit:
 
         if healed_hp >= self._max_health:
             self._health = self._max_health
+            self.check_can_heal
         else:
             self._health = healed_hp
+
+    def check_can_heal(self):
+        if self._health == self._max_health:
+            self._can_heal = False
+        else:
+            self._can_heal = True
 
     def check_if_alive(self):
         if self._health <= 0:
