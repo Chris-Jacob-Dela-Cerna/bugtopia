@@ -91,3 +91,16 @@ class Unit:
         if residual_damage <= 0:
             residual_damage = 1
         self._health -= residual_damage
+
+    def heal(self):
+        max_heal = self._max_health / 2
+        min_heal = self._max_health / 100
+        missing_hp = 1 - (self._health / self._max_health)
+
+        total_healing = min_heal + ((max_heal - min_heal) * missing_hp)
+        healed_hp = self._health + total_healing
+
+        if healed_hp >= self._max_health:
+            self._health = self._max_health
+        else:
+            self._health = healed_hp
