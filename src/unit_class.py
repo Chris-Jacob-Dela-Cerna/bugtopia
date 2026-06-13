@@ -23,6 +23,18 @@ def get_unit(slot, units_data):
 class Unit:
     def __init__(self, unit_idx, trait_idx, units_data):
         unit = units_data[unit_idx]
-        trait = unit[trait_idx]
         self.unit = unit['name']
+
+        trait = unit['traits'][trait_idx]
         self.trait = trait['name']
+        self.health = trait['stats']['health']
+        self.defence = trait['stats']['defence']
+        self.attack = trait['stats']['attack']
+
+        abilities = trait['abilities']
+        self.can_attack = False
+        if "attack" in abilities:
+            self.can_attack = True
+        self.can_healSelf = False
+        if "healSelf" in abilities:
+            self.can_healSelf = True
