@@ -23,13 +23,33 @@ def get_unit(slot, units_data):
 class Unit:
     def __init__(self, unit_idx, trait_idx, units_data):
         unit = units_data[unit_idx]
-        self.unit = unit['name']
+
+        unit_name = unit['name']
+        if len(unit_name) > 1 or len(unit_name) > 13:
+            raise ValueError("Invalid unit name length. Range: 1-13")
+        self._unit = unit_name
 
         trait = unit['traits'][trait_idx]
-        self.trait = trait['name']
-        self.health = trait['stats']['health']
-        self.defence = trait['stats']['defence']
-        self.attack = trait['stats']['attack']
+
+        trait_name = trait['name']
+        if len(trait_name) < 1 or len(trait_name) > 13:
+            raise ValueError("Invalid trait name length. Range: 1-13")
+        self._trait = trait_name
+
+        health = trait['stats']['health']
+        if health < 1 or health > 9999999:
+            raise ValueError("Invalid health value. Range: 1-9999999")
+        self.health = health
+
+        defence = trait['stats']['defence']
+        if defence < 1 or defence > 9999999:
+            raise ValueError("Invalid defence value. Range: 1-9999999")
+        self.defence = defence
+
+        attack = trait['stats']['attack']
+        if attack < 1 or attack > 9999999:
+            raise ValueError("Invalid attack value. Range: 1-9999999")
+        self.attack = attack
 
         abilities = trait['abilities']
         self.can_attack = False
@@ -38,3 +58,11 @@ class Unit:
         self.can_healSelf = False
         if "healSelf" in abilities:
             self.can_healSelf = True
+
+    @property
+    def unit(self):
+        return self._unit
+    
+    @property
+    def trait(self):
+        return self._trait

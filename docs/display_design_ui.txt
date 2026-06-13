@@ -106,8 +106,8 @@ Battle UI
   |                                                        |
   |────────────────────────────────────────────────────────|
   | 1) Warrior       | 2) Archer        | 3) Giant         |
-  | HP: 95/100       | HP: 70/80        | HP: 140/200      |
   | T: Agile         | T: Agile         | T: Agile         |
+  | HP: 95/100       | HP: 70/80        | HP: 140/200      |
   | DEF: 15          | DEF: 5           | DEF: 20          |
   | ATK: 25          | ATK: 35          | ATK: 20          |
   |────────────────────────────────────────────────────────|
@@ -115,8 +115,8 @@ Battle UI
   ╰────────────────────────────────────────────────────────╯
   ╭────────────────────────────────────────────────────────╮
   | Choose:          | Action:          | Attack:          |
-  | a. 1-Warrior     | a. Attack <      | a. 1-Warrior     |
-  | b. 3-Giant <     | b. Heal          | b. 2-Archer      |
+  | a. Warrior       | a. Attack <      | a. 1-Warrior     |
+  | b. Giant <       | b. Heal          | b. 2-Archer      |
   |                  |                  | c. 3-Giant       |
   |                  |                  |                  |
   |                  | e. Back          | e. Back          |
