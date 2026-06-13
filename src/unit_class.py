@@ -22,4 +22,7 @@ def get_unit(slot, units_data):
 
 class Unit:
     def __init__(self, unit_idx, trait_idx, units_data):
-        ...
+        unit = units_data[unit_idx]
+        trait = unit[trait_idx]
+        self.unit = unit['name']
+        self.trait = trait['name']

@@ -48,7 +48,7 @@ def convert_trait_stats_ui(page):
 
     for x in range(3):
         current_trait = page['traits'][x]
-        trait = current_trait['trait']
+        trait = current_trait['name']
         trait_space = fit(13, trait)
         rows[0] += f" {options[x]}. {trait.title()}{trait_space} |"
 

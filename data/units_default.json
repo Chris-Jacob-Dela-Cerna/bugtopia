@@ -3,7 +3,7 @@
         "name": "Warrior",
         "traits": [
             {
-                "trait": "normal",
+                "name": "normal",
                 "stats": {
                     "health": 120,
                     "defence": 15,
@@ -17,7 +17,7 @@
                 ]
             },
             {
-                "trait": "agile",
+                "name": "agile",
                 "stats": {
                     "health": 100,
                     "defence": 10,
@@ -31,7 +31,7 @@
                 ]
             },
             {
-                "trait": "tanky",
+                "name": "tanky",
                 "stats": {
                     "health": 150,
                     "defence": 25,
@@ -50,7 +50,7 @@
         "name": "Archer",
         "traits": [
             {
-                "trait": "normal",
+                "name": "normal",
                 "stats": {
                     "health": 100,
                     "defence": 12,
@@ -64,7 +64,7 @@
                 ]
             },
             {
-                "trait": "sniper",
+                "name": "sniper",
                 "stats": {
                     "health": 80,
                     "defence": 5,
@@ -78,7 +78,7 @@
                 ]
             },
             {
-                "trait": "evasive",
+                "name": "evasive",
                 "stats": {
                     "health": 110,
                     "defence": 18,
@@ -97,7 +97,7 @@
         "name": "Giant",
         "traits": [
             {
-                "trait": "normal",
+                "name": "normal",
                 "stats": {
                     "health": 160,
                     "defence": 10,
@@ -111,7 +111,7 @@
                 ]
             },
             {
-                "trait": "brawler",
+                "name": "brawler",
                 "stats": {
                     "health": 140,
                     "defence": 8,
@@ -125,7 +125,7 @@
                 ]
             },
             {
-                "trait": "colossus",
+                "name": "colossus",
                 "stats": {
                     "health": 200,
                     "defence": 22,
