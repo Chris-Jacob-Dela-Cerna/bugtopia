@@ -26,13 +26,13 @@ class Unit:
         self._health = health
 
         defence = trait['stats']['defence']
-        if defence < 1 or defence > 9999999:
-            raise ValueError("Invalid defence value. Range: 1-9999999")
+        if defence < 0 or defence > 9999999:
+            raise ValueError("Invalid defence value. Range: 0-9999999")
         self._defence = defence
 
         attack = trait['stats']['attack']
-        if attack < 1 or attack > 9999999:
-            raise ValueError("Invalid attack value. Range: 1-9999999")
+        if attack < 0 or attack > 9999999:
+            raise ValueError("Invalid attack value. Range: 0-9999999")
         self._attack = attack
 
         abilities = trait['abilities']
@@ -42,6 +42,12 @@ class Unit:
         self._can_healSelf = False
         if "healSelf" in abilities:
             self._can_healSelf = True
+        self._can_poison = False
+        if "poison" in abilities:
+            self._can_poison = True
+        self._can_pierce = False
+        if "pierce" in abilities:
+            self._can_pierce = True
 
         self._is_alive = True
         self._can_heal = False
