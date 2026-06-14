@@ -135,6 +135,8 @@ class Unit:
                 if bool(status_message):
                     status_message += "|"
                 status_message += status
+        else:
+            status_message += "None"
         return status_message
 
     def check_is_alive(self):

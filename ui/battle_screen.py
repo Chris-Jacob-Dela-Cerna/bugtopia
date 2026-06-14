@@ -1,6 +1,7 @@
 
 
 from utils.ui_helpers import fit
+from utils.ui_helpers import fit2
 
 
 def convert_battle_ui(deck1, deck2):
@@ -9,15 +10,13 @@ def convert_battle_ui(deck1, deck2):
     ui.append("  | Player 1                                               |")
     ui.append("  |────────────────────────────────────────────────────────|")
 
-    deck1_rows = get_deck_rows(deck1)
-    ui.extend(deck1_rows)
+    ui.extend(get_deck_rows(deck1))
 
     ui.append("  |────────────────────────────────────────────────────────|")
     ui.append("  |                                                        |")
     ui.append("  |────────────────────────────────────────────────────────|")
 
-    deck2_rows = get_deck_rows(deck2)
-    ui.extend(deck2_rows)
+    ui.extend(get_deck_rows(deck2))
 
     ui.append("  |────────────────────────────────────────────────────────|")
     ui.append("  | Player 2                                               |")
@@ -60,8 +59,3 @@ def get_deck_rows(deck):
                 row += fit2(slot.status(), 11, "STS: ", " | ")
             rows[x] = row
     return rows
-
-
-def fit2(text="", total_space=0, first="", last=""):
-    space = (total_space - len(str(text))) * " "
-    return f"{first}{text}{space}{last}"
