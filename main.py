@@ -20,7 +20,7 @@ def main():
     battle_ui = bs.convert_battle_ui(deck1, deck2)
     uh.display(battle_ui)
 
-    # main_logic.main_menu()
+    main_logic.main_menu()
 
 
 if __name__ == "__main__":
