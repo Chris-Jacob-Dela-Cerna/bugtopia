@@ -1,7 +1,6 @@
 
 
 from utils.ui_helpers import fit
-from utils.ui_helpers import fit2
 
 
 def convert_battle_ui(deck1, deck2):
@@ -9,15 +8,11 @@ def convert_battle_ui(deck1, deck2):
     ui.append("  ╭────────────────────────────────────────────────────────╮")
     ui.append("  | Player 1                                               |")
     ui.append("  |────────────────────────────────────────────────────────|")
-
     ui.extend(get_deck_rows(deck1))
-
     ui.append("  |────────────────────────────────────────────────────────|")
     ui.append("  |                                                        |")
     ui.append("  |────────────────────────────────────────────────────────|")
-
     ui.extend(get_deck_rows(deck2))
-
     ui.append("  |────────────────────────────────────────────────────────|")
     ui.append("  | Player 2                                               |")
     ui.append("  ╰────────────────────────────────────────────────────────╯")
@@ -46,16 +41,16 @@ def get_deck_rows(deck):
                 rows[x] = row
                 continue
             elif x == 0:
-                row += fit2(slot.unit, 13, f"{y + 1}) ", " | ") 
+                row += fit(slot.unit, 13, f"{y + 1}) ", " | ") 
             elif x == 1:
-                row += fit2(slot.trait, 13, "T: ", " | ")
+                row += fit(slot.trait, 13, "T: ", " | ")
             elif x == 2:
-                row += fit2(f"{slot.health}/{slot.base_health}", 13, "H: ", " | ")
+                row += fit(f"{slot.health}/{slot.base_health}", 13, "H: ", " | ")
             elif x == 3:
-                row += fit2(slot.defence, 11, "DEF: ", " | ")
+                row += fit(slot.defence, 11, "DEF: ", " | ")
             elif x == 4:
-                row += fit2(slot.attack, 11, "ATK: ", " | ")
+                row += fit(slot.attack, 11, "ATK: ", " | ")
             elif x == 5:
-                row += fit2(slot.status(), 11, "STS: ", " | ")
+                row += fit(slot.status(), 11, "STS: ", " | ")
             rows[x] = row
     return rows

@@ -1,12 +1,12 @@
 
 
-from utils.ui_helpers import fit2
+from utils.ui_helpers import fit
 
 
 def convert_menu_ui(ui_data):
     ui = []
     ui.append("               ╭──────────────────────────────╮")
-    ui.append(fit2(ui_data['header'], 28, "               │ ", " |"))
+    ui.append(fit(ui_data['header'], 28, "               │ ", " |"))
     ui.append("               |──────────────────────────────|")
 
     option_list = get_options(ui_data)
@@ -22,5 +22,5 @@ def get_options(ui_data):
     option_list = []
     options = ui_data['options'].items()
     for letter, option in options:
-        option_list.append(fit2(f"{letter}. {option}", 28, "               │ ", " |"))
+        option_list.append(fit(f"{letter}. {option}", 28, "               │ ", " |"))
     return option_list

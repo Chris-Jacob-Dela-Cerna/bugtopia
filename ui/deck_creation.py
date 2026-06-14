@@ -1,6 +1,6 @@
 
 
-from utils.ui_helpers import fit2
+from utils.ui_helpers import fit
 
 
 def convert_page_ui(ui_data, idx=0, deck=[], show_help=False):
@@ -11,28 +11,23 @@ def convert_page_ui(ui_data, idx=0, deck=[], show_help=False):
     ui.append("  |────────────────────────────────────────────────────────|")
 
     current_page = page['idx'] + 1
-    ui.append(fit2(f"{current_page}) {page['name']}", 54, "  | ", " |"))
+    ui.append(fit(f"{current_page}) {page['name']}", 54, "  | ", " |"))
 
     ui.append("  | Traits:                                                |")
-
     ui.extend(convert_trait_stats_ui(page))
 
     ui.append("  | Abilities:                                             |")
-
     ability_list = get_abilities(page)
     ui.extend(convert_abilities_ui(ability_list))
 
     ui.append("  |────────────────────────────────────────────────────────|")
-
     total_pages = len(ui_data)
     back_option, next_option = get_page_option(current_page, total_pages)
-    ui.append(fit2(f"{current_page}/{total_pages}", 10, "  | Page ", f" | {back_option} | {next_option} |"))
+    ui.append(fit(f"{current_page}/{total_pages}", 11, "  | Page ", f" | {back_option} | {next_option} |"))
 
     ui.append("  |────────────────────────────────────────────────────────|")
-
     slots = get_slots(deck)
     ui.append(f"  | {slots[0]} | {slots[1]} | {slots[2]} |")
-
     ui.append("  ╰────────────────────────────────────────────────────────╯")
 
     ui.extend(get_help_state(show_help))
@@ -44,10 +39,10 @@ def convert_trait_stats_ui(page):
     rows = ["  |", "  |", "  |", "  |"]
     for x in range(3):
         current_trait = page['traits'][x]
-        rows[0] += fit2(f"{options[x]}. {current_trait['name'].title()}", 16, " ", " |")
-        rows[1] += fit2(current_trait['stats']['health'], 12, " HP: ", " |")
-        rows[2] += fit2(current_trait['stats']['defence'], 11, " DEF: ", " |")
-        rows[3] += fit2(current_trait['stats']['attack'], 11, " ATK: ", " |")
+        rows[0] += fit(f"{options[x]}. {current_trait['name'].title()}", 16, " ", " |")
+        rows[1] += fit(current_trait['stats']['health'], 12, " HP: ", " |")
+        rows[2] += fit(current_trait['stats']['defence'], 11, " DEF: ", " |")
+        rows[3] += fit(current_trait['stats']['attack'], 11, " ATK: ", " |")
     return rows
 
 
@@ -66,7 +61,7 @@ def convert_abilities_ui(ability_list):
             if not bool(current_ability):
                 abilities[y] += "                  |"
                 continue
-            abilities[y] += fit2(current_ability, 14, " - ", " |")
+            abilities[y] += fit(current_ability, 14, " - ", " |")
     return abilities
 
 
@@ -85,7 +80,7 @@ def get_page_option(current_page, total_pages):
 def get_slots(deck):
     slots = []
     for slot in deck:
-        slots.append(fit2(slot, 16))
+        slots.append(fit(slot, 16))
     empty_slots = 3 - len(deck)
     if empty_slots:
         for _ in range(empty_slots):
