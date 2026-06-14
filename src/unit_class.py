@@ -4,6 +4,9 @@ from millify import millify
 
 
 class Unit:
+    poison_duration = 3 * 2
+    pierce_duration = 4 * 2
+    
     def __init__(self, unit_idx, trait_idx, units_data):
         unit = units_data[unit_idx]
 
@@ -53,6 +56,12 @@ class Unit:
         self._is_alive = True
         self._is_full_hp = False
 
+        self._is_poisoned = False
+        self._poison_state = 0
+
+        self._is_pierced = False
+        self._pierced_state = 0
+
 
     @property
     def unit(self):
@@ -83,12 +92,36 @@ class Unit:
         return self._attack
     
     @property
+    def can_attack(self):
+        return self._can_attack
+    
+    @property
+    def can_healSelf(self):
+        return self._can_healSelf
+
+    @property
+    def can_poison(self):
+        return self._can_poison
+
+    @property
+    def can_pierce(self):
+        return self._can_pierce
+    
+    @property
     def is_alive(self):
         return self._is_alive
 
     @property
     def is_full_hp(self):
         return self._is_full_hp
+    
+    @property
+    def is_poisoned(self):
+        return self._is_poisoned
+
+    @property
+    def is_pierced(self):
+        return self._is_pierced
 
 
     def check_is_alive(self):
@@ -101,25 +134,50 @@ class Unit:
             self._is_full_hp = False
         else:
             self._is_full_hp = True
-
+    
+    def check_is_poisoned(self):
+        if self._poison_state > 0:
+            self._poison_state -= 1
+            self.poison_damage()
+        else:
+            self._is_poisoned = False
 
     def damage(self, attack):
         residual_damage = attack - self._defence
         if residual_damage <= 0:
             residual_damage = 1
         self._health -= residual_damage
-        self.check_if_alive()
+        self.check_is_alive()
 
     def heal(self):
-        max_heal = self._base_health / 2
+        max_heal = self._base_health / 3.3
         min_heal = self._base_health / 100
         missing_hp = 1 - (self._health / self._base_health)
 
-        total_healing = min_heal + ((max_heal - min_heal) * missing_hp)
-        healed_hp = self._health + total_healing
+        total_heal = min_heal + ((max_heal - min_heal) * missing_hp)
+        total_hp = self._health + total_heal
 
-        if healed_hp >= self._base_health:
+        if total_hp >= self._base_health:
             self._health = self._base_health
             self.check_is_full_hp()
         else:
-            self._health = healed_hp
+            self._health = total_hp
+
+    def poison(self):
+        self._is_poisoned = True
+        self._poison_state = Unit.poison_duration
+
+    def poison_damage(self):
+        max_damage = self._base_health / 4
+        min_damage = self._base_health / 6.6
+        turn_range = 1 - (self._poison_state / Unit.poison_duration)
+
+        total_damage = min_damage + ((max_damage - min_damage) * turn_range)
+        total_hp = self._health - total_damage
+
+        if total_hp <= 0:
+            self._health = 1
+            self._is_poisoned = False
+            self._poison_state = 0
+        else:
+            self._health = total_hp
