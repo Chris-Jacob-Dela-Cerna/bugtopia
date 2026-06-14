@@ -126,21 +126,8 @@ class Unit:
 
     def check_is_alive(self):
         if self._health <= 0:
-            self._health = 0
             self._is_alive = False
-
-    def check_is_full_hp(self):
-        if self._health == self._base_health:
-            self._is_full_hp = False
-        else:
-            self._is_full_hp = True
-    
-    def check_is_poisoned(self):
-        if self._poison_state > 0:
-            self._poison_state -= 1
-            self.poison_damage()
-        else:
-            self._is_poisoned = False
+            self._health = 0
 
     def damage(self, attack):
         residual_damage = attack - self._defence
@@ -148,6 +135,13 @@ class Unit:
             residual_damage = 1
         self._health -= residual_damage
         self.check_is_alive()
+
+
+    def check_is_full_hp(self):
+        if self._health == self._base_health:
+            self._is_full_hp = False
+        else:
+            self._is_full_hp = True
 
     def heal(self):
         max_heal = self._base_health / 3.3
@@ -163,21 +157,40 @@ class Unit:
         else:
             self._health = total_hp
 
+
     def poison(self):
         self._is_poisoned = True
         self._poison_state = Unit.poison_duration
 
+    def check_is_poisoned(self):
+        if self._poison_state > 0:
+            self._poison_state -= 1
+            self.poison_damage()
+        else:
+            self._is_poisoned = False
+
     def poison_damage(self):
         max_damage = self._base_health / 4
         min_damage = self._base_health / 6.6
-        turn_range = 1 - (self._poison_state / Unit.poison_duration)
+        remaining_turns = 1 - (self._poison_state / Unit.poison_duration)
 
-        total_damage = min_damage + ((max_damage - min_damage) * turn_range)
+        total_damage = min_damage + ((max_damage - min_damage) * remaining_turns)
         total_hp = self._health - total_damage
 
         if total_hp <= 0:
             self._health = 1
-            self._is_poisoned = False
-            self._poison_state = 0
         else:
             self._health = total_hp
+
+
+    def pierce(self):
+        self._is_pierced = True
+        self._pierced_state = Unit.pierce_duration
+        self._defence = self._base_defence / 2
+
+    def check_is_pierced(self):
+        if self._pierced_state > 0:
+            self._pierced_state -= 1
+        else:
+            self._is_pierced = False
+            self._defence = self._base_defence
