@@ -9,56 +9,15 @@ def convert_battle_ui(deck1, deck2):
     ui.append("  | Player 1                                               |")
     ui.append("  |────────────────────────────────────────────────────────|")
 
-    rows = ["  | ", "  | ", "  | ", "  | ", "  | ", "  | "]
-    dead_rows = [
-        "--            -- | ",
-        "   --      --    | ",
-        "       --        | ",
-        "       --        | ",
-        "   --      --    | ",
-        "--            -- | "
-    ]
-
-    for x, row in enumerate(rows):
-        for y, slot in enumerate(deck1):
-            if slot == None:
-                row += dead_rows[x]
-                continue
-            elif x == 0:
-                visible_idx = y + 1
-                unit_name = slot.unit
-                unit_space = fit(13, unit_name)
-                row += f"{visible_idx}) {unit_name}{unit_space} | "
-            elif x == 1:
-                trait_name = slot.trait
-                trait_space = fit(13, trait_name)
-                row += f"T: {trait_name}{trait_space} | "
-            elif x == 2:
-                health = slot.health
-                base_health = slot.base_health
-                health_space = fit(13, f"{health}/{base_health}")
-                row += f"H: {health}/{base_health}{health_space} | "
-            elif x == 3:
-                defence = slot.defence
-                defence_space = fit(11, defence)
-                row += f"DEF: {defence}{defence_space} | "
-            elif x == 4:
-                attack = slot.attack
-                attack_space = fit(11, attack)
-                row += f"ATK: {attack}{attack_space} | "
-            else:
-                row += "                 | "
-            rows[x] = row
-
-    ui.extend(rows)
-
-
+    deck1_rows = get_deck_rows(deck1)
+    ui.extend(deck1_rows)
 
     ui.append("  |────────────────────────────────────────────────────────|")
     ui.append("  |                                                        |")
     ui.append("  |────────────────────────────────────────────────────────|")
 
-
+    deck2_rows = get_deck_rows(deck2)
+    ui.extend(deck2_rows)
 
     ui.append("  |────────────────────────────────────────────────────────|")
     ui.append("  | Player 2                                               |")
@@ -69,3 +28,40 @@ def convert_battle_ui(deck1, deck2):
 
     ui.append("  ╰────────────────────────────────────────────────────────╯")
     return ui
+
+
+def get_deck_rows(deck):
+    rows = ["  | ", "  | ", "  | ", "  | ", "  | ", "  | "]
+    dead_rows = [
+        "--            -- | ",
+        "   --      --    | ",
+        "       --        | ",
+        "       --        | ",
+        "   --      --    | ",
+        "--            -- | "
+    ]
+    for x, row in enumerate(rows):
+        for y, slot in enumerate(deck):
+            if slot == None:
+                row += dead_rows[x]
+                rows[x] = row
+                continue
+            elif x == 0:
+                row += fit2(slot.unit, 13, f"{y + 1}) ", " | ") 
+            elif x == 1:
+                row += fit2(slot.trait, 13, "T: ", " | ")
+            elif x == 2:
+                row += fit2(f"{slot.health}/{slot.base_health}", 13, "H: ", " | ")
+            elif x == 3:
+                row += fit2(slot.defence, 11, "DEF: ", " | ")
+            elif x == 4:
+                row += fit2(slot.attack, 11, "ATK: ", " | ")
+            elif x == 5:
+                row += "                 | "
+            rows[x] = row
+    return rows
+
+
+def fit2(text="", total_space=0, first="", last=""):
+    space = (total_space - len(str(text))) * " "
+    return f"{first}{text}{space}{last}"

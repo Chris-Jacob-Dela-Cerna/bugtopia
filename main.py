@@ -12,7 +12,7 @@ def main():
 
     units_data = aj.load_json_data("units_default.json")
     deck1 = [Unit(0, 0, units_data), None, Unit(2, 0, units_data)]
-    deck2 = [Unit(0, 2, units_data), Unit(1, 2, units_data), Unit(2, 2, units_data)]
+    deck2 = [Unit(0, 2, units_data), None, None]
 
     battle_ui = bs.convert_battle_ui(deck1, deck2)
     uh.display(battle_ui)
