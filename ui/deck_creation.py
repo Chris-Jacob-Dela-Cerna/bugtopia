@@ -55,13 +55,12 @@ def get_abilities(page):
 
 def convert_abilities_ui(ability_list):
     abilities = ["  |", "  |", "  |", "  |"]
-    for x in range(3):
-        for y in range(len(ability_list[x])):
-            current_ability = ability_list[x][y]
-            if not bool(current_ability):
+    for x, ability_row in enumerate(ability_list):
+        for y, ability in enumerate(ability_row):
+            if not bool(ability):
                 abilities[y] += "                  |"
                 continue
-            abilities[y] += fit(current_ability, 14, " - ", " |")
+            abilities[y] += fit(ability, 14, " - ", " |")
     return abilities
 
 
@@ -83,18 +82,18 @@ def get_slots(deck):
         slots.append(fit(slot, 16))
     empty_slots = 3 - len(deck)
     if empty_slots:
-        for _ in range(empty_slots):
-            slots.append("---             ")
+        slots.extend(["---             " for _ in range(empty_slots)])
     return slots
 
 
 def get_help_state(show_help):
     if show_help:
-        return ["    To change page -> type 'e', 'r', or the page number", 
-                "    To select -> type unit-trait, ex: '1b', 2a, or '3c'", 
-                "    To undo -> type 'd'",
-                "    To finish -> type 'f'",
-                "    To go back -> type 'b'"
-                ]
+        return [
+            "    To change page -> type 'e', 'r', or the page number", 
+            "    To select -> type unit-trait, ex: '1b', 2a, or '3c'", 
+            "    To undo -> type 'd'",
+            "    To finish -> type 'f'",
+            "    To go back -> type 'b'"
+        ]
     else:
         return ["    Type 'h' to view all options."]
