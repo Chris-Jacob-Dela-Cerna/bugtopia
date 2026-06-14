@@ -3,11 +3,11 @@
         "name": "Warrior",
         "traits": [
             {
-                "name": "normal",
+                "name": "swordsman",
                 "stats": {
                     "health": 120,
                     "defence": 15,
-                    "attack": 25
+                    "attack": 30
                 },
                 "abilities": [
                     "attack",
@@ -17,29 +17,29 @@
                 ]
             },
             {
-                "name": "agile",
+                "name": "assassin",
                 "stats": {
                     "health": 100,
                     "defence": 10,
-                    "attack": 35
+                    "attack": 38
                 },
                 "abilities": [
                     "attack",
-                    "healSelf",
+                    "poison",
                     "",
                     ""
                 ]
             },
             {
-                "name": "tanky",
+                "name": "brute",
                 "stats": {
-                    "health": 150,
-                    "defence": 25,
-                    "attack": 18
+                    "health": 180,
+                    "defence": 22,
+                    "attack": 26
                 },
                 "abilities": [
                     "attack",
-                    "healSelf",
+                    "",
                     "",
                     ""
                 ]
@@ -50,43 +50,43 @@
         "name": "Archer",
         "traits": [
             {
-                "name": "normal",
+                "name": "skirmisher",
+                "stats": {
+                    "health": 95,
+                    "defence": 10,
+                    "attack": 28
+                },
+                "abilities": [
+                    "attack",
+                    "healSelf",
+                    "",
+                    ""
+                ]
+            },
+            {
+                "name": "marksman",
+                "stats": {
+                    "health": 70,
+                    "defence": 5,
+                    "attack": 50
+                },
+                "abilities": [
+                    "attack",
+                    "piercing",
+                    "",
+                    ""
+                ]
+            },
+            {
+                "name": "guerilla",
                 "stats": {
                     "health": 100,
                     "defence": 12,
-                    "attack": 22
+                    "attack": 32
                 },
                 "abilities": [
                     "attack",
-                    "healSelf",
-                    "",
-                    ""
-                ]
-            },
-            {
-                "name": "sniper",
-                "stats": {
-                    "health": 80,
-                    "defence": 5,
-                    "attack": 45
-                },
-                "abilities": [
-                    "attack",
-                    "healSelf",
-                    "",
-                    ""
-                ]
-            },
-            {
-                "name": "evasive",
-                "stats": {
-                    "health": 110,
-                    "defence": 18,
-                    "attack": 20
-                },
-                "abilities": [
-                    "attack",
-                    "healSelf",
+                    "poison",
                     "",
                     ""
                 ]
@@ -97,7 +97,7 @@
         "name": "Giant",
         "traits": [
             {
-                "name": "normal",
+                "name": "beast",
                 "stats": {
                     "health": 160,
                     "defence": 10,
@@ -115,11 +115,11 @@
                 "stats": {
                     "health": 140,
                     "defence": 8,
-                    "attack": 40
+                    "attack": 42
                 },
                 "abilities": [
                     "attack",
-                    "healSelf",
+                    "piercing",
                     "",
                     ""
                 ]
@@ -127,13 +127,13 @@
             {
                 "name": "colossus",
                 "stats": {
-                    "health": 200,
-                    "defence": 22,
-                    "attack": 15
+                    "health": 250,
+                    "defence": 18,
+                    "attack": 30
                 },
                 "abilities": [
                     "attack",
-                    "healSelf",
+                    "",
                     "",
                     ""
                 ]

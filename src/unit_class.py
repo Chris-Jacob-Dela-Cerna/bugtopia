@@ -8,7 +8,7 @@ class Unit:
         unit = units_data[unit_idx]
 
         unit_name = unit['name']
-        if len(unit_name) > 1 or len(unit_name) > 13:
+        if len(unit_name) < 1 or len(unit_name) > 13:
             raise ValueError("Invalid unit name length. Range: 1-13")
         self._unit = unit_name
 
@@ -36,12 +36,12 @@ class Unit:
         self._attack = attack
 
         abilities = trait['abilities']
-        self.can_attack = False
+        self._can_attack = False
         if "attack" in abilities:
-            self.can_attack = True
-        self.can_healSelf = False
+            self._can_attack = True
+        self._can_healSelf = False
         if "healSelf" in abilities:
-            self.can_healSelf = True
+            self._can_healSelf = True
 
         self._is_alive = True
         self._can_heal = False
@@ -73,13 +73,28 @@ class Unit:
     @property
     def is_alive(self):
         return self._is_alive
+    
+    @property
+    def can_heal(self):
+        return self._can_heal
+
+    def check_if_alive(self):
+        if self._health <= 0:
+            self._health = 0
+            self._is_alive = False
+
+    def check_can_heal(self):
+        if self._health == self._max_health:
+            self._can_heal = False
+        else:
+            self._can_heal = True
 
     def damage(self, attack):
         residual_damage = attack - self._defence
         if residual_damage <= 0:
             residual_damage = 1
         self._health -= residual_damage
-        self.check_if_alive
+        self.check_if_alive()
 
     def heal(self):
         max_heal = self._max_health / 2
@@ -91,17 +106,6 @@ class Unit:
 
         if healed_hp >= self._max_health:
             self._health = self._max_health
-            self.check_can_heal
+            self.check_can_heal()
         else:
             self._health = healed_hp
-
-    def check_can_heal(self):
-        if self._health == self._max_health:
-            self._can_heal = False
-        else:
-            self._can_heal = True
-
-    def check_if_alive(self):
-        if self._health <= 0:
-            self._health = 0
-            self._is_alive = False
