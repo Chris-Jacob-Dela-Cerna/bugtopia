@@ -57,7 +57,7 @@ def get_deck_rows(deck):
             elif x == 4:
                 row += fit2(slot.attack, 11, "ATK: ", " | ")
             elif x == 5:
-                row += "                 | "
+                row += fit2(slot.status(), 11, "STS: ", " | ")
             rows[x] = row
     return rows
 

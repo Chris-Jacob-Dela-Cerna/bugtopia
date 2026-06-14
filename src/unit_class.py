@@ -122,7 +122,20 @@ class Unit:
     @property
     def is_pierced(self):
         return self._is_pierced
-
+    
+    def status(self):
+        statuses = []
+        if self._is_poisoned:
+            statuses.append("PSN")
+        if self._is_pierced:
+            statuses.append("PRC")
+        status_message = ""
+        if bool(statuses):
+            for status in statuses:
+                if bool(status_message):
+                    status_message += "|"
+                status_message += status
+        return status_message
 
     def check_is_alive(self):
         if self._health <= 0:
