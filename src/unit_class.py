@@ -22,12 +22,13 @@ class Unit:
         health = trait['stats']['health']
         if health < 1 or health > 9999999:
             raise ValueError("Invalid health value. Range: 1-9999999")
-        self._max_health = health
+        self._base_health = health
         self._health = health
 
         defence = trait['stats']['defence']
         if defence < 0 or defence > 9999999:
             raise ValueError("Invalid defence value. Range: 0-9999999")
+        self._base_defence = defence
         self._defence = defence
 
         attack = trait['stats']['attack']
@@ -50,23 +51,28 @@ class Unit:
             self._can_pierce = True
 
         self._is_alive = True
-        self._can_heal = False
+        self._is_full_hp = False
+
 
     @property
     def unit(self):
-        return self._unit
+        return self._unit.title()
 
     @property
     def trait(self):
-        return self._trait
+        return self._trait.title()
 
     @property
-    def max_health(self):
-        return millify(self._max_health, precision=1)
+    def base_health(self):
+        return millify(self._base_health, precision=1)
 
     @property
     def health(self):
         return millify(self._health, precision=1)
+
+    @property
+    def base_defence(self):
+        return self._base_defence
 
     @property
     def defence(self):
@@ -79,21 +85,23 @@ class Unit:
     @property
     def is_alive(self):
         return self._is_alive
-    
-    @property
-    def can_heal(self):
-        return self._can_heal
 
-    def check_if_alive(self):
+    @property
+    def is_full_hp(self):
+        return self._is_full_hp
+
+
+    def check_is_alive(self):
         if self._health <= 0:
             self._health = 0
             self._is_alive = False
 
-    def check_can_heal(self):
-        if self._health == self._max_health:
-            self._can_heal = False
+    def check_is_full_hp(self):
+        if self._health == self._base_health:
+            self._is_full_hp = False
         else:
-            self._can_heal = True
+            self._is_full_hp = True
+
 
     def damage(self, attack):
         residual_damage = attack - self._defence
@@ -103,15 +111,15 @@ class Unit:
         self.check_if_alive()
 
     def heal(self):
-        max_heal = self._max_health / 2
-        min_heal = self._max_health / 100
-        missing_hp = 1 - (self._health / self._max_health)
+        max_heal = self._base_health / 2
+        min_heal = self._base_health / 100
+        missing_hp = 1 - (self._health / self._base_health)
 
         total_healing = min_heal + ((max_heal - min_heal) * missing_hp)
         healed_hp = self._health + total_healing
 
-        if healed_hp >= self._max_health:
-            self._health = self._max_health
-            self.check_can_heal()
+        if healed_hp >= self._base_health:
+            self._health = self._base_health
+            self.check_is_full_hp()
         else:
             self._health = healed_hp
