@@ -41,6 +41,29 @@ def convert_battle_ui(deck1, deck2):
             health_row += f"H: {health}/{base_health}{health_space} | "
     ui.append(health_row)
 
+
+    rows = ["  | ", "  | ", "  | ", "  | ", "  | ", "  | "]
+    dead_rows = [
+        "--            -- | ",
+        "   --      --    | ",
+        "       --        | ",
+        "       --        | ",
+        "   --      --    | ",
+        "--            -- | "
+    ]
+
+    for x, row in enumerate(rows):
+        for y, slot in enumerate(deck1):
+            if slot == None:
+                row += dead_rows[x]
+                continue
+            row += "                 | "
+            rows[x] = row
+
+    ui.extend(rows)
+
+
+
     ui.append("  |────────────────────────────────────────────────────────|")
     ui.append("  |                                                        |")
     ui.append("  |────────────────────────────────────────────────────────|")
