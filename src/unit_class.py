@@ -384,13 +384,26 @@ class Unit:
 
 
     def heal_self(self):
-        max_heal = self._base_health * 0.30
-        min_heal = self._base_health * 0.01
-        missing_hp = 1 - (self._health / self._base_health)
+        if self._is_weakened or self.is_poisoned:
+            self.is_weakened = False
+            self._weakened_state = 0
+            self._is_poisoned = False
+            self._poisoned_state - 0
+        else:
+            max_heal = self._base_health * 0.30
+            min_heal = self._base_health * 0.01
+            missing_hp = 1 - (self._health / self._base_health)
+            total_heal = min_heal + ((max_heal - min_heal) * missing_hp)
+            self.heal(total_heal)
 
-        total_heal = min_heal + ((max_heal - min_heal) * missing_hp)
-        self.heal(total_heal)
-    
+
+    def check_is_lastStand(self):
+        if self.can_lastStand:
+            if self._health < self._base_health * 0.25:
+                self._attack = self._base_attack + (self._base_attack * 0.50)
+            else:
+                self._attack = self._base_attack
+
 
     def regen(self):
         self._is_regen = True
@@ -412,7 +425,6 @@ class Unit:
             self.check_is_full_hp()
         else:
             self._health = total_hp
-
 
 
     def compile_statuses(statuses):
