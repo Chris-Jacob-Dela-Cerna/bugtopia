@@ -427,7 +427,7 @@ class Unit:
             self._health = total_hp
 
 
-    def compile_statuses(statuses):
+    def compile_statuses(self, statuses):
         status_message = ""
         if bool(statuses):
             for status in statuses:

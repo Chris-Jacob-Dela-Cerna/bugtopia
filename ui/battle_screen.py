@@ -63,3 +63,8 @@ def get_deck_rows(deck):
                 row += fit(debuffs, 11, "DBF: ", " | ")
             rows[x] = row
     return rows
+
+
+def get_control_rows():
+    rows = ["  | ", "  | ", "  | ", "  | ", "  | "]
+    blank_row = "                 | "
