@@ -293,20 +293,45 @@ class Unit:
         self.check_is_alive()
 
 
+    def burn(self):
+        self._is_burned = True
+        self._burned_state = Unit.burn_duration
+
+    def check_is_burned(self):
+        if self._burned_state > 0:
+            self._burned_state -= 1
+            self.damage(self._base_health * 0.30)
+        if self._burned_state == 0:
+            self._is_burned = False
+
+
+    def pierce(self):
+        self._is_pierced = True
+        self._pierced_state = Unit.pierce_duration
+        self._defence = self._base_defence * 0.50
+
+    def check_is_pierced(self):
+        if self._pierced_state > 0:
+            self._pierced_state -= 1
+        if self._pierced_state == 0:
+            self._is_pierced = False
+            self._defence = self._base_defence
+
+
     def poison(self):
         self._is_poisoned = True
-        self._poison_state = Unit.poison_duration
+        self._poisoned_state = Unit.poison_duration
 
     def check_is_poisoned(self):
-        if self._poison_state > 0:
-            self._poison_state -= 1
+        if self._poisoned_state > 0:
+            self._poisoned_state -= 1
             self.poison_damage()
-        else:
+        if self._poisoned_state == 0:
             self._is_poisoned = False
 
     def poison_damage(self):
-        max_damage = self._base_health / 4
-        min_damage = self._base_health / 6.6
+        max_damage = self._base_health * 0.25
+        min_damage = self._base_health * 0.15
         remaining_turns = 1 - (self._poison_state / Unit.poison_duration)
 
         total_damage = min_damage + ((max_damage - min_damage) * remaining_turns)
@@ -318,23 +343,13 @@ class Unit:
             self._health = total_hp
 
 
-    def pierce(self):
-        self._is_pierced = True
-        self._pierced_state = Unit.pierce_duration
-        self._defence = self._base_defence / 2
 
-    def check_is_pierced(self):
-        if self._pierced_state > 0:
-            self._pierced_state -= 1
-        else:
-            self._is_pierced = False
-            self._defence = self._base_defence
 
 
 
     def heal(self):
-        max_heal = self._base_health / 3.3
-        min_heal = self._base_health / 100
+        max_heal = self._base_health * 0.30
+        min_heal = self._base_health * 0.01
         missing_hp = 1 - (self._health / self._base_health)
 
         total_heal = min_heal + ((max_heal - min_heal) * missing_hp)
