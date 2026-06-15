@@ -15,12 +15,14 @@ class Unit:
             raise ValueError("Invalid unit name length. Range: 1-13")
         self._unit = unit_name
 
+
         trait = unit['traits'][trait_idx]
 
         trait_name = trait['name']
         if len(trait_name) < 1 or len(trait_name) > 13:
             raise ValueError("Invalid trait name length. Range: 1-13")
         self._trait = trait_name
+
 
         health = trait['stats']['health']
         if health < 1 or health > 9999999:
@@ -37,7 +39,9 @@ class Unit:
         attack = trait['stats']['attack']
         if attack < 0 or attack > 9999999:
             raise ValueError("Invalid attack value. Range: 0-9999999")
+        self._base_attack = attack
         self._attack = attack
+
 
         abilities = trait['abilities']
         self._can_attack = False
@@ -53,6 +57,7 @@ class Unit:
         if "pierce" in abilities:
             self._can_pierce = True
 
+
         self._is_alive = True
         self._is_full_hp = False
 
@@ -63,6 +68,7 @@ class Unit:
         self._pierced_state = 0
 
 
+
     @property
     def unit(self):
         return self._unit.title()
@@ -70,6 +76,7 @@ class Unit:
     @property
     def trait(self):
         return self._trait.title()
+
 
     @property
     def base_health(self):
@@ -79,6 +86,7 @@ class Unit:
     def health(self):
         return millify(self._health, precision=1)
 
+
     @property
     def base_defence(self):
         return self._base_defence
@@ -87,14 +95,20 @@ class Unit:
     def defence(self):
         return self._defence
 
+
+    @property
+    def base_attack(self):
+        return self._base_attack
+
     @property
     def attack(self):
         return self._attack
-    
+
+
     @property
     def can_attack(self):
         return self._can_attack
-    
+
     @property
     def can_healSelf(self):
         return self._can_healSelf
@@ -106,7 +120,8 @@ class Unit:
     @property
     def can_pierce(self):
         return self._can_pierce
-    
+
+
     @property
     def is_alive(self):
         return self._is_alive
@@ -114,7 +129,7 @@ class Unit:
     @property
     def is_full_hp(self):
         return self._is_full_hp
-    
+
     @property
     def is_poisoned(self):
         return self._is_poisoned
@@ -122,7 +137,9 @@ class Unit:
     @property
     def is_pierced(self):
         return self._is_pierced
-    
+
+
+
     def status(self):
         statuses = []
         if self._is_poisoned:
@@ -138,6 +155,7 @@ class Unit:
         else:
             status_message += "None"
         return status_message
+
 
     def check_is_alive(self):
         if self._health <= 0:

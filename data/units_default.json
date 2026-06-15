@@ -1,45 +1,92 @@
 [
     {
-        "name": "Warrior",
+        "name": "Ant",
         "traits": [
             {
-                "name": "swordsman",
+                "name": "fire",
                 "stats": {
-                    "health": 120,
-                    "defence": 15,
-                    "attack": 30
-                },
-                "abilities": [
-                    "attack",
-                    "healSelf",
-                    "",
-                    ""
-                ]
-            },
-            {
-                "name": "assassin",
-                "stats": {
-                    "health": 100,
-                    "defence": 10,
+                    "health": 85,
+                    "defence": 8,
                     "attack": 38
                 },
                 "abilities": [
                     "attack",
-                    "poison",
-                    "",
+                    "burn",
+                    "enrage",
                     ""
                 ]
             },
             {
-                "name": "brute",
+                "name": "bullet",
                 "stats": {
-                    "health": 180,
-                    "defence": 22,
+                    "health": 105,
+                    "defence": 12,
+                    "attack": 30
+                },
+                "abilities": [
+                    "attack",
+                    "poison",
+                    "weaken",
+                    ""
+                ]
+            },
+            {
+                "name": "leaf cutter",
+                "stats": {
+                    "health": 130,
+                    "defence": 16,
+                    "attack": 22
+                },
+                "abilities": [
+                    "attack",
+                    "harden",
+                    "regen",
+                    ""
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Beetle",
+        "traits": [
+            {
+                "name": "bombardier",
+                "stats": {
+                    "health": 90,
+                    "defence": 10,
+                    "attack": 34
+                },
+                "abilities": [
+                    "attack",
+                    "burn",
+                    "weaken",
+                    ""
+                ]
+            },
+            {
+                "name": "stag",
+                "stats": {
+                    "health": 145,
+                    "defence": 20,
                     "attack": 26
                 },
                 "abilities": [
                     "attack",
-                    "",
+                    "pierce",
+                    "harden",
+                    ""
+                ]
+            },
+            {
+                "name": "hercules",
+                "stats": {
+                    "health": 215,
+                    "defence": 22,
+                    "attack": 30
+                },
+                "abilities": [
+                    "attack",
+                    "lastStand",
                     "",
                     ""
                 ]
@@ -47,28 +94,169 @@
         ]
     },
     {
-        "name": "Archer",
+        "name": "Spider",
         "traits": [
             {
-                "name": "skirmisher",
+                "name": "black widow",
                 "stats": {
-                    "health": 95,
+                    "health": 80,
+                    "defence": 6,
+                    "attack": 36
+                },
+                "abilities": [
+                    "attack",
+                    "poison",
+                    "leech",
+                    ""
+                ]
+            },
+            {
+                "name": "wolf",
+                "stats": {
+                    "health": 110,
+                    "defence": 12,
+                    "attack": 30
+                },
+                "abilities": [
+                    "attack",
+                    "healSelf",
+                    "enrage",
+                    ""
+                ]
+            },
+            {
+                "name": "tarantula",
+                "stats": {
+                    "health": 160,
+                    "defence": 14,
+                    "attack": 24
+                },
+                "abilities": [
+                    "attack",
+                    "harden",
+                    "regen",
+                    ""
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Wasp",
+        "traits": [
+            {
+                "name": "yellow jacket",
+                "stats": {
+                    "health": 88,
+                    "defence": 8,
+                    "attack": 40
+                },
+                "abilities": [
+                    "attack",
+                    "burn",
+                    "enrage",
+                    ""
+                ]
+            },
+            {
+                "name": "paper",
+                "stats": {
+                    "health": 100,
                     "defence": 10,
                     "attack": 28
                 },
                 "abilities": [
                     "attack",
+                    "poison",
                     "healSelf",
-                    "",
                     ""
                 ]
             },
             {
-                "name": "marksman",
+                "name": "hornet",
                 "stats": {
-                    "health": 70,
-                    "defence": 5,
-                    "attack": 50
+                    "health": 125,
+                    "defence": 15,
+                    "attack": 35
+                },
+                "abilities": [
+                    "attack",
+                    "pierce",
+                    "enrage",
+                    ""
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Grasshopper",
+        "traits": [
+            {
+                "name": "locust",
+                "stats": {
+                    "health": 78,
+                    "defence": 6,
+                    "attack": 32
+                },
+                "abilities": [
+                    "attack",
+                    "weaken",
+                    "enrage",
+                    ""
+                ]
+            },
+            {
+                "name": "katydid",
+                "stats": {
+                    "health": 95,
+                    "defence": 10,
+                    "attack": 24
+                },
+                "abilities": [
+                    "attack",
+                    "poison",
+                    "healSelf",
+                    ""
+                ]
+            },
+            {
+                "name": "cricket",
+                "stats": {
+                    "health": 108,
+                    "defence": 13,
+                    "attack": 28
+                },
+                "abilities": [
+                    "attack",
+                    "harden",
+                    "healSelf",
+                    ""
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Mantis",
+        "traits": [
+            {
+                "name": "orchid",
+                "stats": {
+                    "health": 90,
+                    "defence": 8,
+                    "attack": 32
+                },
+                "abilities": [
+                    "attack",
+                    "weaken",
+                    "leech",
+                    ""
+                ]
+            },
+            {
+                "name": "praying",
+                "stats": {
+                    "health": 98,
+                    "defence": 10,
+                    "attack": 44
                 },
                 "abilities": [
                     "attack",
@@ -78,15 +266,250 @@
                 ]
             },
             {
-                "name": "guerilla",
+                "name": "giant",
                 "stats": {
-                    "health": 100,
+                    "health": 132,
+                    "defence": 14,
+                    "attack": 36
+                },
+                "abilities": [
+                    "attack",
+                    "enrage",
+                    "lastStand",
+                    ""
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Fly",
+        "traits": [
+            {
+                "name": "horse",
+                "stats": {
+                    "health": 82,
+                    "defence": 6,
+                    "attack": 34
+                },
+                "abilities": [
+                    "attack",
+                    "leech",
+                    "enrage",
+                    ""
+                ]
+            },
+            {
+                "name": "robber",
+                "stats": {
+                    "health": 92,
+                    "defence": 8,
+                    "attack": 38
+                },
+                "abilities": [
+                    "attack",
+                    "leech",
+                    "burn",
+                    ""
+                ]
+            },
+            {
+                "name": "bot",
+                "stats": {
+                    "health": 105,
+                    "defence": 10,
+                    "attack": 24
+                },
+                "abilities": [
+                    "attack",
+                    "poison",
+                    "weaken",
+                    "regen"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Cockroach",
+        "traits": [
+            {
+                "name": "german",
+                "stats": {
+                    "health": 95,
+                    "defence": 10,
+                    "attack": 26
+                },
+                "abilities": [
+                    "attack",
+                    "regen",
+                    "weaken",
+                    ""
+                ]
+            },
+            {
+                "name": "hissing",
+                "stats": {
+                    "health": 132,
+                    "defence": 14,
+                    "attack": 26
+                },
+                "abilities": [
+                    "attack",
+                    "weaken",
+                    "harden",
+                    ""
+                ]
+            },
+            {
+                "name": "giant",
+                "stats": {
+                    "health": 172,
+                    "defence": 16,
+                    "attack": 22
+                },
+                "abilities": [
+                    "attack",
+                    "regen",
+                    "lastStand",
+                    ""
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Scorpion",
+        "traits": [
+            {
+                "name": "bark",
+                "stats": {
+                    "health": 82,
+                    "defence": 7,
+                    "attack": 36
+                },
+                "abilities": [
+                    "attack",
+                    "poison",
+                    "weaken",
+                    ""
+                ]
+            },
+            {
+                "name": "death stalker",
+                "stats": {
+                    "health": 75,
+                    "defence": 5,
+                    "attack": 42
+                },
+                "abilities": [
+                    "attack",
+                    "poison",
+                    "leech",
+                    ""
+                ]
+            },
+            {
+                "name": "emperor",
+                "stats": {
+                    "health": 175,
+                    "defence": 18,
+                    "attack": 28
+                },
+                "abilities": [
+                    "attack",
+                    "harden",
+                    "lastStand",
+                    ""
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Centipede",
+        "traits": [
+            {
+                "name": "house",
+                "stats": {
+                    "health": 85,
+                    "defence": 8,
+                    "attack": 30
+                },
+                "abilities": [
+                    "attack",
+                    "poison",
+                    "enrage",
+                    ""
+                ]
+            },
+            {
+                "name": "scolopendra",
+                "stats": {
+                    "health": 112,
+                    "defence": 12,
+                    "attack": 35
+                },
+                "abilities": [
+                    "attack",
+                    "pierce",
+                    "weaken",
+                    ""
+                ]
+            },
+            {
+                "name": "giant",
+                "stats": {
+                    "health": 155,
+                    "defence": 14,
+                    "attack": 34
+                },
+                "abilities": [
+                    "attack",
+                    "pierce",
+                    "lastStand",
+                    ""
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Termite",
+        "traits": [
+            {
+                "name": "nasute",
+                "stats": {
+                    "health": 88,
+                    "defence": 10,
+                    "attack": 26
+                },
+                "abilities": [
+                    "attack",
+                    "burn",
+                    "weaken",
+                    ""
+                ]
+            },
+            {
+                "name": "formosan",
+                "stats": {
+                    "health": 108,
                     "defence": 12,
                     "attack": 32
                 },
                 "abilities": [
                     "attack",
-                    "poison",
+                    "enrage",
+                    "pierce",
+                    ""
+                ]
+            },
+            {
+                "name": "dampwood",
+                "stats": {
+                    "health": 190,
+                    "defence": 24,
+                    "attack": 20
+                },
+                "abilities": [
+                    "attack",
+                    "harden",
                     "",
                     ""
                 ]
@@ -94,47 +517,47 @@
         ]
     },
     {
-        "name": "Giant",
+        "name": "Dragonfly",
         "traits": [
             {
-                "name": "beast",
+                "name": "skimmer",
                 "stats": {
-                    "health": 160,
-                    "defence": 10,
-                    "attack": 28
+                    "health": 105,
+                    "defence": 12,
+                    "attack": 30
                 },
                 "abilities": [
                     "attack",
+                    "leech",
                     "healSelf",
-                    "",
                     ""
                 ]
             },
             {
-                "name": "brawler",
+                "name": "darner",
                 "stats": {
-                    "health": 140,
+                    "health": 92,
                     "defence": 8,
                     "attack": 42
                 },
                 "abilities": [
                     "attack",
-                    "pierce",
-                    "",
+                    "enrage",
+                    "lastStand",
                     ""
                 ]
             },
             {
-                "name": "colossus",
+                "name": "petaltail",
                 "stats": {
-                    "health": 250,
-                    "defence": 18,
-                    "attack": 30
+                    "health": 132,
+                    "defence": 14,
+                    "attack": 36
                 },
                 "abilities": [
                     "attack",
-                    "",
-                    "",
+                    "pierce",
+                    "burn",
                     ""
                 ]
             }
