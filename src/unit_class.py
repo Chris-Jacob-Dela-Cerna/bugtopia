@@ -53,8 +53,9 @@ class Unit:
         self._can_enrage = False
         self._can_harden = False
         self._can_healSelf = False
-        self._can_lastStand = False
         self._can_regen = False
+
+        self._can_lastStand = False
 
 
         if "attack" in abilities:
@@ -98,79 +99,134 @@ class Unit:
         self._enraged_state = 0
         self._is_hardened = False
         self._hardened_state = 0
-        self._is_lastStand = False
         self._is_regen = False
         self._regen_state = 0
 
+        self._is_lastStand = False
 
+
+
+    # Family and classification
     @property
     def unit(self):
         return self._unit.title()
-
     @property
     def trait(self):
         return self._trait.title()
 
 
+
+    # Base and current health
     @property
     def base_health(self):
         return millify(self._base_health, precision=1)
-
     @property
     def health(self):
         return millify(self._health, precision=1)
 
-
+    # Base and current defence
     @property
     def base_defence(self):
         return self._base_defence
-
     @property
     def defence(self):
         return self._defence
 
-
+    # Base and current attack damage
     @property
     def base_attack(self):
         return self._base_attack
-
     @property
     def attack(self):
         return self._attack
 
 
+
+    # Inflicting Abilities - Instant
     @property
     def can_attack(self):
         return self._can_attack
+    @property
+    def can_leech(self):
+        return self._can_leech
 
+    # Inflicting Abilities - With Duration
+    @property
+    def can_burn(self):
+        return self._can_burn
+    @property
+    def can_pierce(self):
+        return self._can_pierce
+    @property
+    def can_poison(self):
+        return self._can_poison
+    @property
+    def can_weaken(self):
+        return self._can_weaken
+
+
+    # Self Abilities - Instant
     @property
     def can_healSelf(self):
         return self._can_healSelf
 
+    # Self Abilities - With Duration
     @property
-    def can_poison(self):
-        return self._can_poison
-
+    def can_enrage(self):
+        return self._can_enrage
     @property
-    def can_pierce(self):
-        return self._can_pierce
+    def can_harden(self):
+        return self._can_harden
+    @property
+    def can_regen(self):
+        return self._can_regen
 
 
+    # Passive Abilities
+    @property
+    def can_lastStand(self):
+        return self._can_lastStand
+
+
+
+    # General Status
     @property
     def is_alive(self):
         return self._is_alive
-
     @property
     def is_full_hp(self):
         return self._is_full_hp
 
-    @property
-    def is_poisoned(self):
-        return self._is_poisoned
 
+    # Debuff Status
+    @property
+    def is_burned(self):
+        return self._is_burned
     @property
     def is_pierced(self):
         return self._is_pierced
+    @property
+    def is_poisoned(self):
+        return self._is_poisoned
+    @property
+    def is_weakened(self):
+        return self._is_weakened
+
+
+    # Buff Status
+    @property
+    def is_enraged(self):
+        return self._is_enraged
+    @property
+    def is_hardened(self):
+        return self._is_hardened
+    @property
+    def is_lastStand(self):
+        return self._is_lastStand
+    @property
+    def is_regen(self):
+        return self._is_regen 
+
 
 
 
@@ -191,6 +247,7 @@ class Unit:
         return status_message
 
 
+
     def check_is_alive(self):
         if self._health <= 0:
             self._is_alive = False
@@ -202,6 +259,7 @@ class Unit:
             residual_damage = 1
         self._health -= residual_damage
         self.check_is_alive()
+
 
 
     def check_is_full_hp(self):
@@ -223,6 +281,7 @@ class Unit:
             self.check_is_full_hp()
         else:
             self._health = total_hp
+
 
 
     def poison(self):
@@ -248,6 +307,7 @@ class Unit:
             self._health = 1
         else:
             self._health = total_hp
+
 
 
     def pierce(self):
