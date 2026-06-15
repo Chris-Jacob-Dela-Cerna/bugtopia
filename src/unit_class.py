@@ -246,17 +246,7 @@ class Unit:
             statuses.append("PSN")
         if self._is_weakened:
             statuses.append("WKN")
-
-        status_message = ""
-        if bool(statuses):
-            for status in statuses:
-                if bool(status_message):
-                    status_message += "|"
-                status_message += status
-        else:
-            status_message += "None"
-        return status_message
-
+        return self.compile_statuses(statuses)
 
     def show_buffs(self):
         statuses = []
@@ -268,16 +258,17 @@ class Unit:
             statuses.append("LSD")
         if self._is_regen:
             statuses.append("RGN")
+        return self.compile_statuses(statuses)
 
-        status_message = ""
-        if bool(statuses):
-            for status in statuses:
-                if bool(status_message):
-                    status_message += "|"
-                status_message += status
-        else:
-            status_message += "None"
-        return status_message
+
+
+    def check_general_status(self):
+        self.check_is_alive()
+        self.check_is_full_hp()
+
+    def check_applied_status(self):
+        self.check_is_pierced()
+        self.check_is_poisoned()
 
 
 
@@ -354,3 +345,16 @@ class Unit:
             self.check_is_full_hp()
         else:
             self._health = total_hp
+
+
+
+    def compile_statuses(statuses):
+        status_message = ""
+        if bool(statuses):
+            for status in statuses:
+                if bool(status_message):
+                    status_message += "|"
+                status_message += status
+        else:
+            status_message += "None"
+        return status_message
