@@ -11,11 +11,11 @@ def main():
     from utils import ui_helpers as uh
 
     units_data = aj.load_json_data("units_default.json")
-    warrior = Unit(0, 0, units_data)
+    warrior = Unit(units_data, 0, 0)
     warrior.poison()
     warrior.pierce()
-    deck1 = [warrior, None, Unit(2, 0, units_data)]
-    deck2 = [Unit(0, 2, units_data), None, None]
+    deck1 = [warrior, None, Unit(units_data, 2, 0)]
+    deck2 = [Unit(units_data, 0, 2), None, None]
 
     battle_ui = bs.convert_battle_ui(deck1, deck2)
     uh.display(battle_ui)

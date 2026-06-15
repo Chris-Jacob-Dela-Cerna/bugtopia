@@ -4,9 +4,16 @@ from millify import millify
 
 
 class Unit:
-    poison_duration = 3 * 2
-    pierce_duration = 4 * 2
-    
+    burn_duration = 2
+    pierce_duration = 4
+    poison_duration = 3
+    weaken_duration = 3
+
+    enrage_duration = 2
+    harden_duration = 2
+    regen_duration = 3
+
+
     def __init__(self, units_data, unit_idx=0, trait_idx=0):
         unit = units_data[unit_idx]
         unit_name = unit['name']
@@ -32,12 +39,12 @@ class Unit:
         self._base_health = health
         self._health = health
 
-        if defence < 0 or defence > 9999999:
-            raise ValueError("Invalid defence value. Range: 0-9999999")
+        if defence < 0 or defence > 999999:
+            raise ValueError("Invalid defence value. Range: 0-999999")
         self._base_defence = defence
         self._defence = defence
 
-        if attack < 0 or attack > 9999999:
+        if attack < 0 or attack > 999999:
             raise ValueError("Invalid attack value. Range: 0-9999999")
         self._base_attack = attack
         self._attack = attack
@@ -130,7 +137,7 @@ class Unit:
         return self._base_defence
     @property
     def defence(self):
-        return self._defence
+        return round(self._defence, 1)
 
     # Base and current attack damage
     @property
@@ -138,7 +145,7 @@ class Unit:
         return self._base_attack
     @property
     def attack(self):
-        return self._attack
+        return round(self._attack, 1)
 
 
 
@@ -197,7 +204,6 @@ class Unit:
     def is_full_hp(self):
         return self._is_full_hp
 
-
     # Debuff Status
     @property
     def is_burned(self):
@@ -212,7 +218,6 @@ class Unit:
     def is_weakened(self):
         return self._is_weakened
 
-
     # Buff Status
     @property
     def is_enraged(self):
@@ -221,21 +226,49 @@ class Unit:
     def is_hardened(self):
         return self._is_hardened
     @property
-    def is_lastStand(self):
-        return self._is_lastStand
-    @property
     def is_regen(self):
         return self._is_regen 
 
+    # Triggered Status
+    @property
+    def is_lastStand(self):
+        return self._is_lastStand
 
 
 
-    def status(self):
+    def show_debuffs(self):
         statuses = []
-        if self._is_poisoned:
-            statuses.append("PSN")
+        if self._is_burned:
+            statuses.append("BRN")
         if self._is_pierced:
             statuses.append("PRC")
+        if self._is_poisoned:
+            statuses.append("PSN")
+        if self._is_weakened:
+            statuses.append("WKN")
+
+        status_message = ""
+        if bool(statuses):
+            for status in statuses:
+                if bool(status_message):
+                    status_message += "|"
+                status_message += status
+        else:
+            status_message += "None"
+        return status_message
+
+
+    def show_buffs(self):
+        statuses = []
+        if self._is_enraged:
+            statuses.append("RGE")
+        if self._is_hardened:
+            statuses.append("HRD")
+        if self._is_lastStand:
+            statuses.append("LSD")
+        if self._is_regen:
+            statuses.append("RGN")
+
         status_message = ""
         if bool(statuses):
             for status in statuses:
@@ -253,35 +286,20 @@ class Unit:
             self._is_alive = False
             self._health = 0
 
-    def damage(self, attack):
-        residual_damage = attack - self._defence
-        if residual_damage <= 0:
-            residual_damage = 1
-        self._health -= residual_damage
-        self.check_is_alive()
-
-
-
     def check_is_full_hp(self):
         if self._health == self._base_health:
             self._is_full_hp = False
         else:
             self._is_full_hp = True
 
-    def heal(self):
-        max_heal = self._base_health / 3.3
-        min_heal = self._base_health / 100
-        missing_hp = 1 - (self._health / self._base_health)
 
-        total_heal = min_heal + ((max_heal - min_heal) * missing_hp)
-        total_hp = self._health + total_heal
 
-        if total_hp >= self._base_health:
-            self._health = self._base_health
-            self.check_is_full_hp()
-        else:
-            self._health = total_hp
-
+    def damage(self, attack):
+        residual_damage = attack - self._defence
+        if residual_damage <= 0:
+            residual_damage = 1
+        self._health -= residual_damage
+        self.check_is_alive()
 
 
     def poison(self):
@@ -309,7 +327,6 @@ class Unit:
             self._health = total_hp
 
 
-
     def pierce(self):
         self._is_pierced = True
         self._pierced_state = Unit.pierce_duration
@@ -321,3 +338,19 @@ class Unit:
         else:
             self._is_pierced = False
             self._defence = self._base_defence
+
+
+
+    def heal(self):
+        max_heal = self._base_health / 3.3
+        min_heal = self._base_health / 100
+        missing_hp = 1 - (self._health / self._base_health)
+
+        total_heal = min_heal + ((max_heal - min_heal) * missing_hp)
+        total_hp = self._health + total_heal
+
+        if total_hp >= self._base_health:
+            self._health = self._base_health
+            self.check_is_full_hp()
+        else:
+            self._health = total_hp

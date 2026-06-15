@@ -51,6 +51,14 @@ def get_deck_rows(deck):
             elif x == 4:
                 row += fit(slot.attack, 11, "ATK: ", " | ")
             elif x == 5:
-                row += fit(slot.status(), 11, "STS: ", " | ")
+                debuffs = slot.show_debuffs()
+                if len(debuffs) > 11:
+                    debuffs = debuffs[:11]
+                row += fit(debuffs, 11, "DBF: ", " | ")
+            elif x == 6:
+                buffs = slot.show_buffs()
+                if len(buffs) > 11:
+                    buffs = buffs[:11]
+                row += fit(buffs, 11, "BUF: ", " | ")
             rows[x] = row
     return rows
