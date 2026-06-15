@@ -7,66 +7,100 @@ class Unit:
     poison_duration = 3 * 2
     pierce_duration = 4 * 2
     
-    def __init__(self, unit_idx, trait_idx, units_data):
+    def __init__(self, units_data, unit_idx=0, trait_idx=0):
         unit = units_data[unit_idx]
-
         unit_name = unit['name']
+        trait = unit['traits'][trait_idx]
+        trait_name = trait['name']
+        health = trait['stats']['health']
+        defence = trait['stats']['defence']
+        attack = trait['stats']['attack']
+        abilities = trait['abilities']
+
+
         if len(unit_name) < 1 or len(unit_name) > 13:
             raise ValueError("Invalid unit name length. Range: 1-13")
         self._unit = unit_name
 
-
-        trait = unit['traits'][trait_idx]
-
-        trait_name = trait['name']
         if len(trait_name) < 1 or len(trait_name) > 13:
             raise ValueError("Invalid trait name length. Range: 1-13")
         self._trait = trait_name
 
 
-        health = trait['stats']['health']
         if health < 1 or health > 9999999:
             raise ValueError("Invalid health value. Range: 1-9999999")
         self._base_health = health
         self._health = health
 
-        defence = trait['stats']['defence']
         if defence < 0 or defence > 9999999:
             raise ValueError("Invalid defence value. Range: 0-9999999")
         self._base_defence = defence
         self._defence = defence
 
-        attack = trait['stats']['attack']
         if attack < 0 or attack > 9999999:
             raise ValueError("Invalid attack value. Range: 0-9999999")
         self._base_attack = attack
         self._attack = attack
 
 
-        abilities = trait['abilities']
         self._can_attack = False
+        self._can_burn = False
+        self._can_leech = False
+        self._can_pierce = False
+        self._can_poison = False
+        self._can_weaken = False
+
+        self._can_enrage = False
+        self._can_harden = False
+        self._can_healSelf = False
+        self._can_lastStand = False
+        self._can_regen = False
+
+
         if "attack" in abilities:
             self._can_attack = True
-        self._can_healSelf = False
-        if "healSelf" in abilities:
-            self._can_healSelf = True
-        self._can_poison = False
-        if "poison" in abilities:
-            self._can_poison = True
-        self._can_pierce = False
+        if "burn" in abilities:
+            self._can_burn = True
+        if "leech" in abilities:
+            self._can_leech = True
         if "pierce" in abilities:
             self._can_pierce = True
+        if "poison" in abilities:
+            self._can_poison = True
+        if "weaken" in abilities:
+            self._can_weaken = True
+
+        if "enrage" in abilities:
+            self._can_enrage = True
+        if "harden" in abilities:
+            self._can_harden = True
+        if "healSelf" in abilities:
+            self._can_healSelf = True
+        if "lastStand" in abilities:
+            self._can_lastStand = True
+        if "regen" in abilities:
+            self._can_regen = True
 
 
         self._is_alive = True
         self._is_full_hp = False
 
-        self._is_poisoned = False
-        self._poison_state = 0
-
+        self._is_burned = False
+        self._burned_state = 0
         self._is_pierced = False
         self._pierced_state = 0
+        self._is_poisoned = False
+        self._poisoned_state = 0
+        self._is_weakened = False
+        self._weakened_state = 0
 
+        self._is_enraged = False
+        self._enraged_state = 0
+        self._is_hardened = False
+        self._hardened_state = 0
+        self._is_lastStand = False
+        self._is_regen = False
+        self._regen_state = 0
 
 
     @property
