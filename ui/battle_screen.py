@@ -25,11 +25,12 @@ def convert_battle_ui(deck1, deck2):
 
 
 def get_deck_rows(deck):
-    rows = ["  | ", "  | ", "  | ", "  | ", "  | ", "  | "]
+    rows = ["  | ", "  | ", "  | ", "  | ", "  | ", "  | ", "  | "]
     dead_rows = [
         "--            -- | ",
         "   --      --    | ",
         "       --        | ",
+        "     --  --      | ",
         "       --        | ",
         "   --      --    | ",
         "--            -- | "
@@ -51,14 +52,14 @@ def get_deck_rows(deck):
             elif x == 4:
                 row += fit(slot.attack, 11, "ATK: ", " | ")
             elif x == 5:
-                debuffs = slot.show_debuffs()
-                if len(debuffs) > 11:
-                    debuffs = debuffs[:11]
-                row += fit(debuffs, 11, "DBF: ", " | ")
-            elif x == 6:
                 buffs = slot.show_buffs()
                 if len(buffs) > 11:
                     buffs = buffs[:11]
                 row += fit(buffs, 11, "BUF: ", " | ")
+            elif x == 6:
+                debuffs = slot.show_debuffs()
+                if len(debuffs) > 11:
+                    debuffs = debuffs[:11]
+                row += fit(debuffs, 11, "DBF: ", " | ")
             rows[x] = row
     return rows
