@@ -370,6 +370,19 @@ class Unit:
             self._attack = self._base_attack
 
 
+    def harden(self):
+        self._is_hardened = True
+        self._hardened_state = Unit.harden_duration
+        self._defence = self._base_defence + (self._base_defence * 0.40)
+
+    def check_is_hardened(self):
+        if self._hardened_state > 0:
+            self._hardened_state -= 1
+        if self._hardened_state == 0:
+            self._is_hardened = False
+            self._defence = self._base_defence
+
+
     def heal_self(self):
         max_heal = self._base_health * 0.30
         min_heal = self._base_health * 0.01
@@ -377,6 +390,18 @@ class Unit:
 
         total_heal = min_heal + ((max_heal - min_heal) * missing_hp)
         self.heal(total_heal)
+    
+
+    def regen(self):
+        self._is_regen = True
+        self._regen_state = Unit.regen_duration
+
+    def check_is_regen(self):
+        if self._regen_state > 0:
+            self._regen_state -= 1
+            self.heal(self._base_health * 0.10)
+        if self._regen_state == 0:
+            self._is_regen = False
 
 
 
