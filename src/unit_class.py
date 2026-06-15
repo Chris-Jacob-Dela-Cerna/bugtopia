@@ -357,14 +357,18 @@ class Unit:
 
 
 
-    def heal(self):
+    def heal_self(self):
         max_heal = self._base_health * 0.30
         min_heal = self._base_health * 0.01
         missing_hp = 1 - (self._health / self._base_health)
 
         total_heal = min_heal + ((max_heal - min_heal) * missing_hp)
-        total_hp = self._health + total_heal
+        self.heal(total_heal)
 
+
+
+    def heal(self, total_heal):
+        total_hp = self._health + total_heal
         if total_hp >= self._base_health:
             self._health = self._base_health
             self.check_is_full_hp()
