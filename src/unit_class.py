@@ -308,7 +308,7 @@ class Unit:
     def pierce(self):
         self._is_pierced = True
         self._pierced_state = Unit.pierce_duration
-        self._defence = self._base_defence - (self._base_defence * 0.50)
+        self._defence -= self._base_defence * 0.50
 
     def check_is_pierced(self):
         if self._pierced_state > 0:
@@ -346,7 +346,7 @@ class Unit:
     def weaken(self):
         self._is_weakened = True
         self._weakened_state = Unit.weaken_duration
-        self._attack = self._base_attack - (self._base_attack * 0.30)
+        self._attack -= self._base_attack * 0.30
 
     def check_is_weakened(self):
         if self._weakened_state > 0:
@@ -360,7 +360,7 @@ class Unit:
     def enrage(self):
         self._is_enraged = True
         self._enraged_state = Unit.enrage_duration
-        self._attack = self._base_attack + (self._base_attack * 0.30)
+        self._attack += self._base_attack * 0.30
 
     def check_is_enraged(self):
         if self._enraged_state > 0:
@@ -373,7 +373,7 @@ class Unit:
     def harden(self):
         self._is_hardened = True
         self._hardened_state = Unit.harden_duration
-        self._defence = self._base_defence + (self._base_defence * 0.40)
+        self._defence += self._base_defence * 0.40
 
     def check_is_hardened(self):
         if self._hardened_state > 0:
