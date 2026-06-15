@@ -357,6 +357,19 @@ class Unit:
 
 
 
+    def enrage(self):
+        self._is_enraged = True
+        self._enraged_state = Unit.enrage_duration
+        self._attack = self._base_attack + (self._base_attack * 0.30)
+
+    def check_is_enraged(self):
+        if self._enraged_state > 0:
+            self._enraged_state -= 1
+        if self._enraged_state == 0:
+            self._is_enraged = False
+            self._attack = self._base_attack
+
+
     def heal_self(self):
         max_heal = self._base_health * 0.30
         min_heal = self._base_health * 0.01
