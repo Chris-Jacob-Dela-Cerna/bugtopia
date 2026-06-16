@@ -3,26 +3,25 @@
 from utils.ui_helpers import fit
 
 
-def convert_battle_ui(deck1, deck2):
+def convert_battle_ui(current_deck, enemy_deck):
     ui = []
     ui.append("  ╭────────────────────────────────────────────────────────╮")
     ui.append("  | Player 1                                               |")
     ui.append("  |────────────────────────────────────────────────────────|")
 
-    ui.extend(get_deck_rows(deck1))
+    ui.extend(get_deck_rows(enemy_deck))
 
-    ui.append("  |────────────────────────────────────────────────────────|")
-    ui.append("  |                                                        |")
-    ui.append("  |────────────────────────────────────────────────────────|")
+    ui.append("  ╰────────────────────────────────────────────────────────╯")
+    ui.append("                            Turn 1")
+    ui.append("  ╭────────────────────────────────────────────────────────╮")
 
-    ui.extend(get_deck_rows(deck2))
+    ui.extend(get_deck_rows(current_deck))
 
     ui.append("  |────────────────────────────────────────────────────────|")
     ui.append("  | Player 2                                               |")
-    ui.append("  ╰────────────────────────────────────────────────────────╯")
-    ui.append("  ╭────────────────────────────────────────────────────────╮")
+    ui.append("  |────────────────────────────────────────────────────────|")
 
-    ui.extend(get_control_rows(control_panel))
+    ui.extend(get_control_panel_rows(control_panel_data))
 
     ui.append("  ╰────────────────────────────────────────────────────────╯")
     return ui
@@ -30,7 +29,7 @@ def convert_battle_ui(deck1, deck2):
 
 def get_deck_rows(deck):
     rows = ["  | ", "  | ", "  | ", "  | ", "  | ", "  | ", "  | "]
-    dead_rows = [
+    dead_cells = [
         "--            -- | ",
         "   --      --    | ",
         "       --        | ",
@@ -42,7 +41,7 @@ def get_deck_rows(deck):
     for x, row in enumerate(rows):
         for y, slot in enumerate(deck):
             if slot == None:
-                row += dead_rows[x]
+                row += dead_cells[x]
                 rows[x] = row
                 continue
             elif x == 0:
@@ -69,54 +68,22 @@ def get_deck_rows(deck):
     return rows
 
 
-control_panel = [
-    {
-        "header": "Select:",
-        "options": {
-            "a": "",
-            "b": "",
-            "c": "",
-            "d": "",
-            "e": "Back"
-        }
-    },
-    {
-        "header": "Ability:",
-        "options": {
-            "a": "",
-            "b": "",
-            "c": "",
-            "d": "",
-            "e": "Back"
-        }
-    },
-    {}
-]
+control_panel_data = {
+    "header": "Select a unit:",
+    "options": [
+        "a. ",
+        "b. ",
+        "",
+        "",
+        "e. Back"
+    ]
+}
 
 
-def get_control_rows(control_data):
+def get_control_panel_rows(control_panel_data):
     rows = []
-    blank_row = "                 | "
+    rows.append(fit(control_panel_data['header'], 54, "  | " ," |"))
 
-    header_row = "  | "
-    for column in control_data:
-        if column:
-            header_row += fit(column['header'], 16, last=" | ")
-        else:
-            header_row += blank_row
-
-
-    rows.append(header_row)
-
-
-    selection_rows = ["  | ", "  | ", "  | ", "  | "]
-    rows.extend(selection_rows)
-
-
-    back_row = "  | "
-    rows.append(back_row)
-
+    blank_cell = "                                                       |"
 
     return rows
-
-
