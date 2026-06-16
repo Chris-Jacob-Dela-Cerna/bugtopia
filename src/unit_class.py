@@ -152,7 +152,7 @@ class Unit:
     # List of abilities
     @property
     def abilities(self):
-        return sorted(self._abilities)
+        return sorted([ability for ability in self._abilities if ability])
 
 
 
