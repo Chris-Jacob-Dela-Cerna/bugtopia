@@ -434,6 +434,4 @@ class Unit:
                 if status_message:
                     status_message += "|"
                 status_message += status
-        else:
-            status_message += "None"
         return status_message
