@@ -3,9 +3,12 @@
 import sys
 from src import deck_creation_logic as dc
 from src import get_menus as gm
+from src import get_unit_idx as gu
+from src import unit_class as uc
 from ui import menu as mn
 from ui import prompt as pr
 from ui import title as tt
+from utils import access_json as aj
 from utils import ui_helpers as uh
 
 
@@ -57,3 +60,7 @@ def battle(deck_1, deck_2):
     starting_battle_ui = pr.prompt("Starting battle...")
     uh.display(starting_battle_ui)
     input("                ")
+
+    units_data = aj.load_json_data("units_default.json")
+
+    gu.get_unit_idx("T1-Ant", units_data)

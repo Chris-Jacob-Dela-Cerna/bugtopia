@@ -4,24 +4,10 @@ from src import main_logic
 
 
 def main():
-    #Temporary
-    from ui import battle_screen as bs
-    from src.unit_class import Unit
-    from utils import access_json as aj
-    from utils import ui_helpers as uh
-
-    units_data = aj.load_json_data("units_default.json")
-    warrior = Unit(units_data, 0, 0)
-    warrior.poison()
-    warrior.pierce()
-    warrior.enrage()
-    deck1 = [warrior, None, Unit(units_data, 8, 0)]
-    deck2 = [Unit(units_data, 2, 2), Unit(units_data, 4, 1), None]
-
-    battle_ui = bs.convert_battle_ui(deck1, deck2)
-    uh.display(battle_ui)
     # main_logic.main_menu()
-
+    deck_1 = ["T1-Beetle", "T2-Grasshopper", "T3-Centipede"]
+    deck_2 = ["T2-Ant", "T2-Dragonfly", "T1-Fly"]
+    main_logic.battle(deck_1, deck_2)
 
 if __name__ == "__main__":
     main()
