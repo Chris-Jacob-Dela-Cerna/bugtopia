@@ -50,6 +50,8 @@ class Unit:
         self._attack = attack
 
 
+        self._abilities = abilities
+
         self._can_attack = False
         self._can_burn = False
         self._can_leech = False
@@ -146,6 +148,11 @@ class Unit:
     @property
     def attack(self):
         return round(self._attack, 1)
+    
+    # List of abilities
+    @property
+    def abilities(self):
+        return sorted(self._abilities)
 
 
 
@@ -233,7 +240,7 @@ class Unit:
     @property
     def is_lastStand(self):
         return self._is_lastStand
-
+    
 
 
     def show_debuffs(self):
@@ -267,9 +274,14 @@ class Unit:
         self.check_is_full_hp()
 
     def check_applied_status(self):
+        self.check_is_burned()
+        self.check_is_enraged()
+        self.check_is_hardened()
+        self.check_is_lastStand()
         self.check_is_pierced()
         self.check_is_poisoned()
-
+        self.check_is_regen()
+        self.check_is_weakened()
 
 
     def check_is_alive(self):

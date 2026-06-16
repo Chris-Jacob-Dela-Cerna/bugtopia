@@ -11,9 +11,10 @@ def battle_logic(deck_1, deck_2):
     units_data = aj.load_json_data("units_default.json")
     player_1 = convert_player_deck(deck_1, units_data)
     player_2 = convert_player_deck(deck_2, units_data)
+    panel_mode = 0
 
     while True:
-        control_panel_data = get_control_panel_data(player_1, player_2)
+        control_panel_data = get_control_panel_data(player_1, player_2, panel_mode)
         battle_ui = bs.convert_battle_ui(player_1, player_2, control_panel_data)
         uh.display(battle_ui)
         input("    >>> ").strip().lower()
