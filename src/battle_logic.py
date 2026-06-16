@@ -13,7 +13,7 @@ def battle_logic(deck_1, deck_2):
     player_2 = convert_player_deck(deck_2, units_data)
 
     while True:
-        control_panel_data = get_control_panel_data([player_1, player_2])
+        control_panel_data = get_control_panel_data(player_1, player_2)
         battle_ui = bs.convert_battle_ui(player_1, player_2, control_panel_data)
         uh.display(battle_ui)
         input("    >>> ").strip().lower()
@@ -24,18 +24,34 @@ def convert_player_deck(deck, units_data):
     return [uc.Unit(units_data, *unit_idx) for unit_idx in deck_units_idx]
 
 
-def get_control_panel_data(player, current_player=0, panel_mode=0):
-    control_panel_data = {'options': [""]}
+def get_control_panel_data(current_player, enemy_player, panel_mode=2):
+    control_panel_data = {}
+    letters = "abcde"
+    options = []
+
     if panel_mode == 0:
-        control_panel_data['header'] = "Select a unit:"
+        header = "Select a unit:"
+        options.extend([f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)" for x, unit in enumerate(current_player)])
+        unit_count = len(current_player)
+        if unit_count < 4:
+            options.extend(["" for _ in range(4 - unit_count)])
+        options.append("e. Skip")
+
     elif panel_mode == 1:
-        control_panel_data['header'] = "Choose an ability:"
+        header = "Choose an ability:"
+
     elif panel_mode == 2:
-        control_panel_data['header'] = "Inflict on:"
+        header = "Inflict on:"
+        options.extend([f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)" for x, unit in enumerate(enemy_player)])
+        unit_count = len(enemy_player)
+        if unit_count < 4:
+            options.extend(["" for _ in range(4 - unit_count)])
+        options.append("e. Back")
+
+    control_panel_data['header'] = header
+    control_panel_data['options'] = options
 
     return control_panel_data
-
-
 
 
 control_panel_data_example = {
