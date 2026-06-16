@@ -67,6 +67,6 @@ def handle_deck(chosen, deck, pages_data):
                 "c": "T3"
             }
             deck.append(f"{options[unit_trait]}-{pages_data[unit_number]["name"].title()}")
-    if chosen == "d" and bool(deck):
+    if chosen == "d" and deck:
         del deck[-1]
     return deck

@@ -22,7 +22,7 @@ def convert_battle_ui(deck1, deck2):
     ui.append("  ╰────────────────────────────────────────────────────────╯")
     ui.append("  ╭────────────────────────────────────────────────────────╮")
 
-    ui.extend(get_control_rows(control_data))
+    ui.extend(get_control_rows(control_panel))
 
     ui.append("  ╰────────────────────────────────────────────────────────╯")
     return ui
@@ -69,7 +69,7 @@ def get_deck_rows(deck):
     return rows
 
 
-control_data = [
+control_panel = [
     {
         "header": "Select:",
         "options": {
@@ -78,19 +78,17 @@ control_data = [
             "c": "",
             "d": "",
             "e": "Back"
-        },
-        "e": "Back"
+        }
     },
     {
-        "header": "Select:",
+        "header": "Ability:",
         "options": {
             "a": "",
             "b": "",
             "c": "",
             "d": "",
             "e": "Back"
-        },
-        
+        }
     },
     {}
 ]
@@ -100,8 +98,14 @@ def get_control_rows(control_data):
     rows = []
     blank_row = "                 | "
 
-
     header_row = "  | "
+    for column in control_data:
+        if column:
+            header_row += fit(column['header'], 16, last=" | ")
+        else:
+            header_row += blank_row
+
+
     rows.append(header_row)
 
 

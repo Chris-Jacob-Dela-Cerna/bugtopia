@@ -429,9 +429,9 @@ class Unit:
 
     def compile_statuses(self, statuses):
         status_message = ""
-        if bool(statuses):
+        if statuses:
             for status in statuses:
-                if bool(status_message):
+                if status_message:
                     status_message += "|"
                 status_message += status
         else:
