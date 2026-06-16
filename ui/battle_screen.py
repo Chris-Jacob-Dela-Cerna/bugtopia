@@ -3,10 +3,10 @@
 from utils.ui_helpers import fit
 
 
-def convert_battle_ui(current_deck, enemy_deck):
+def convert_battle_ui(current_deck, enemy_deck, control_panel_data):
     ui = []
     ui.append("  ╭────────────────────────────────────────────────────────╮")
-    ui.append("  | Player 1                                               |")
+    ui.append("  | Player 2                                               |")
     ui.append("  |────────────────────────────────────────────────────────|")
 
     ui.extend(get_deck_rows(enemy_deck))
@@ -18,7 +18,7 @@ def convert_battle_ui(current_deck, enemy_deck):
     ui.extend(get_deck_rows(current_deck))
 
     ui.append("  |────────────────────────────────────────────────────────|")
-    ui.append("  | Player 2                                               |")
+    ui.append("  | Player 1                                               |")
     ui.append("  |────────────────────────────────────────────────────────|")
 
     ui.extend(get_control_panel_rows(control_panel_data))
@@ -66,18 +66,6 @@ def get_deck_rows(deck):
                 row += fit(debuffs, 11, "DBF: ", " | ")
             rows[x] = row
     return rows
-
-
-control_panel_data = {
-    "header": "Select a unit:",
-    "options": [
-        "a. Fire Ant (100 HP)",
-        "b. Hercules Beetle (200 HP)",
-        "",
-        "",
-        "e. Back"
-    ]
-}
 
 
 def get_control_panel_rows(control_panel_data):
