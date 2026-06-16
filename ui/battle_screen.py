@@ -71,8 +71,8 @@ def get_deck_rows(deck):
 control_panel_data = {
     "header": "Select a unit:",
     "options": [
-        "a. ",
-        "b. ",
+        "a. Fire Ant (100 HP)",
+        "b. Hercules Beetle (200 HP)",
         "",
         "",
         "e. Back"
@@ -85,5 +85,9 @@ def get_control_panel_rows(control_panel_data):
     rows.append(fit(control_panel_data['header'], 54, "  | " ," |"))
 
     blank_cell = "                                                       |"
-
+    for option in control_panel_data['options']:
+        if option:
+            rows.append(fit(option, 54, "  | ", " |"))
+        else:
+            rows.append(fit(blank_cell, first="  | "))
     return rows
