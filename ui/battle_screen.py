@@ -8,17 +8,21 @@ def convert_battle_ui(deck1, deck2):
     ui.append("  ╭────────────────────────────────────────────────────────╮")
     ui.append("  | Player 1                                               |")
     ui.append("  |────────────────────────────────────────────────────────|")
+
     ui.extend(get_deck_rows(deck1))
+
     ui.append("  |────────────────────────────────────────────────────────|")
     ui.append("  |                                                        |")
     ui.append("  |────────────────────────────────────────────────────────|")
+
     ui.extend(get_deck_rows(deck2))
+
     ui.append("  |────────────────────────────────────────────────────────|")
     ui.append("  | Player 2                                               |")
     ui.append("  ╰────────────────────────────────────────────────────────╯")
     ui.append("  ╭────────────────────────────────────────────────────────╮")
 
-
+    ui.extend(get_control_rows(control_data))
 
     ui.append("  ╰────────────────────────────────────────────────────────╯")
     return ui
@@ -65,6 +69,50 @@ def get_deck_rows(deck):
     return rows
 
 
-def get_control_rows():
-    rows = ["  | ", "  | ", "  | ", "  | ", "  | "]
+control_data = [
+    {
+        "header": "Select:",
+        "options": {
+            "a": "",
+            "b": "",
+            "c": "",
+            "d": "",
+            "e": "Back"
+        },
+        "e": "Back"
+    },
+    {
+        "header": "Select:",
+        "options": {
+            "a": "",
+            "b": "",
+            "c": "",
+            "d": "",
+            "e": "Back"
+        },
+        
+    },
+    {}
+]
+
+
+def get_control_rows(control_data):
+    rows = []
     blank_row = "                 | "
+
+
+    header_row = "  | "
+    rows.append(header_row)
+
+
+    selection_rows = ["  | ", "  | ", "  | ", "  | "]
+    rows.extend(selection_rows)
+
+
+    back_row = "  | "
+    rows.append(back_row)
+
+
+    return rows
+
+

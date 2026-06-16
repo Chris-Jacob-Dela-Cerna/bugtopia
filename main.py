@@ -14,13 +14,13 @@ def main():
     warrior = Unit(units_data, 0, 0)
     warrior.poison()
     warrior.pierce()
-    deck1 = [warrior, None, Unit(units_data, 2, 0)]
-    deck2 = [Unit(units_data, 0, 2), None, None]
+    warrior.enrage()
+    deck1 = [warrior, None, Unit(units_data, 8, 0)]
+    deck2 = [Unit(units_data, 2, 2), Unit(units_data, 4, 1), None]
 
     battle_ui = bs.convert_battle_ui(deck1, deck2)
     uh.display(battle_ui)
-
-    main_logic.main_menu()
+    # main_logic.main_menu()
 
 
 if __name__ == "__main__":
