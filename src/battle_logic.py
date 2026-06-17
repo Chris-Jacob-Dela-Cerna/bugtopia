@@ -9,6 +9,7 @@ from utils import ui_helpers as uh
 
 def battle_logic(deck_1, deck_2):
     units_data = aj.load_json_data("units_default.json")
+
     player_1 = convert_player_deck(deck_1, units_data)
     player_2 = convert_player_deck(deck_2, units_data)
     panel_mode = 0
@@ -24,20 +25,47 @@ def battle_logic(deck_1, deck_2):
         if panel_mode == 0:
             options = {letters[x]: unit for x, unit in enumerate(player_1) if unit}
             if chosen in options.keys():
-                panel_mode = 1
                 selected_unit = options[chosen]
+                panel_mode = 1
                 continue
             elif chosen == "e":
                 break
         elif panel_mode == 1:
             options = {letters[x]: ability for x, ability in enumerate(selected_unit.abilities) if ability}
             if chosen in options.keys():
-                panel_mode = 2
                 ability = options[chosen]
+                if check_self_ability(selected_unit, ability):
+                    break
+                panel_mode = 2
                 continue
             elif chosen == "e":
-                panel_mode = 0
+                panel_mode -= 1
                 continue
+        elif panel_mode == 2:
+            options = {letters[x]: unit for x, unit in enumerate(player_2) if unit}
+            if chosen in options.keys():
+                selected_target = options[chosen]
+                ...
+                break
+            elif chosen == "e":
+                panel_mode -= 1
+                continue
+
+
+
+
+def check_self_ability(selected_unit, ability):
+    self_abilities = {
+        "enrage": selected_unit.enrage(),
+        "harden": selected_unit.harden(),
+        "healSelf": selected_unit.heal_self(),
+        "regen": selected_unit.regen()
+    }
+    if ability not in self_abilities:
+        return False
+    self_abilities[ability]
+    return True
+
 
 
 
