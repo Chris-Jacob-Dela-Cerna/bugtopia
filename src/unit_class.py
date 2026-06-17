@@ -277,12 +277,12 @@ class Unit:
     def check_general_status(self):
         self.check_is_alive()
         self.check_is_full_hp()
+        self.check_is_lastStand()
 
     def check_applied_status(self):
         self.check_is_burned()
         self.check_is_enraged()
         self.check_is_hardened()
-        self.check_is_lastStand()
         self.check_is_pierced()
         self.check_is_poisoned()
         self.check_is_regen()
@@ -299,7 +299,7 @@ class Unit:
             self._is_full_hp = False
         else:
             self._is_full_hp = True
-            ability = "selfHeal"
+            ability = "healSelf"
             if ability in self._blocked_abilities:
                 self._blocked_abilities.remove(ability)
 
@@ -366,9 +366,9 @@ class Unit:
                 self._blocked_abilities.remove(ability)
 
     def poison_damage(self):
-        max_damage = self._base_health * 0.25
-        min_damage = self._base_health * 0.15
-        remaining_turns = 1 - (self._poison_state / Unit.poison_duration)
+        max_damage = self._base_health * 0.15
+        min_damage = self._base_health * 0.08
+        remaining_turns = 1 - (self._poisoned_state / Unit.poison_duration)
 
         total_damage = min_damage + ((max_damage - min_damage) * remaining_turns)
         total_hp = self._health - total_damage
@@ -432,11 +432,11 @@ class Unit:
 
 
     def heal_self(self):
-        if self._is_weakened or self.is_poisoned:
-            self.is_weakened = False
+        if self._is_weakened or self._is_poisoned:
+            self._is_weakened = False
             self._weakened_state = 0
             self._is_poisoned = False
-            self._poisoned_state - 0
+            self._poisoned_state = 0
         else:
             max_heal = self._base_health * 0.30
             min_heal = self._base_health * 0.01
@@ -466,7 +466,7 @@ class Unit:
             self._is_regen = False
             ability = "regen"
             if ability in self._blocked_abilities:
-                self._blocked_abilities.append(ability)
+                self._blocked_abilities.remove(ability)
 
 
     def heal(self, total_heal):

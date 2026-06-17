@@ -3,6 +3,7 @@
 from src import get_unit_idx as gu
 from src import unit_class as uc
 from ui import battle_screen as bs
+from ui import prompt as pr
 from utils import access_json as aj
 from utils import ui_helpers as uh
 
@@ -14,12 +15,26 @@ def battle_logic(deck_1, deck_2):
 
     turn = 1
     while True:
-        player_battle_turn(player_1, player_2, turn)
-        player_battle_turn(player_2, player_1, turn)
+        uh.display(pr.prompt("Player 1"))
+        input("                ")
+        player_battle_turn(player_1, player_2, turn, 1)
+
+        players = player_1 + player_2
+        for unit in players:
+            unit.check_general_status()
+
+        uh.display(pr.prompt("Player 2"))
+        input("                ")
+        player_battle_turn(player_2, player_1, turn, 2)
+
+        for unit in players:
+            unit.check_general_status()
+            unit.check_applied_status()
+
         turn += 1
 
 
-def player_battle_turn(current_player, enemy_player, turn):
+def player_battle_turn(current_player, enemy_player, turn, player_turn):
     panel_mode = 0
     selected_unit = None
     selected_ability = None
@@ -28,7 +43,7 @@ def player_battle_turn(current_player, enemy_player, turn):
 
     while True:
         control_panel_data = get_control_panel_data(current_player, enemy_player, panel_mode, selected_unit, selected_ability, selected_target)
-        battle_ui = bs.convert_battle_ui(current_player, enemy_player, control_panel_data)
+        battle_ui = bs.convert_battle_ui(current_player, enemy_player, control_panel_data, turn, player_turn)
         uh.display(battle_ui)
         chosen = input("    >>> ").strip().lower()
 
@@ -129,8 +144,8 @@ def check_inflicting_ability(selected_unit, ability, selected_target):
         "attack": lambda: selected_target.damage(selected_unit.attack),
         "burn": lambda: selected_target.burn(),
         "leech": lambda: (
-            selected_unit.heal(selected_target.health * 0.15),
-            selected_target.true_damage(selected_target.health * 0.15),
+            selected_unit.heal(selected_target._health * 0.15),
+            selected_target.true_damage(selected_target._health * 0.15),
         ),
         "pierce": lambda: selected_target.pierce(),
         "poison": lambda: selected_target.poison(),

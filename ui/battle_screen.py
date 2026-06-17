@@ -3,22 +3,28 @@
 from utils.ui_helpers import fit
 
 
-def convert_battle_ui(current_deck, enemy_deck, control_panel_data):
+def convert_battle_ui(current_deck, enemy_deck, control_panel_data, turn, player_turn=1):
     ui = []
     ui.append("  ╭────────────────────────────────────────────────────────╮")
-    ui.append("  | Player 2                                               |")
+    if player_turn == 1:
+        p1 = 1
+        p2 = 2
+    else:
+        p1 = 2
+        p2 = 1
+    ui.append(f"  | Player {p2}                                               |")
     ui.append("  |────────────────────────────────────────────────────────|")
 
     ui.extend(get_deck_rows(enemy_deck))
 
     ui.append("  ╰────────────────────────────────────────────────────────╯")
-    ui.append("                            Turn 1")
+    ui.append(f"  Turn {turn}")
     ui.append("  ╭────────────────────────────────────────────────────────╮")
 
     ui.extend(get_deck_rows(current_deck))
 
     ui.append("  |────────────────────────────────────────────────────────|")
-    ui.append("  | Player 1                                               |")
+    ui.append(f"  | Player {p1}                                               |")
     ui.append("  |────────────────────────────────────────────────────────|")
 
     ui.extend(get_control_panel_rows(control_panel_data))
