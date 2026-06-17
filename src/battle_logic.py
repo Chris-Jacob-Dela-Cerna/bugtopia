@@ -12,6 +12,14 @@ def battle_logic(deck_1, deck_2):
     player_1 = convert_player_deck(deck_1, units_data)
     player_2 = convert_player_deck(deck_2, units_data)
 
+    turn = 1
+    while True:
+        player_battle_turn(player_1, player_2, turn)
+        player_battle_turn(player_2, player_1, turn)
+        turn += 1
+
+
+def player_battle_turn(current_player, enemy_player, turn):
     panel_mode = 0
     selected_unit = None
     selected_ability = None
@@ -19,13 +27,13 @@ def battle_logic(deck_1, deck_2):
     letters = "abcd"
 
     while True:
-        control_panel_data = get_control_panel_data(player_1, player_2, panel_mode, selected_unit, selected_ability, selected_target)
-        battle_ui = bs.convert_battle_ui(player_1, player_2, control_panel_data)
+        control_panel_data = get_control_panel_data(current_player, enemy_player, panel_mode, selected_unit, selected_ability, selected_target)
+        battle_ui = bs.convert_battle_ui(current_player, enemy_player, control_panel_data)
         uh.display(battle_ui)
         chosen = input("    >>> ").strip().lower()
 
         if panel_mode == 0:
-            options = {letters[x]: unit for x, unit in enumerate(player_1) if unit}
+            options = {letters[x]: unit for x, unit in enumerate(current_player) if unit}
             if chosen in options.keys():
                 selected_unit = options[chosen]
                 panel_mode = 1
@@ -34,51 +42,56 @@ def battle_logic(deck_1, deck_2):
                 break
 
         elif panel_mode == 1:
-            abilities = selected_unit.abilities
-            for blocked_ability in selected_unit.blocked_abilities:
-                if blocked_ability in abilities:
-                    abilities.remove(blocked_ability)
-            options = {letters[x]: ability for x, ability in enumerate(abilities) if ability}
+            options = {}
+            overlap = 0
+            for x, ability in enumerate(selected_unit.abilities):
+                if ability and ability not in selected_unit.blocked_abilities:
+                    options[letters[x - overlap]] = ability
+                    if overlap > 0:
+                        overlap -= 1
+                else:
+                    overlap += 1
             if chosen in options.keys():
                 selected_ability = options[chosen]
                 if check_self_ability(selected_unit, selected_ability):
                     panel_mode = 0
-                    continue
+                    break
                 panel_mode = 2
                 continue
             elif chosen == "e":
                 panel_mode = 0
                 continue
-    
+
         elif panel_mode == 2:
-            options = {letters[x]: unit for x, unit in enumerate(player_2) if unit}
+            options = {letters[x]: unit for x, unit in enumerate(enemy_player) if unit}
             if chosen in options.keys():
                 selected_target = options[chosen]
                 if check_inflicting_ability(selected_unit, selected_ability, selected_target):
                     panel_mode = 0
-                    continue
+                    break
                 continue
             elif chosen == "e":
                 panel_mode = 1
                 continue
 
 
-
-
-
 def get_control_panel_data(current_player, enemy_player, panel_mode=0, selected_unit=None, selected_ability=None, selected_target=None):
-    letters = "abcde"
+    letters = "abcd"
     if panel_mode == 0:
         header = "Select a unit:"
         options = [f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)" for x, unit in enumerate(current_player)]
         footer = "e. Skip"
     elif panel_mode == 1:
         header = "Choose an ability:"
-        abilities = selected_unit.abilities
-        for blocked_ability in selected_unit.blocked_abilities:
-            if blocked_ability in abilities:
-                abilities.remove(blocked_ability)
-        options = [f"{letters[x]}. {ability}" for x, ability in enumerate(abilities) if ability]
+        options = []
+        overlap = 0
+        for x, ability in enumerate(selected_unit.abilities):
+            if ability not in selected_unit.blocked_abilities:
+                options.append(f"{letters[x - overlap]}. {ability}")
+                if overlap > 0:
+                    overlap -= 1
+            else:
+                overlap += 1
         footer = "e. Back"
     elif panel_mode == 2:
         header = "Inflict on:"
@@ -87,10 +100,6 @@ def get_control_panel_data(current_player, enemy_player, panel_mode=0, selected_
     else:
         raise ValueError("Invalid panel mode.")
     return contruct_panel(header, options, footer)
-
-
-
-
 
 
 
