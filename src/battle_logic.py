@@ -47,8 +47,6 @@ def player_battle_turn(current_player, enemy_player, turn):
             for x, ability in enumerate(selected_unit.abilities):
                 if ability and ability not in selected_unit.blocked_abilities:
                     options[letters[x - overlap]] = ability
-                    if overlap > 0:
-                        overlap -= 1
                 else:
                     overlap += 1
             if chosen in options.keys():
@@ -63,7 +61,13 @@ def player_battle_turn(current_player, enemy_player, turn):
                 continue
 
         elif panel_mode == 2:
-            options = {letters[x]: unit for x, unit in enumerate(enemy_player) if unit}
+            options = {}
+            overlap = 0
+            for x, unit in enumerate(enemy_player):
+                if selected_ability not in unit.blocked_abilities:
+                    options[letters[x - overlap]] = unit
+                else:
+                    overlap += 1
             if chosen in options.keys():
                 selected_target = options[chosen]
                 if check_inflicting_ability(selected_unit, selected_ability, selected_target):
@@ -88,14 +92,18 @@ def get_control_panel_data(current_player, enemy_player, panel_mode=0, selected_
         for x, ability in enumerate(selected_unit.abilities):
             if ability not in selected_unit.blocked_abilities:
                 options.append(f"{letters[x - overlap]}. {ability}")
-                if overlap > 0:
-                    overlap -= 1
             else:
                 overlap += 1
         footer = "e. Back"
     elif panel_mode == 2:
         header = "Inflict on:"
-        options = [f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)" for x, unit in enumerate(enemy_player)]
+        options = []
+        overlap = 0
+        for x, unit in enumerate(enemy_player):
+            if selected_ability not in unit.blocked_abilities:
+                options.append(f"{letters[x - overlap]}. {unit.trait} {unit.unit} ({unit.health} HP)")
+            else:
+                overlap += 1
         footer = "e. Back"
     else:
         raise ValueError("Invalid panel mode.")
