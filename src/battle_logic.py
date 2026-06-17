@@ -9,15 +9,17 @@ from utils import ui_helpers as uh
 
 def battle_logic(deck_1, deck_2):
     units_data = aj.load_json_data("units_default.json")
-
     player_1 = convert_player_deck(deck_1, units_data)
     player_2 = convert_player_deck(deck_2, units_data)
+
     panel_mode = 0
     selected_unit = None
+    selected_ability = None
+    selected_target = None
     letters = "abcd"
 
     while True:
-        control_panel_data = get_control_panel_data(player_1, player_2, panel_mode, selected_unit)
+        control_panel_data = get_control_panel_data(player_1, player_2, panel_mode, selected_unit, selected_ability, selected_target)
         battle_ui = bs.convert_battle_ui(player_1, player_2, control_panel_data)
         uh.display(battle_ui)
         chosen = input("    >>> ").strip().lower()
@@ -30,63 +32,41 @@ def battle_logic(deck_1, deck_2):
                 continue
             elif chosen == "e":
                 break
+
         elif panel_mode == 1:
-            options = {letters[x]: ability for x, ability in enumerate(selected_unit.abilities) if ability}
+            abilities = selected_unit.abilities
+            for blocked_ability in selected_unit.blocked_abilities:
+                if blocked_ability in abilities:
+                    abilities.remove(blocked_ability)
+            options = {letters[x]: ability for x, ability in enumerate(abilities) if ability}
             if chosen in options.keys():
-                ability = options[chosen]
-                if check_self_ability(selected_unit, ability):
-                    break
+                selected_ability = options[chosen]
+                if check_self_ability(selected_unit, selected_ability):
+                    panel_mode = 0
+                    continue
                 panel_mode = 2
                 continue
             elif chosen == "e":
-                panel_mode -= 1
+                panel_mode = 0
                 continue
+    
         elif panel_mode == 2:
             options = {letters[x]: unit for x, unit in enumerate(player_2) if unit}
             if chosen in options.keys():
                 selected_target = options[chosen]
-                if check_inflicting_ability(selected_unit, ability, selected_target):
-                    break
+                if check_inflicting_ability(selected_unit, selected_ability, selected_target):
+                    panel_mode = 0
+                    continue
                 continue
             elif chosen == "e":
-                panel_mode -= 1
+                panel_mode = 1
                 continue
 
 
 
 
-def check_self_ability(selected_unit, ability):
-    self_abilities = {
-        "enrage": selected_unit.enrage(),
-        "harden": selected_unit.harden(),
-        "healSelf": selected_unit.heal_self(),
-        "regen": selected_unit.regen()
-    }
-    if ability not in self_abilities:
-        return False
-    self_abilities[ability]
-    return True
 
-
-def check_inflicting_ability(selected_unit, ability, selected_target):
-    inflicting_abilities =  {
-        "attack": lambda: selected_target.damage(selected_target),
-        "burn": selected_target.burn(),
-        "pierce": selected_target.pierce(),
-        "poison": selected_target.poison(),
-        "weaken": selected_target.weaken(),
-
-    }
-
-
-
-
-def convert_player_deck(deck, units_data):
-    deck_units_idx = [gu.get_unit_idx(unit_slot, units_data) for unit_slot in deck]
-    return [uc.Unit(units_data, *unit_idx) for unit_idx in deck_units_idx]
-
-
-def get_control_panel_data(current_player, enemy_player, panel_mode=0, selected_unit=None):
+def get_control_panel_data(current_player, enemy_player, panel_mode=0, selected_unit=None, selected_ability=None, selected_target=None):
     letters = "abcde"
     if panel_mode == 0:
         header = "Select a unit:"
@@ -94,7 +74,11 @@ def get_control_panel_data(current_player, enemy_player, panel_mode=0, selected_
         footer = "e. Skip"
     elif panel_mode == 1:
         header = "Choose an ability:"
-        options = [f"{letters[x]}. {ability}" for x, ability in enumerate(selected_unit.abilities)]
+        abilities = selected_unit.abilities
+        for blocked_ability in selected_unit.blocked_abilities:
+            if blocked_ability in abilities:
+                abilities.remove(blocked_ability)
+        options = [f"{letters[x]}. {ability}" for x, ability in enumerate(abilities) if ability]
         footer = "e. Back"
     elif panel_mode == 2:
         header = "Inflict on:"
@@ -103,6 +87,47 @@ def get_control_panel_data(current_player, enemy_player, panel_mode=0, selected_
     else:
         raise ValueError("Invalid panel mode.")
     return contruct_panel(header, options, footer)
+
+
+
+
+
+
+
+def check_self_ability(selected_unit, ability):
+    self_abilities = {
+        "enrage": lambda: selected_unit.enrage(),
+        "harden": lambda: selected_unit.harden(),
+        "healSelf": lambda: selected_unit.heal_self(),
+        "regen": lambda: selected_unit.regen()
+    }
+    if ability not in self_abilities:
+        return False
+    self_abilities[ability]()
+    return True
+
+
+def check_inflicting_ability(selected_unit, ability, selected_target):
+    inflicting_abilities = {
+        "attack": lambda: selected_target.damage(selected_unit.attack),
+        "burn": lambda: selected_target.burn(),
+        "leech": lambda: (
+            selected_unit.heal(selected_target.health * 0.15),
+            selected_target.true_damage(selected_target.health * 0.15),
+        ),
+        "pierce": lambda: selected_target.pierce(),
+        "poison": lambda: selected_target.poison(),
+        "weaken": lambda: selected_target.weaken(),
+    }
+    if ability not in inflicting_abilities:
+        return False
+    inflicting_abilities[ability]()
+    return True
+
+
+def convert_player_deck(deck, units_data):
+    deck_units_idx = [gu.get_unit_idx(unit_slot, units_data) for unit_slot in deck]
+    return [uc.Unit(units_data, *unit_idx) for unit_idx in deck_units_idx]
 
 
 def contruct_panel(header, options, footer):

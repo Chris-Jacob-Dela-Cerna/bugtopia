@@ -51,6 +51,7 @@ class Unit:
 
 
         self._abilities = abilities
+        self._blocked_abilities = ["healSelf"]
 
         self._can_attack = False
         self._can_burn = False
@@ -152,7 +153,11 @@ class Unit:
     # List of abilities
     @property
     def abilities(self):
-        return sorted([ability for ability in self._abilities if ability])
+        return sorted([ability for ability in self._abilities if ability and ability != "lastStand"])
+    
+    @property
+    def blocked_abilities(self):
+        return self._blocked_abilities
 
 
 
@@ -294,6 +299,9 @@ class Unit:
             self._is_full_hp = False
         else:
             self._is_full_hp = True
+            ability = "selfHeal"
+            if ability in self._blocked_abilities:
+                self._blocked_abilities.remove(ability)
 
 
 
@@ -312,6 +320,7 @@ class Unit:
     def burn(self):
         self._is_burned = True
         self._burned_state = Unit.burn_duration
+        self._blocked_abilities.append("burn")
 
     def check_is_burned(self):
         if self._burned_state > 0:
@@ -319,12 +328,16 @@ class Unit:
             self.damage(self._base_health * 0.30)
         if self._burned_state == 0:
             self._is_burned = False
+            ability = "burn"
+            if ability in self._blocked_abilities:
+                self._blocked_abilities.remove(ability)
 
 
     def pierce(self):
         self._is_pierced = True
         self._pierced_state = Unit.pierce_duration
         self._defence -= self._base_defence * 0.50
+        self._blocked_abilities.append("pierce")
 
     def check_is_pierced(self):
         if self._pierced_state > 0:
@@ -332,11 +345,15 @@ class Unit:
         if self._pierced_state == 0:
             self._is_pierced = False
             self._defence = self._base_defence
+            ability = "pierce"
+            if ability in self._blocked_abilities:
+                self._blocked_abilities.remove(ability)
 
 
     def poison(self):
         self._is_poisoned = True
         self._poisoned_state = Unit.poison_duration
+        self._blocked_abilities.append("poison")
 
     def check_is_poisoned(self):
         if self._poisoned_state > 0:
@@ -344,6 +361,9 @@ class Unit:
             self.poison_damage()
         if self._poisoned_state == 0:
             self._is_poisoned = False
+            ability = "poison"
+            if ability in self._blocked_abilities:
+                self._blocked_abilities.remove(ability)
 
     def poison_damage(self):
         max_damage = self._base_health * 0.25
@@ -363,6 +383,7 @@ class Unit:
         self._is_weakened = True
         self._weakened_state = Unit.weaken_duration
         self._attack -= self._base_attack * 0.30
+        self._blocked_abilities.append("weaken")
 
     def check_is_weakened(self):
         if self._weakened_state > 0:
@@ -370,6 +391,9 @@ class Unit:
         if self._weakened_state == 0:
             self._is_weakened = False
             self._attack = self._base_attack
+            ability = "weaken"
+            if ability in self._blocked_abilities:
+                self._blocked_abilities.remove(ability)
 
 
 
@@ -377,6 +401,7 @@ class Unit:
         self._is_enraged = True
         self._enraged_state = Unit.enrage_duration
         self._attack += self._base_attack * 0.30
+        self._blocked_abilities.append("enrage")
 
     def check_is_enraged(self):
         if self._enraged_state > 0:
@@ -384,12 +409,16 @@ class Unit:
         if self._enraged_state == 0:
             self._is_enraged = False
             self._attack = self._base_attack
+            ability = "enrage"
+            if ability in self._blocked_abilities:
+                self._blocked_abilities.remove(ability)
 
 
     def harden(self):
         self._is_hardened = True
         self._hardened_state = Unit.harden_duration
         self._defence += self._base_defence * 0.40
+        self._blocked_abilities.append("harden")
 
     def check_is_hardened(self):
         if self._hardened_state > 0:
@@ -397,6 +426,9 @@ class Unit:
         if self._hardened_state == 0:
             self._is_hardened = False
             self._defence = self._base_defence
+            ability = "harden"
+            if ability in self._blocked_abilities:
+                self._blocked_abilities.remove(ability)
 
 
     def heal_self(self):
@@ -424,6 +456,7 @@ class Unit:
     def regen(self):
         self._is_regen = True
         self._regen_state = Unit.regen_duration
+        self._blocked_abilities.append("regen")
 
     def check_is_regen(self):
         if self._regen_state > 0:
@@ -431,13 +464,16 @@ class Unit:
             self.heal(self._base_health * 0.10)
         if self._regen_state == 0:
             self._is_regen = False
-
+            ability = "regen"
+            if ability in self._blocked_abilities:
+                self._blocked_abilities.append(ability)
 
 
     def heal(self, total_heal):
         total_hp = self._health + total_heal
         if total_hp >= self._base_health:
             self._health = self._base_health
+            self._blocked_abilities.append("selfHeal")
             self.check_is_full_hp()
         else:
             self._health = total_hp
