@@ -45,8 +45,9 @@ def battle_logic(deck_1, deck_2):
             options = {letters[x]: unit for x, unit in enumerate(player_2) if unit}
             if chosen in options.keys():
                 selected_target = options[chosen]
-                ...
-                break
+                if check_inflicting_ability(selected_unit, ability, selected_target):
+                    break
+                continue
             elif chosen == "e":
                 panel_mode -= 1
                 continue
@@ -67,7 +68,15 @@ def check_self_ability(selected_unit, ability):
     return True
 
 
+def check_inflicting_ability(selected_unit, ability, selected_target):
+    inflicting_abilities =  {
+        "attack": lambda: selected_target.damage(selected_target),
+        "burn": selected_target.burn(),
+        "pierce": selected_target.pierce(),
+        "poison": selected_target.poison(),
+        "weaken": selected_target.weaken(),
 
+    }
 
 
 

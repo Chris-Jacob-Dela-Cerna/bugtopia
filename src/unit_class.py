@@ -303,6 +303,10 @@ class Unit:
             residual_damage = 1
         self._health -= residual_damage
         self.check_is_alive()
+    
+    def true_damage(self, attack):
+        self._health -= attack
+        self.check_is_alive()
 
 
     def burn(self):
