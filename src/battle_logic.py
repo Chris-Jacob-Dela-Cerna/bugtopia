@@ -71,13 +71,7 @@ def player_battle_turn(current_player, enemy_player, turn, player_turn):
                 break
 
         elif panel_mode == 1:
-            options = {}
-            overlap = 0
-            for x, ability in enumerate(selected_unit.abilities):
-                if ability and ability not in selected_unit.blocked_abilities:
-                    options[letters[x - overlap]] = ability
-                else:
-                    overlap += 1
+            options = {letters[x]: ability for x, ability in enumerate(selected_unit.abilities) if ability and ability not in selected_unit.blocked_abilities}
             if chosen in options.keys():
                 selected_ability = options[chosen]
                 if check_self_ability(selected_unit, selected_ability):
@@ -117,13 +111,7 @@ def get_control_panel_data(current_player, enemy_player, panel_mode=0, selected_
         footer = "e. Skip"
     elif panel_mode == 1:
         header = "Choose an ability:"
-        options = []
-        overlap = 0
-        for x, ability in enumerate(selected_unit.abilities):
-            if ability not in selected_unit.blocked_abilities:
-                options.append(f"{letters[x - overlap]}. {ability}")
-            else:
-                overlap += 1
+        options = [f"{letters[x]}. {ability}" for x, ability in enumerate(selected_unit.abilities) if ability not in selected_unit.blocked_abilities]
         footer = "e. Back"
     elif panel_mode == 2:
         header = "Inflict on:"
