@@ -21,12 +21,12 @@ def battle_logic(deck_1, deck_2):
         for x, unit in enumerate(player_1):
             if unit:
                 unit.check_general_status()
-                if not unit.is_alive:
+                if not unit._status['alive']:
                     player_1[x] = None
         for x, unit in enumerate(player_2):
             if unit:
                 unit.check_general_status()
-                if not unit.is_alive:
+                if not unit._status['alive']:
                     player_2[x] = None
 
         uh.display(pr.prompt("Player 2"))
@@ -37,13 +37,13 @@ def battle_logic(deck_1, deck_2):
             if unit:
                 unit.check_general_status()
                 unit.check_applied_status()
-                if not unit.is_alive:
+                if not unit._status['alive']:
                     player_1[x] = None
         for x, unit in enumerate(player_2):
             if unit:
                 unit.check_general_status()
                 unit.check_applied_status()
-                if not unit.is_alive:
+                if not unit._status['alive']:
                     player_2[x] = None
         turn += 1
 
@@ -85,13 +85,10 @@ def player_battle_turn(current_player, enemy_player, turn, player_turn):
 
         elif panel_mode == 2:
             options = {}
-            overlap = 0
             for x, unit in enumerate(enemy_player):
                 if unit:
                     if selected_ability not in unit.blocked_abilities:
-                        options[letters[x - overlap]] = unit
-                    else:
-                        overlap += 1
+                        options[letters[x]] = unit
             if chosen in options.keys():
                 selected_target = options[chosen]
                 if check_inflicting_ability(selected_unit, selected_ability, selected_target):
@@ -116,17 +113,38 @@ def get_control_panel_data(current_player, enemy_player, panel_mode=0, selected_
     elif panel_mode == 2:
         header = "Inflict on:"
         options = []
-        overlap = 0
         for x, unit in enumerate(enemy_player):
             if unit:
                 if selected_ability not in unit.blocked_abilities:
-                    options.append(f"{letters[x - overlap]}. {unit.trait} {unit.unit} ({unit.health} HP)")
-                else:
-                    overlap += 1
+                    options.append(f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)")
         footer = "e. Back"
     else:
         raise ValueError("Invalid panel mode.")
     return contruct_panel(header, options, footer)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -137,10 +155,10 @@ def check_self_ability(selected_unit, ability):
         "healSelf": lambda: selected_unit.heal_self(),
         "regen": lambda: selected_unit.regen()
     }
-    if ability not in self_abilities:
-        return False
-    self_abilities[ability]()
-    return True
+    if ability in self_abilities:
+        self_abilities[ability]()
+        return True
+    return False
 
 
 def check_inflicting_ability(selected_unit, ability, selected_target):
@@ -155,10 +173,10 @@ def check_inflicting_ability(selected_unit, ability, selected_target):
         "poison": lambda: selected_target.poison(),
         "weaken": lambda: selected_target.weaken(),
     }
-    if ability not in inflicting_abilities:
-        return False
-    inflicting_abilities[ability]()
-    return True
+    if ability in inflicting_abilities:
+        inflicting_abilities[ability]()
+        return True
+    return False
 
 
 def convert_player_deck(deck, units_data):

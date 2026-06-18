@@ -50,51 +50,15 @@ class Unit:
         self._attack = attack
 
 
+
         self._abilities = abilities
+        self._active_abilities = []
+        self._status = {
+            "full_hp": True,
+            "alive": True
+        }
         self._blocked_abilities = ["healSelf"]
 
-        self._can_attack = False
-        self._can_burn = False
-        self._can_leech = False
-        self._can_pierce = False
-        self._can_poison = False
-        self._can_weaken = False
-
-        self._can_enrage = False
-        self._can_harden = False
-        self._can_healSelf = False
-        self._can_regen = False
-
-        self._can_lastStand = False
-
-
-        if "attack" in abilities:
-            self._can_attack = True
-        if "burn" in abilities:
-            self._can_burn = True
-        if "leech" in abilities:
-            self._can_leech = True
-        if "pierce" in abilities:
-            self._can_pierce = True
-        if "poison" in abilities:
-            self._can_poison = True
-        if "weaken" in abilities:
-            self._can_weaken = True
-
-        if "enrage" in abilities:
-            self._can_enrage = True
-        if "harden" in abilities:
-            self._can_harden = True
-        if "healSelf" in abilities:
-            self._can_healSelf = True
-        if "lastStand" in abilities:
-            self._can_lastStand = True
-        if "regen" in abilities:
-            self._can_regen = True
-
-
-        self._is_alive = True
-        self._is_full_hp = False
 
         self._is_burned = False
         self._burned_state = 0
@@ -149,72 +113,19 @@ class Unit:
     @property
     def attack(self):
         return round(self._attack, 1)
-    
+
+
+
     # List of abilities
     @property
     def abilities(self):
         return sorted([ability for ability in self._abilities if ability and ability != "lastStand"])
-    
+
     @property
     def blocked_abilities(self):
         return self._blocked_abilities
 
 
-
-    # Inflicting Abilities - Instant
-    @property
-    def can_attack(self):
-        return self._can_attack
-    @property
-    def can_leech(self):
-        return self._can_leech
-
-    # Inflicting Abilities - With Duration
-    @property
-    def can_burn(self):
-        return self._can_burn
-    @property
-    def can_pierce(self):
-        return self._can_pierce
-    @property
-    def can_poison(self):
-        return self._can_poison
-    @property
-    def can_weaken(self):
-        return self._can_weaken
-
-
-    # Self Abilities - Instant
-    @property
-    def can_healSelf(self):
-        return self._can_healSelf
-
-    # Self Abilities - With Duration
-    @property
-    def can_enrage(self):
-        return self._can_enrage
-    @property
-    def can_harden(self):
-        return self._can_harden
-    @property
-    def can_regen(self):
-        return self._can_regen
-
-
-    # Passive Abilities
-    @property
-    def can_lastStand(self):
-        return self._can_lastStand
-
-
-
-    # General Status
-    @property
-    def is_alive(self):
-        return self._is_alive
-    @property
-    def is_full_hp(self):
-        return self._is_full_hp
 
     # Debuff Status
     @property
@@ -245,7 +156,13 @@ class Unit:
     @property
     def is_lastStand(self):
         return self._is_lastStand
-    
+
+
+
+    def can(self, ability):
+        if ability in self._abilities:
+            return True
+        return False
 
 
     def show_debuffs(self):
@@ -289,16 +206,19 @@ class Unit:
         self.check_is_weakened()
 
 
+
+
+
     def check_is_alive(self):
         if self._health <= 0:
-            self._is_alive = False
-            self._health = 0
+            self._status['alive'] = False
+
 
     def check_is_full_hp(self):
         if self._health == self._base_health:
-            self._is_full_hp = False
+            self._status['full_hp'] = True
         else:
-            self._is_full_hp = True
+            self._status['full_hp'] = False
             ability = "healSelf"
             if ability in self._blocked_abilities:
                 self._blocked_abilities.remove(ability)
@@ -446,7 +366,7 @@ class Unit:
 
 
     def check_is_lastStand(self):
-        if self.can_lastStand:
+        if self.can("lastStand"):
             if self._health < self._base_health * 0.30:
                 self._attack = self._base_attack + (self._base_attack * 0.50)
             else:
