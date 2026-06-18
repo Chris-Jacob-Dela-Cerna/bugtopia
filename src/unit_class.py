@@ -200,23 +200,20 @@ class Unit:
         if self._health <= 0:
             self._status['alive'] = False
 
-
     def check_is_full_hp(self):
         if self._health == self._base_health:
             self._status['full_hp'] = True
         else:
             self._status['full_hp'] = False
-            ability = "healSelf"
-            if ability in self._blocked_abilities:
-                self._blocked_abilities.remove(ability)
+            self.remove_status("healSelf")
 
 
 
     def damage(self, attack):
-        residual_damage = attack - self._defence
-        if residual_damage <= 0:
-            residual_damage = 1
-        self._health -= residual_damage
+        damage = attack - self._defence
+        if damage <= 0:
+            damage = 1
+        self._health -= damage
         self.check_is_alive()
 
     def true_damage(self, attack):
@@ -235,13 +232,13 @@ class Unit:
             self._burned_state -= 1
             self.damage(self._base_health * 0.30)
         if self._burned_state == 0:
-            self.remove_status("burn")
+            self.remove_debuff("burn")
 
 
 
     def pierce(self):
         ability = "pierce"
-        self._active_debuffs.append(ability)
+        self.add_debuff(ability)
         self._burned_state = Unit.abilities['lingering'][ability]['duration']
         self._defence = self._base_defence - (self._base_defence * 0.50)
 
@@ -249,14 +246,14 @@ class Unit:
         if self._pierced_state > 0:
             self._pierced_state -= 1
         if self._pierced_state == 0:
+            self.remove_debuff("pierce")
             self._defence = self._base_defence
-            self.remove_status("pierce")
-
+            
 
 
     def poison(self):
         ability = "poison"
-        self._active_debuffs.append(ability)
+        self.add_debuff(ability)
         self._burned_state = Unit.abilities['lingering'][ability]['duration']
 
     def check_is_poisoned(self):
@@ -264,7 +261,7 @@ class Unit:
             self._poisoned_state -= 1
             self.poison_damage()
         if self._poisoned_state == 0:
-            self.remove_status("poison")
+            self.remove_debuff("poison")
 
     def poison_damage(self):
         max_damage = self._base_health * 0.15
@@ -281,7 +278,7 @@ class Unit:
 
     def weaken(self):
         ability = "weaken"
-        self._active_debuffs.append(ability)
+        self.add_debuff(ability)
         self._burned_state = Unit.abilities['lingering'][ability]['duration']
         self._attack = self._base_attack - (self._base_attack * 0.30)
 
@@ -289,14 +286,14 @@ class Unit:
         if self._weakened_state > 0:
             self._weakened_state -= 1
         if self._weakened_state == 0:
+            self.remove_debuff("weaken")
             self._attack = self._base_attack
-            self.remove_status("weaken")
 
 
 
     def enrage(self):
         ability = "enrage"
-        self._active_buffs.append(ability)
+        self.add_buff(ability)
         self._burned_state = Unit.abilities['lingering'][ability]['duration']
         self._attack = self._base_attack + (self._base_attack * 0.30)
 
@@ -304,13 +301,14 @@ class Unit:
         if self._enraged_state > 0:
             self._enraged_state -= 1
         if self._enraged_state == 0:
+            self.remove_buff("enrage")
             self._attack = self._base_attack
-            self.remove_status("enrage")
+
 
 
     def harden(self):
         ability = "harden"
-        self._active_buffs.append(ability)
+        self.add_buff(ability)
         self._burned_state = Unit.abilities['lingering'][ability]['duration']
         self._defence = self._base_defence + (self._base_defence * 0.40)
 
@@ -318,14 +316,15 @@ class Unit:
         if self._hardened_state > 0:
             self._hardened_state -= 1
         if self._hardened_state == 0:
+            self.remove_buff("harden")
             self._defence = self._base_defence
-            self.remove_status("harden")
+
 
 
     def heal_self(self):
         if "weaken" in self._active_debuffs or "poison" in self._active_debuffs:
-            self.remove_status("weaken")
-            self.remove_status("poison")
+            self.remove_debuff("weaken")
+            self.remove_debuff("poison")
             self._weakened_state = 0
             self._poisoned_state = 0
         else:
@@ -334,6 +333,14 @@ class Unit:
             missing_hp = 1 - (self._health / self._base_health)
             total_heal = min_heal + ((max_heal - min_heal) * missing_hp)
             self.heal(total_heal)
+    
+    def heal(self, total_heal):
+        total_hp = self._health + total_heal
+        if total_hp >= self._base_health:
+            self._health = self._base_health
+            self.check_is_full_hp()
+        else:
+            self._health = total_hp
 
 
 
@@ -348,7 +355,7 @@ class Unit:
 
     def regen(self):
         ability = "regen"
-        self._active_buffs.append(ability)
+        self.add_buff(ability)
         self._burned_state = Unit.abilities['lingering'][ability]['duration']
 
     def check_is_regen(self):
@@ -356,22 +363,22 @@ class Unit:
             self._regen_state -= 1
             self.heal(self._base_health * 0.10)
         elif self._regen_state == 0:
-            self.remove_status("regen")
+            self.remove_buff("regen")
 
 
 
-    def heal(self, total_heal):
-        total_hp = self._health + total_heal
-        if total_hp >= self._base_health:
-            self._health = self._base_health
-            self.check_is_full_hp()
-        else:
-            self._health = total_hp
+    def add_buff(self, ability):
+        if ability not in self._active_buffs:
+            self._active_buffs.append(ability)
+    
+    def add_debuff(self, ability):
+        if ability not in self._active_debuffs:
+            self._active_debuffs.append(ability)
 
-
-
-    def remove_status(self, ability):
+    def remove_buff(self, ability):
         if ability in self._active_buffs:
             self._active_buffs.remove(ability)
-        elif ability in self._active_debuffs:
+    
+    def remove_debuff(self, ability):
+        if ability in self._active_debuffs:
             self._active_debuffs.remove(ability)
