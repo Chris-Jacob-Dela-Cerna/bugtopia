@@ -89,7 +89,6 @@ class Unit:
         self._attack = attack
 
 
-
         self._abilities = abilities
         self._active_buffs = []
         self._active_debuffs = []
@@ -98,17 +97,8 @@ class Unit:
             "alive": True
         }
 
-        self._burned_state = 0
-        self._pierced_state = 0
-        self._poisoned_state = 0
-        self._weakened_state = 0
-        self._enraged_state = 0
-        self._hardened_state = 0
-        self._regen_state = 0
 
 
-
-    # Family and classification
     @property
     def unit(self):
         return self._unit.title()
@@ -118,7 +108,6 @@ class Unit:
 
 
 
-    # Base and current health
     @property
     def base_health(self):
         return millify(self._base_health, precision=1)
@@ -128,7 +117,6 @@ class Unit:
 
 
 
-    # Base and current defence
     @property
     def base_defence(self):
         return self._base_defence
@@ -138,7 +126,6 @@ class Unit:
 
 
 
-    # Base and current attack damage
     @property
     def base_attack(self):
         return self._base_attack
@@ -148,7 +135,6 @@ class Unit:
 
 
 
-    # List of abilities
     @property
     def abilities(self):
         return sorted([ability for ability in self._abilities if ability and ability != "lastStand"])
@@ -232,11 +218,13 @@ class Unit:
         self.add_debuff(ability)
 
     def check_is_burned(self):
-        if self._burned_state > 0:
-            self._burned_state -= 1
+        ability = "burn"
+        state = Unit.abilities['lingering'][ability]['state']
+        if state > 0:
+            state -= 1
             self.damage(self._base_health * 0.30)
-        if self._burned_state == 0:
-            self.remove_debuff("burn")
+        if state == 0:
+            self.remove_debuff(ability)
 
 
 
@@ -246,12 +234,14 @@ class Unit:
         self._defence = self._base_defence - (self._base_defence * 0.50)
 
     def check_is_pierced(self):
-        if self._pierced_state > 0:
-            self._pierced_state -= 1
-        if self._pierced_state == 0:
-            self.remove_debuff("pierce")
+        ability = "pierce"
+        state = Unit.abilities['lingering'][ability]['state']
+        if state > 0:
+            state -= 1
+        if state == 0:
+            self.remove_debuff(ability)
             self._defence = self._base_defence
-            
+
 
 
     def poison(self):
@@ -259,16 +249,19 @@ class Unit:
         self.add_debuff(ability)
 
     def check_is_poisoned(self):
-        if self._poisoned_state > 0:
-            self._poisoned_state -= 1
+        ability = "poison"
+        state = Unit.abilities['lingering'][ability]['state']
+        if state > 0:
+            state -= 1
             self.poison_damage()
-        if self._poisoned_state == 0:
-            self.remove_debuff("poison")
+        if state == 0:
+            self.remove_debuff(ability)
 
     def poison_damage(self):
         max_damage = self._base_health * 0.15
         min_damage = self._base_health * 0.08
-        remaining_turns = 1 - (self._poisoned_state / Unit.poison_duration)
+        poison_path = Unit.abilities['lingering']['poison']
+        remaining_turns = 1 - (poison_path['state'] / poison_path['duration'])
         total_damage = min_damage + ((max_damage - min_damage) * remaining_turns)
         total_hp = self._health - total_damage
         if total_hp <= 0:
@@ -284,10 +277,12 @@ class Unit:
         self._attack = self._base_attack - (self._base_attack * 0.30)
 
     def check_is_weakened(self):
-        if self._weakened_state > 0:
-            self._weakened_state -= 1
-        if self._weakened_state == 0:
-            self.remove_debuff("weaken")
+        ability = "weaken"
+        state = Unit.abilities['lingering'][ability]['state']
+        if state > 0:
+            state -= 1
+        if state == 0:
+            self.remove_debuff(ability)
             self._attack = self._base_attack
 
 
@@ -298,10 +293,12 @@ class Unit:
         self._attack = self._base_attack + (self._base_attack * 0.30)
 
     def check_is_enraged(self):
-        if self._enraged_state > 0:
-            self._enraged_state -= 1
-        if self._enraged_state == 0:
-            self.remove_buff("enrage")
+        ability = "enrage"
+        state = Unit.abilities['lingering'][ability]['state']
+        if state > 0:
+            state -= 1
+        if state == 0:
+            self.remove_buff(ability)
             self._attack = self._base_attack
 
 
@@ -312,20 +309,20 @@ class Unit:
         self._defence = self._base_defence + (self._base_defence * 0.40)
 
     def check_is_hardened(self):
-        if self._hardened_state > 0:
-            self._hardened_state -= 1
-        if self._hardened_state == 0:
-            self.remove_buff("harden")
+        ability = "harden"
+        state = Unit.abilities['lingering'][ability]['state']
+        if state > 0:
+            state -= 1
+        if state == 0:
+            self.remove_buff(ability)
             self._defence = self._base_defence
 
 
 
-    def heal_self(self):
+    def healSelf(self):
         if "weaken" in self._active_debuffs or "poison" in self._active_debuffs:
             self.remove_debuff("weaken")
             self.remove_debuff("poison")
-            self._weakened_state = 0
-            self._poisoned_state = 0
         else:
             max_heal = self._base_health * 0.30
             min_heal = self._base_health * 0.01
@@ -357,11 +354,13 @@ class Unit:
         self.add_buff(ability)
 
     def check_is_regen(self):
-        if self._regen_state > 0:
-            self._regen_state -= 1
+        ability = "regen"
+        state = Unit.abilities['lingering'][ability]['state']
+        if state > 0:
+            state -= 1
             self.heal(self._base_health * 0.10)
-        elif self._regen_state == 0:
-            self.remove_buff("regen")
+        elif state == 0:
+            self.remove_buff(ability)
 
 
 
