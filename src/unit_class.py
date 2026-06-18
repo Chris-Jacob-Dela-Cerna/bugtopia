@@ -13,34 +13,41 @@ class Unit:
         "lingering": {
             "burn": {
                 "display": "BRN", 
-                "duration": 2
+                "duration": 2,
+                "state": 0
             },
             "enrage": {
                 "display": "RGE", 
-                "duration": 2
+                "duration": 2,
+                "state": 0
             },
             "harden": {
                 "display": "HRD", 
-                "duration": 2
+                "duration": 2,
+                "state": 0
             },
             "lastStand": {
                 "display": "LST", 
             },
             "pierce": {
                 "display": "PRC", 
-                "duration": 4
+                "duration": 4,
+                "state": 0
             },
             "poison": {
                 "display": "PSN", 
-                "duration": 3
+                "duration": 3,
+                "state": 0
             },
             "regen": {
                 "display": "RGN", 
-                "duration": 3
+                "duration": 3,
+                "state": 0
             },
             "weaken": {
                 "display": "WKN", 
-                "duration": 3
+                "duration": 3,
+                "state": 0
             }
         }
     }
@@ -119,6 +126,8 @@ class Unit:
     def health(self):
         return millify(self._health, precision=1)
 
+
+
     # Base and current defence
     @property
     def base_defence(self):
@@ -126,6 +135,8 @@ class Unit:
     @property
     def defence(self):
         return round(self._defence, 1)
+
+
 
     # Base and current attack damage
     @property
@@ -142,12 +153,6 @@ class Unit:
     def abilities(self):
         return sorted([ability for ability in self._abilities if ability and ability != "lastStand"])
 
-    @property
-    def blocked_abilities(self):
-        return self._blocked_abilities
-
-
-
 
 
     def can(self, ability):
@@ -159,13 +164,13 @@ class Unit:
 
     def show_buffs(self):
         statuses = []
-        for buff in self._active_buff:
+        for buff in self._active_buffs:
             statuses.append(Unit.abilities['lingering'][buff]['display'])
         return self.compile_statuses(statuses)
 
     def show_debuffs(self):
         statuses = []
-        for debuff in self._active_debuff:
+        for debuff in self._active_debuffs:
             statuses.append(Unit.abilities['lingering'][debuff]['display'])
         return self.compile_statuses(statuses)
 
@@ -224,8 +229,7 @@ class Unit:
 
     def burn(self):
         ability = "burn"
-        self._active_debuffs.append(ability)
-        self._burned_state = Unit.abilities['lingering'][ability]['duration']
+        self.add_debuff(ability)
 
     def check_is_burned(self):
         if self._burned_state > 0:
@@ -239,7 +243,6 @@ class Unit:
     def pierce(self):
         ability = "pierce"
         self.add_debuff(ability)
-        self._burned_state = Unit.abilities['lingering'][ability]['duration']
         self._defence = self._base_defence - (self._base_defence * 0.50)
 
     def check_is_pierced(self):
@@ -254,7 +257,6 @@ class Unit:
     def poison(self):
         ability = "poison"
         self.add_debuff(ability)
-        self._burned_state = Unit.abilities['lingering'][ability]['duration']
 
     def check_is_poisoned(self):
         if self._poisoned_state > 0:
@@ -279,7 +281,6 @@ class Unit:
     def weaken(self):
         ability = "weaken"
         self.add_debuff(ability)
-        self._burned_state = Unit.abilities['lingering'][ability]['duration']
         self._attack = self._base_attack - (self._base_attack * 0.30)
 
     def check_is_weakened(self):
@@ -294,7 +295,6 @@ class Unit:
     def enrage(self):
         ability = "enrage"
         self.add_buff(ability)
-        self._burned_state = Unit.abilities['lingering'][ability]['duration']
         self._attack = self._base_attack + (self._base_attack * 0.30)
 
     def check_is_enraged(self):
@@ -309,7 +309,6 @@ class Unit:
     def harden(self):
         ability = "harden"
         self.add_buff(ability)
-        self._burned_state = Unit.abilities['lingering'][ability]['duration']
         self._defence = self._base_defence + (self._base_defence * 0.40)
 
     def check_is_hardened(self):
@@ -356,7 +355,6 @@ class Unit:
     def regen(self):
         ability = "regen"
         self.add_buff(ability)
-        self._burned_state = Unit.abilities['lingering'][ability]['duration']
 
     def check_is_regen(self):
         if self._regen_state > 0:
@@ -370,15 +368,29 @@ class Unit:
     def add_buff(self, ability):
         if ability not in self._active_buffs:
             self._active_buffs.append(ability)
-    
+            self.add_state(ability)
+
     def add_debuff(self, ability):
         if ability not in self._active_debuffs:
             self._active_debuffs.append(ability)
+            self.add_state(ability)
+
+    def add_state(self, ability):
+        if "state" in Unit.abilities['lingering'][ability].keys():
+            Unit.abilities['lingering'][ability]['state'] = Unit.abilities['lingering'][ability]['duration']
+
+
 
     def remove_buff(self, ability):
         if ability in self._active_buffs:
             self._active_buffs.remove(ability)
-    
+            self.remove_state(ability)
+
     def remove_debuff(self, ability):
         if ability in self._active_debuffs:
             self._active_debuffs.remove(ability)
+            self.remove_state(ability)
+    
+    def remove_state(self, ability):
+        if "state" in Unit.abilities['lingering'][ability].keys():
+            Unit.abilities['lingering'][ability]['state'] = 0
