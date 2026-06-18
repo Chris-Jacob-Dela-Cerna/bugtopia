@@ -4,14 +4,46 @@ from millify import millify
 
 
 class Unit:
-    burn_duration = 2
-    pierce_duration = 4
-    poison_duration = 3
-    weaken_duration = 3
-
-    enrage_duration = 2
-    harden_duration = 2
-    regen_duration = 3
+    abilities = {
+        "instant": {
+            "attack": {},
+            "healSelf": {},
+            "leech": {},
+        },
+        "lingering": {
+            "burn": {
+                "display": "BRN", 
+                "duration": 2
+            },
+            "enrage": {
+                "display": "RGE", 
+                "duration": 2
+            },
+            "harden": {
+                "display": "HRD", 
+                "duration": 2
+            },
+            "lastStand": {
+                "display": "LST", 
+            },
+            "pierce": {
+                "display": "PRC", 
+                "duration": 4
+            },
+            "poison": {
+                "display": "PSN", 
+                "duration": 3
+            },
+            "regen": {
+                "display": "RGN", 
+                "duration": 3
+            },
+            "weaken": {
+                "display": "WKN", 
+                "duration": 3
+            }
+        }
+    }
 
 
     def __init__(self, units_data, unit_idx=0, trait_idx=0):
@@ -52,31 +84,20 @@ class Unit:
 
 
         self._abilities = abilities
-        self._active_abilities = []
+        self._active_buffs = []
+        self._active_debuffs = []
         self._status = {
             "full_hp": True,
             "alive": True
         }
-        self._blocked_abilities = ["healSelf"]
 
-
-        self._is_burned = False
         self._burned_state = 0
-        self._is_pierced = False
         self._pierced_state = 0
-        self._is_poisoned = False
         self._poisoned_state = 0
-        self._is_weakened = False
         self._weakened_state = 0
-
-        self._is_enraged = False
         self._enraged_state = 0
-        self._is_hardened = False
         self._hardened_state = 0
-        self._is_regen = False
         self._regen_state = 0
-
-        self._is_lastStand = False
 
 
 
@@ -127,36 +148,6 @@ class Unit:
 
 
 
-    # Debuff Status
-    @property
-    def is_burned(self):
-        return self._is_burned
-    @property
-    def is_pierced(self):
-        return self._is_pierced
-    @property
-    def is_poisoned(self):
-        return self._is_poisoned
-    @property
-    def is_weakened(self):
-        return self._is_weakened
-
-    # Buff Status
-    @property
-    def is_enraged(self):
-        return self._is_enraged
-    @property
-    def is_hardened(self):
-        return self._is_hardened
-    @property
-    def is_regen(self):
-        return self._is_regen 
-
-    # Triggered Status
-    @property
-    def is_lastStand(self):
-        return self._is_lastStand
-
 
 
     def can(self, ability):
@@ -165,29 +156,27 @@ class Unit:
         return False
 
 
-    def show_debuffs(self):
-        statuses = []
-        if self._is_burned:
-            statuses.append("BRN")
-        if self._is_pierced:
-            statuses.append("PRC")
-        if self._is_poisoned:
-            statuses.append("PSN")
-        if self._is_weakened:
-            statuses.append("WKN")
-        return self.compile_statuses(statuses)
 
     def show_buffs(self):
         statuses = []
-        if self._is_enraged:
-            statuses.append("RGE")
-        if self._is_hardened:
-            statuses.append("HRD")
-        if self._is_lastStand:
-            statuses.append("LSD")
-        if self._is_regen:
-            statuses.append("RGN")
+        for buff in self._active_buff:
+            statuses.append(Unit.abilities['lingering'][buff]['display'])
         return self.compile_statuses(statuses)
+
+    def show_debuffs(self):
+        statuses = []
+        for debuff in self._active_debuff:
+            statuses.append(Unit.abilities['lingering'][debuff]['display'])
+        return self.compile_statuses(statuses)
+
+    def compile_statuses(self, statuses):
+        status_message = ""
+        if statuses:
+            for status in statuses:
+                if status_message:
+                    status_message += "|"
+                status_message += status
+        return status_message
 
 
 
@@ -204,8 +193,6 @@ class Unit:
         self.check_is_poisoned()
         self.check_is_regen()
         self.check_is_weakened()
-
-
 
 
 
@@ -231,131 +218,115 @@ class Unit:
             residual_damage = 1
         self._health -= residual_damage
         self.check_is_alive()
-    
+
     def true_damage(self, attack):
         self._health -= attack
         self.check_is_alive()
 
 
+
     def burn(self):
-        self._is_burned = True
-        self._burned_state = Unit.burn_duration
-        self._blocked_abilities.append("burn")
+        ability = "burn"
+        self._active_debuffs.append(ability)
+        self._burned_state = Unit.abilities['lingering'][ability]['duration']
 
     def check_is_burned(self):
         if self._burned_state > 0:
             self._burned_state -= 1
             self.damage(self._base_health * 0.30)
         if self._burned_state == 0:
-            self._is_burned = False
-            ability = "burn"
-            if ability in self._blocked_abilities:
-                self._blocked_abilities.remove(ability)
+            self.remove_status("burn")
+
 
 
     def pierce(self):
-        self._is_pierced = True
-        self._pierced_state = Unit.pierce_duration
+        ability = "pierce"
+        self._active_debuffs.append(ability)
+        self._burned_state = Unit.abilities['lingering'][ability]['duration']
         self._defence = self._base_defence - (self._base_defence * 0.50)
-        self._blocked_abilities.append("pierce")
 
     def check_is_pierced(self):
         if self._pierced_state > 0:
             self._pierced_state -= 1
         if self._pierced_state == 0:
-            self._is_pierced = False
             self._defence = self._base_defence
-            ability = "pierce"
-            if ability in self._blocked_abilities:
-                self._blocked_abilities.remove(ability)
+            self.remove_status("pierce")
+
 
 
     def poison(self):
-        self._is_poisoned = True
-        self._poisoned_state = Unit.poison_duration
-        self._blocked_abilities.append("poison")
+        ability = "poison"
+        self._active_debuffs.append(ability)
+        self._burned_state = Unit.abilities['lingering'][ability]['duration']
 
     def check_is_poisoned(self):
         if self._poisoned_state > 0:
             self._poisoned_state -= 1
             self.poison_damage()
         if self._poisoned_state == 0:
-            self._is_poisoned = False
-            ability = "poison"
-            if ability in self._blocked_abilities:
-                self._blocked_abilities.remove(ability)
+            self.remove_status("poison")
 
     def poison_damage(self):
         max_damage = self._base_health * 0.15
         min_damage = self._base_health * 0.08
         remaining_turns = 1 - (self._poisoned_state / Unit.poison_duration)
-
         total_damage = min_damage + ((max_damage - min_damage) * remaining_turns)
         total_hp = self._health - total_damage
-
         if total_hp <= 0:
             self._health = 1
         else:
             self._health = total_hp
 
 
+
     def weaken(self):
-        self._is_weakened = True
-        self._weakened_state = Unit.weaken_duration
+        ability = "weaken"
+        self._active_debuffs.append(ability)
+        self._burned_state = Unit.abilities['lingering'][ability]['duration']
         self._attack = self._base_attack - (self._base_attack * 0.30)
-        self._blocked_abilities.append("weaken")
 
     def check_is_weakened(self):
         if self._weakened_state > 0:
             self._weakened_state -= 1
         if self._weakened_state == 0:
-            self._is_weakened = False
             self._attack = self._base_attack
-            ability = "weaken"
-            if ability in self._blocked_abilities:
-                self._blocked_abilities.remove(ability)
+            self.remove_status("weaken")
 
 
 
     def enrage(self):
-        self._is_enraged = True
-        self._enraged_state = Unit.enrage_duration
+        ability = "enrage"
+        self._active_buffs.append(ability)
+        self._burned_state = Unit.abilities['lingering'][ability]['duration']
         self._attack = self._base_attack + (self._base_attack * 0.30)
-        self._blocked_abilities.append("enrage")
 
     def check_is_enraged(self):
         if self._enraged_state > 0:
             self._enraged_state -= 1
         if self._enraged_state == 0:
-            self._is_enraged = False
             self._attack = self._base_attack
-            ability = "enrage"
-            if ability in self._blocked_abilities:
-                self._blocked_abilities.remove(ability)
+            self.remove_status("enrage")
 
 
     def harden(self):
-        self._is_hardened = True
-        self._hardened_state = Unit.harden_duration
+        ability = "harden"
+        self._active_buffs.append(ability)
+        self._burned_state = Unit.abilities['lingering'][ability]['duration']
         self._defence = self._base_defence + (self._base_defence * 0.40)
-        self._blocked_abilities.append("harden")
 
     def check_is_hardened(self):
         if self._hardened_state > 0:
             self._hardened_state -= 1
         if self._hardened_state == 0:
-            self._is_hardened = False
             self._defence = self._base_defence
-            ability = "harden"
-            if ability in self._blocked_abilities:
-                self._blocked_abilities.remove(ability)
+            self.remove_status("harden")
 
 
     def heal_self(self):
-        if self._is_weakened or self._is_poisoned:
-            self._is_weakened = False
+        if "weaken" in self._active_debuffs or "poison" in self._active_debuffs:
+            self.remove_status("weaken")
+            self.remove_status("poison")
             self._weakened_state = 0
-            self._is_poisoned = False
             self._poisoned_state = 0
         else:
             max_heal = self._base_health * 0.30
@@ -363,6 +334,7 @@ class Unit:
             missing_hp = 1 - (self._health / self._base_health)
             total_heal = min_heal + ((max_heal - min_heal) * missing_hp)
             self.heal(total_heal)
+
 
 
     def check_is_lastStand(self):
@@ -373,37 +345,33 @@ class Unit:
                 self._attack = self._base_attack
 
 
+
     def regen(self):
-        self._is_regen = True
-        self._regen_state = Unit.regen_duration
-        self._blocked_abilities.append("regen")
+        ability = "regen"
+        self._active_buffs.append(ability)
+        self._burned_state = Unit.abilities['lingering'][ability]['duration']
 
     def check_is_regen(self):
         if self._regen_state > 0:
             self._regen_state -= 1
             self.heal(self._base_health * 0.10)
-        if self._regen_state == 0:
-            self._is_regen = False
-            ability = "regen"
-            if ability in self._blocked_abilities:
-                self._blocked_abilities.remove(ability)
+        elif self._regen_state == 0:
+            self.remove_status("regen")
+
 
 
     def heal(self, total_heal):
         total_hp = self._health + total_heal
         if total_hp >= self._base_health:
             self._health = self._base_health
-            self._blocked_abilities.append("healSelf")
             self.check_is_full_hp()
         else:
             self._health = total_hp
 
 
-    def compile_statuses(self, statuses):
-        status_message = ""
-        if statuses:
-            for status in statuses:
-                if status_message:
-                    status_message += "|"
-                status_message += status
-        return status_message
+
+    def remove_status(self, ability):
+        if ability in self._active_buffs:
+            self._active_buffs.remove(ability)
+        elif ability in self._active_debuffs:
+            self._active_debuffs.remove(ability)
