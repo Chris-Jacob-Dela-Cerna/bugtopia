@@ -336,7 +336,7 @@ class Unit:
     def pierce(self):
         self._is_pierced = True
         self._pierced_state = Unit.pierce_duration
-        self._defence -= self._base_defence * 0.50
+        self._defence = self._base_defence - (self._base_defence * 0.50)
         self._blocked_abilities.append("pierce")
 
     def check_is_pierced(self):
@@ -382,7 +382,7 @@ class Unit:
     def weaken(self):
         self._is_weakened = True
         self._weakened_state = Unit.weaken_duration
-        self._attack -= self._base_attack * 0.30
+        self._attack = self._base_attack - (self._base_attack * 0.30)
         self._blocked_abilities.append("weaken")
 
     def check_is_weakened(self):
@@ -400,7 +400,7 @@ class Unit:
     def enrage(self):
         self._is_enraged = True
         self._enraged_state = Unit.enrage_duration
-        self._attack += self._base_attack * 0.30
+        self._attack = self._base_attack + (self._base_attack * 0.30)
         self._blocked_abilities.append("enrage")
 
     def check_is_enraged(self):
@@ -417,7 +417,7 @@ class Unit:
     def harden(self):
         self._is_hardened = True
         self._hardened_state = Unit.harden_duration
-        self._defence += self._base_defence * 0.40
+        self._defence = self._base_defence + (self._base_defence * 0.40)
         self._blocked_abilities.append("harden")
 
     def check_is_hardened(self):
@@ -447,7 +447,7 @@ class Unit:
 
     def check_is_lastStand(self):
         if self.can_lastStand:
-            if self._health < self._base_health * 0.25:
+            if self._health < self._base_health * 0.30:
                 self._attack = self._base_attack + (self._base_attack * 0.50)
             else:
                 self._attack = self._base_attack
@@ -473,7 +473,7 @@ class Unit:
         total_hp = self._health + total_heal
         if total_hp >= self._base_health:
             self._health = self._base_health
-            self._blocked_abilities.append("selfHeal")
+            self._blocked_abilities.append("healSelf")
             self.check_is_full_hp()
         else:
             self._health = total_hp

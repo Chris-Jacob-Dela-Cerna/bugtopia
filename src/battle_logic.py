@@ -12,25 +12,39 @@ def battle_logic(deck_1, deck_2):
     units_data = aj.load_json_data("units_default.json")
     player_1 = convert_player_deck(deck_1, units_data)
     player_2 = convert_player_deck(deck_2, units_data)
-
     turn = 1
     while True:
         uh.display(pr.prompt("Player 1"))
         input("                ")
         player_battle_turn(player_1, player_2, turn, 1)
 
-        players = player_1 + player_2
-        for unit in players:
-            unit.check_general_status()
+        for x, unit in enumerate(player_1):
+            if unit:
+                unit.check_general_status()
+                if not unit.is_alive:
+                    player_1[x] = None
+        for x, unit in enumerate(player_2):
+            if unit:
+                unit.check_general_status()
+                if not unit.is_alive:
+                    player_2[x] = None
 
         uh.display(pr.prompt("Player 2"))
         input("                ")
         player_battle_turn(player_2, player_1, turn, 2)
 
-        for unit in players:
-            unit.check_general_status()
-            unit.check_applied_status()
-
+        for x, unit in enumerate(player_1):
+            if unit:
+                unit.check_general_status()
+                unit.check_applied_status()
+                if not unit.is_alive:
+                    player_1[x] = None
+        for x, unit in enumerate(player_2):
+            if unit:
+                unit.check_general_status()
+                unit.check_applied_status()
+                if not unit.is_alive:
+                    player_2[x] = None
         turn += 1
 
 
@@ -79,10 +93,11 @@ def player_battle_turn(current_player, enemy_player, turn, player_turn):
             options = {}
             overlap = 0
             for x, unit in enumerate(enemy_player):
-                if selected_ability not in unit.blocked_abilities:
-                    options[letters[x - overlap]] = unit
-                else:
-                    overlap += 1
+                if unit:
+                    if selected_ability not in unit.blocked_abilities:
+                        options[letters[x - overlap]] = unit
+                    else:
+                        overlap += 1
             if chosen in options.keys():
                 selected_target = options[chosen]
                 if check_inflicting_ability(selected_unit, selected_ability, selected_target):
@@ -98,7 +113,7 @@ def get_control_panel_data(current_player, enemy_player, panel_mode=0, selected_
     letters = "abcd"
     if panel_mode == 0:
         header = "Select a unit:"
-        options = [f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)" for x, unit in enumerate(current_player)]
+        options = [f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)" for x, unit in enumerate(current_player) if unit]
         footer = "e. Skip"
     elif panel_mode == 1:
         header = "Choose an ability:"
@@ -115,10 +130,11 @@ def get_control_panel_data(current_player, enemy_player, panel_mode=0, selected_
         options = []
         overlap = 0
         for x, unit in enumerate(enemy_player):
-            if selected_ability not in unit.blocked_abilities:
-                options.append(f"{letters[x - overlap]}. {unit.trait} {unit.unit} ({unit.health} HP)")
-            else:
-                overlap += 1
+            if unit:
+                if selected_ability not in unit.blocked_abilities:
+                    options.append(f"{letters[x - overlap]}. {unit.trait} {unit.unit} ({unit.health} HP)")
+                else:
+                    overlap += 1
         footer = "e. Back"
     else:
         raise ValueError("Invalid panel mode.")
@@ -144,8 +160,8 @@ def check_inflicting_ability(selected_unit, ability, selected_target):
         "attack": lambda: selected_target.damage(selected_unit.attack),
         "burn": lambda: selected_target.burn(),
         "leech": lambda: (
-            selected_unit.heal(selected_target._health * 0.15),
-            selected_target.true_damage(selected_target._health * 0.15),
+            selected_unit.heal(selected_target._health * 0.05),
+            selected_target.true_damage(selected_target._health * 0.10),
         ),
         "pierce": lambda: selected_target.pierce(),
         "poison": lambda: selected_target.poison(),
