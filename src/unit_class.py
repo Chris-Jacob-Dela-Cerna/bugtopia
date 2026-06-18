@@ -51,7 +51,9 @@ class Unit:
             }
         }
     }
-
+    passives = [
+        "lastStand"
+    ]
 
     def __init__(self, units_data, unit_idx=0, trait_idx=0):
         unit = units_data[unit_idx]
@@ -90,6 +92,7 @@ class Unit:
 
 
         self._abilities = abilities
+        self._active_abilities = [ability for ability in abilities if ability not in Unit.passives]
         self._active_buffs = []
         self._active_debuffs = []
         self._status = {
@@ -137,7 +140,11 @@ class Unit:
 
     @property
     def abilities(self):
-        return sorted([ability for ability in self._abilities if ability and ability != "lastStand"])
+        return sorted([ability for ability in self._abilities])
+
+    @property
+    def active_abilities(self):
+        return sorted([ability for ability in self._active_abilities])
 
 
 
@@ -172,26 +179,26 @@ class Unit:
 
 
     def check_general_status(self):
-        self.check_is_alive()
-        self.check_is_full_hp()
-        self.check_is_lastStand()
+        self.check_if_alive()
+        self.check_if_full_hp()
+        self.check_if_lastStand()
 
     def check_applied_status(self):
-        self.check_is_burned()
-        self.check_is_enraged()
-        self.check_is_hardened()
-        self.check_is_pierced()
-        self.check_is_poisoned()
-        self.check_is_regen()
-        self.check_is_weakened()
+        self.check_if_burned()
+        self.check_if_enraged()
+        self.check_if_hardened()
+        self.check_if_pierced()
+        self.check_if_poisoned()
+        self.check_if_regen()
+        self.check_if_weakened()
 
 
 
-    def check_is_alive(self):
+    def check_if_alive(self):
         if self._health <= 0:
             self._status['alive'] = False
 
-    def check_is_full_hp(self):
+    def check_if_full_hp(self):
         if self._health == self._base_health:
             self._status['full_hp'] = True
         else:
@@ -205,11 +212,11 @@ class Unit:
         if damage <= 0:
             damage = 1
         self._health -= damage
-        self.check_is_alive()
+        self.check_if_alive()
 
     def true_damage(self, attack):
         self._health -= attack
-        self.check_is_alive()
+        self.check_if_alive()
 
 
 
@@ -217,7 +224,7 @@ class Unit:
         ability = "burn"
         self.add_debuff(ability)
 
-    def check_is_burned(self):
+    def check_if_burned(self):
         ability = "burn"
         state = Unit.abilities['lingering'][ability]['state']
         if state > 0:
@@ -233,7 +240,7 @@ class Unit:
         self.add_debuff(ability)
         self._defence = self._base_defence - (self._base_defence * 0.50)
 
-    def check_is_pierced(self):
+    def check_if_pierced(self):
         ability = "pierce"
         state = Unit.abilities['lingering'][ability]['state']
         if state > 0:
@@ -248,7 +255,7 @@ class Unit:
         ability = "poison"
         self.add_debuff(ability)
 
-    def check_is_poisoned(self):
+    def check_if_poisoned(self):
         ability = "poison"
         state = Unit.abilities['lingering'][ability]['state']
         if state > 0:
@@ -260,8 +267,8 @@ class Unit:
     def poison_damage(self):
         max_damage = self._base_health * 0.15
         min_damage = self._base_health * 0.08
-        poison_path = Unit.abilities['lingering']['poison']
-        remaining_turns = 1 - (poison_path['state'] / poison_path['duration'])
+        poison = Unit.abilities['lingering']['poison']
+        remaining_turns = 1 - (poison['state'] / poison['duration'])
         total_damage = min_damage + ((max_damage - min_damage) * remaining_turns)
         total_hp = self._health - total_damage
         if total_hp <= 0:
@@ -276,7 +283,7 @@ class Unit:
         self.add_debuff(ability)
         self._attack = self._base_attack - (self._base_attack * 0.30)
 
-    def check_is_weakened(self):
+    def check_if_weakened(self):
         ability = "weaken"
         state = Unit.abilities['lingering'][ability]['state']
         if state > 0:
@@ -292,7 +299,7 @@ class Unit:
         self.add_buff(ability)
         self._attack = self._base_attack + (self._base_attack * 0.30)
 
-    def check_is_enraged(self):
+    def check_if_enraged(self):
         ability = "enrage"
         state = Unit.abilities['lingering'][ability]['state']
         if state > 0:
@@ -308,7 +315,7 @@ class Unit:
         self.add_buff(ability)
         self._defence = self._base_defence + (self._base_defence * 0.40)
 
-    def check_is_hardened(self):
+    def check_if_hardened(self):
         ability = "harden"
         state = Unit.abilities['lingering'][ability]['state']
         if state > 0:
@@ -334,13 +341,13 @@ class Unit:
         total_hp = self._health + total_heal
         if total_hp >= self._base_health:
             self._health = self._base_health
-            self.check_is_full_hp()
+            self.check_if_full_hp()
         else:
             self._health = total_hp
 
 
 
-    def check_is_lastStand(self):
+    def check_if_lastStand(self):
         if self.can("lastStand"):
             if self._health < self._base_health * 0.30:
                 self._attack = self._base_attack + (self._base_attack * 0.50)
@@ -353,7 +360,7 @@ class Unit:
         ability = "regen"
         self.add_buff(ability)
 
-    def check_is_regen(self):
+    def check_if_regen(self):
         ability = "regen"
         state = Unit.abilities['lingering'][ability]['state']
         if state > 0:
