@@ -253,6 +253,16 @@ class Unit:
             self.remove_multiplier_effect("lastStand")
 
 
+    
+    def gate_abilities(self):
+        if self._vital_status['full_hp']:
+            self.add_active_ability("healSelf")
+            self.add_active_ability("leech")
+        else:
+            self.remove_active_ability("healSelf")
+            self.remove_active_ability("leech")
+
+
 
     def damage(self, attack):
         damage = attack - self._defence
@@ -274,6 +284,8 @@ class Unit:
             self._health = 1
         else:
             self._health = total_hp
+
+
 
     def healSelf(self):
         if "weaken" in self._active_debuffs or "poison" in self._active_debuffs:
