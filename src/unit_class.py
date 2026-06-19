@@ -214,27 +214,17 @@ class Unit:
 
     def check_effects(self):
         for effect in self.active_effects:
-            self.apply_effect(effect)
+            self.apply_ticking_effect(effect)
             self.tick_effect(effect)
 
-    def apply_effect(self, effect):
+    def apply_ticking_effect(self, effect):
         match effect:
             case "burn":
                 self.damage(self._base_health * 0.30)
-            case "enrage":
-                Unit.multipliers[effect]['attack'] = 0.30
-            case "harden":
-                Unit.multipliers[effect]['defence'] = 0.40
-            case "lastStand":
-                Unit.multipliers[effect]['attack'] = 0.50
-            case "pierce":
-                Unit.multipliers[effect]['defence'] = -0.50
             case "poison":
                 self.poison_damage()
             case "regen":
                 self.heal(self._base_health * 0.10)
-            case "weaken":
-                Unit.multipliers[effect]['attack'] = -0.30
 
     def tick_effect(self, ability):
         ticks = Unit.ability_data['active']['ticking'][ability]['ticks']
@@ -246,17 +236,6 @@ class Unit:
             elif ability in Unit.statuses['debuffs']:
                 self.remove_debuff(ability)
     
-    def remove_effect(self, effect):
-        match effect:
-            case "enrage":
-                Unit.multipliers[effect]['attack'] = 0
-            case "harden":
-                Unit.multipliers[effect]['defence'] = 0
-            case "pierce":
-                Unit.multipliers[effect]['defence'] = 0
-            case "weaken":
-                Unit.multipliers[effect]['attack'] = 0
-
 
 
     def check_passives(self):
@@ -274,23 +253,13 @@ class Unit:
         self._health -= attack
 
 
-
-    def burn(self):
-        ability = "burn"
-        self.add_debuff(ability)
-
-
-
-    def pierce(self):
-        ability = "pierce"
-        self.add_debuff(ability)
-        Unit.multipliers[ability]['defence'] = -0.50
+    def apply(self, ability):
+        if ability in Unit.statuses['buffs']:
+            self.add_buff(ability)
+        elif ability in Unit.statuses['debuffs']:
+            self.add_debuff(ability)
 
 
-
-    def poison(self):
-        ability = "poison"
-        self.add_debuff(ability)
 
     def poison_damage(self):
         max_damage = self._base_health * 0.15
@@ -306,27 +275,6 @@ class Unit:
 
 
 
-    def weaken(self):
-        ability = "weaken"
-        self.add_debuff(ability)
-        Unit.multipliers[ability]['attack'] = -0.30
-
-
-
-    def enrage(self):
-        ability = "enrage"
-        self.add_buff(ability)
-        Unit.multipliers[ability]['attack'] = 0.30
-
-
-
-    def harden(self):
-        ability = "harden"
-        self.add_buff(ability)
-        Unit.multipliers[ability]['defence'] = 0.40
-
-
-
     def healSelf(self):
         if "weaken" in self._active_debuffs or "poison" in self._active_debuffs:
             self.remove_debuff("weaken")
@@ -337,7 +285,7 @@ class Unit:
             missing_hp = 1 - (self._health / self._base_health)
             total_heal = min_heal + ((max_heal - min_heal) * missing_hp)
             self.heal(total_heal)
-    
+
     def heal(self, total_heal):
         total_hp = self._health + total_heal
         if total_hp >= self._base_health:
@@ -357,26 +305,35 @@ class Unit:
 
 
 
-    def regen(self):
-        ability = "regen"
-        self.add_buff(ability)
-
-
-
     def add_buff(self, ability):
         if ability not in self._active_buffs:
             self._active_buffs.append(ability)
             self.add_ticks(ability)
+            self.add_multiplier_effect(ability)
 
     def add_debuff(self, ability):
         if ability not in self._active_debuffs:
             self._active_debuffs.append(ability)
             self.add_ticks(ability)
+            self.add_multiplier_effect(ability)
 
     def add_ticks(self, ability):
         ticking = Unit.ability_data['active']['ticking']
         if ability in ticking:
             ticking[ability]['ticks'] = ticking[ability]['duration']
+
+    def add_multiplier_effect(self, effect):
+        match effect:
+            case "enrage":
+                Unit.multipliers[effect]['attack'] = 0.30
+            case "harden":
+                Unit.multipliers[effect]['defence'] = 0.40
+            case "lastStand":
+                Unit.multipliers[effect]['attack'] = 0.50
+            case "pierce":
+                Unit.multipliers[effect]['defence'] = -0.50
+            case "weaken":
+                Unit.multipliers[effect]['attack'] = -0.30
 
 
 
@@ -384,17 +341,31 @@ class Unit:
         if ability in self._active_buffs:
             self._active_buffs.remove(ability)
             self.remove_ticks(ability)
+            self.remove_multiplier_effect(ability)
 
     def remove_debuff(self, ability):
         if ability in self._active_debuffs:
             self._active_debuffs.remove(ability)
             self.remove_ticks(ability)
-            self.remove_effect(ability)
+            self.remove_multiplier_effect(ability)
     
     def remove_ticks(self, ability):
         ticking = Unit.ability_data['active']['ticking']
         if ability in ticking:
             ticking[ability]['ticks'] = 0
+
+    def remove_multiplier_effect(self, effect):
+        match effect:
+            case "enrage":
+                Unit.multipliers[effect]['attack'] = 0
+            case "harden":
+                Unit.multipliers[effect]['defence'] = 0
+            case "pierce":
+                Unit.multipliers[effect]['defence'] = 0
+            case "weaken":
+                Unit.multipliers[effect]['attack'] = 0
+            case "weaken":
+                Unit.multipliers[effect]['attack'] = 0
 
 
 
