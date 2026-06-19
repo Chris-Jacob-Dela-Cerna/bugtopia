@@ -1,5 +1,6 @@
 
 
+from src import battle_panel_logic as bpl
 from src import get_unit_idx as gu
 from src import unit_state_logic as usl
 from src import unit_class as uc
@@ -14,137 +15,77 @@ def battle_logic(deck_1, deck_2):
     player_1 = convert_player_deck(deck_1, units_data)
     player_2 = convert_player_deck(deck_2, units_data)
     players = [player_1, player_2]
-    turn = 0
+    turns = 0
     while True:
-        turn += 1
+        turns += 1
         usl.run_per_turn_checks(players)
         usl.run_per_turn_checks(players)
-
-        uh.display(pr.prompt("Player 1"))
-        input("                ")
-        player_turn_logic(player_1, player_2, turn, 1)
+        player_turn_logic(player_1, player_2, turns)
 
         usl.run_per_instance_checks(players)
         usl.run_per_instance_checks(players)
-
-        uh.display(pr.prompt("Player 2"))
-        input("                ")
-        player_turn_logic(player_2, player_1, turn, 2)
+        player_turn_logic(player_2, player_1, turns)
 
 
-def player_turn_logic(current_player, enemy_player, turn, player_turn):
+def player_turn_logic(attacker, defender, turns):
     panel_mode = 0
-    selected_unit = None
-    selected_ability = None
-    selected_target = None
+    unit = None
+    ability = None
+    target = None
     letters = "abcd"
 
     while True:
-        control_panel_data = get_control_panel_data(current_player, enemy_player, panel_mode, selected_unit, selected_ability, selected_target)
-        battle_ui = bs.convert_battle_ui(current_player, enemy_player, control_panel_data, turn, player_turn)
+        control_panel_data = bpl.get_control_panel_data(attacker, defender, panel_mode, unit, ability)
+        battle_ui = bs.convert_battle_ui(attacker, defender, control_panel_data, turns)
         uh.display(battle_ui)
         chosen = input("    >>> ").strip().lower()
 
         if panel_mode == 0:
-            options = {letters[x]: unit for x, unit in enumerate(current_player) if unit}
+            options = {letters[x]: unit for x, unit in enumerate(attacker) if unit}
+
             if chosen in options.keys():
-                selected_unit = options[chosen]
+                unit = options[chosen]
                 panel_mode = 1
                 continue
+
             elif chosen == "e":
                 break
 
+
+
         elif panel_mode == 1:
-            options = {letters[x]: ability for x, ability in enumerate(selected_unit.abilities) if ability and ability not in selected_unit.blocked_abilities}
+            options = {letters[x]: ability for x, ability in enumerate(unit.abilities) if ability and ability not in unit.blocked_abilities}
             if chosen in options.keys():
-                selected_ability = options[chosen]
-                if usl.check_self_ability(selected_unit, selected_ability):
+                ability = options[chosen]
+                if usl.check_self_ability(unit, ability):
                     panel_mode = 0
                     break
                 panel_mode = 2
                 continue
+
             elif chosen == "e":
                 panel_mode = 0
                 continue
 
+
+
         elif panel_mode == 2:
             options = {}
-            for x, unit in enumerate(enemy_player):
+            for x, unit in enumerate(defender):
                 if unit:
-                    if selected_ability not in unit.blocked_abilities:
+                    if ability not in unit.blocked_abilities:
                         options[letters[x]] = unit
             if chosen in options.keys():
-                selected_target = options[chosen]
-                if usl.check_inflicting_ability(selected_unit, selected_ability, selected_target):
+                target = options[chosen]
+                if usl.check_inflicting_ability(unit, ability, target):
                     panel_mode = 0
                     break
                 continue
             elif chosen == "e":
                 panel_mode = 1
                 continue
-
-
-def get_control_panel_data(current_player, enemy_player, panel_mode=0, selected_unit=None, selected_ability=None, selected_target=None):
-    letters = "abcd"
-    if panel_mode == 0:
-        header = "Select a unit:"
-        options = [f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)" for x, unit in enumerate(current_player) if unit]
-        footer = "e. Skip"
-    elif panel_mode == 1:
-        header = "Choose an ability:"
-        options = [f"{letters[x]}. {ability}" for x, ability in enumerate(selected_unit.abilities) if ability not in selected_unit.blocked_abilities]
-        footer = "e. Back"
-    elif panel_mode == 2:
-        header = "Inflict on:"
-        options = []
-        for x, unit in enumerate(enemy_player):
-            if unit:
-                if selected_ability not in unit.blocked_abilities:
-                    options.append(f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)")
-        footer = "e. Back"
-    else:
-        raise ValueError("Invalid panel mode.")
-    return contruct_panel(header, options, footer)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def convert_player_deck(deck, units_data):
     deck_units_idx = [gu.get_unit_idx(unit_slot, units_data) for unit_slot in deck]
     return [uc.Unit(units_data, *unit_idx) for unit_idx in deck_units_idx]
-
-
-def contruct_panel(header, options, footer):
-    if len(options) < 4:
-        options.extend(["" for _ in range(4 - len(options))])
-    options.append(footer)
-    return {
-        "header": header,
-        "options": options
-    }
