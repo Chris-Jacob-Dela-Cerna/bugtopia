@@ -5,7 +5,6 @@ from src import get_unit_idx as gu
 from src import unit_state_logic as usl
 from src import unit_class as uc
 from ui import battle_screen as bs
-from ui import prompt as pr
 from utils import access_json as aj
 from utils import ui_helpers as uh
 
@@ -28,12 +27,10 @@ def battle_logic(deck_1, deck_2):
 
 
 def player_turn_logic(attacker, defender, turns):
-    global panel_mode
     panel_mode = 0
     selected_unit = None
     selected_ability = None
     selected_target = None
-    letters = "abcd"
 
     while True:
         if panel_mode == 0:
@@ -48,9 +45,10 @@ def player_turn_logic(attacker, defender, turns):
 
         elif panel_mode == 1:
             panel, options = bpl.ability_panel(selected_unit)
+            chosen = load_battle_ui(attacker, defender, panel, turns)
             if chosen in options:
                 selected_ability = options[chosen]
-                if usl.check_self_ability(unit, selected_ability):
+                if usl.check_self_ability(selected_unit, selected_ability):
                     panel_mode = 0
                     break
                 else:
@@ -61,17 +59,15 @@ def player_turn_logic(attacker, defender, turns):
                 continue
 
         elif panel_mode == 2:
-            options = {}
-            for x, unit in enumerate(defender):
-                if unit:
-                    if selected_ability not in unit.blocked_abilities:
-                        options[letters[x]] = unit
-            if chosen in options.keys():
-                target = options[chosen]
-                if usl.check_inflicting_ability(unit, selected_ability, target):
+            panel, options = bpl.attack_panel(defender, selected_ability)
+            chosen = load_battle_ui(attacker, defender, panel, turns)
+            if chosen in options:
+                selected_target = options[chosen]
+                if usl.check_inflicting_ability(selected_unit, selected_ability, selected_target):
                     panel_mode = 0
                     break
-                continue
+                else:
+                    continue
             elif chosen == "e":
                 panel_mode = 1
                 continue

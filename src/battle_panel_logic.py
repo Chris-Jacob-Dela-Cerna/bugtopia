@@ -1,23 +1,5 @@
 
 
-def get_control_panel_data(attacker, defender, panel_mode=0, unit=None, ability=None):
-    letters = "abcd"
-
-
-
-    if panel_mode == 2:
-        header = "Inflict on:"
-        options = []
-        for x, unit in enumerate(defender):
-            if unit:
-                if ability not in unit.blocked_abilities:
-                    options.append(f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)")
-        footer = "e. Back"
-    else:
-        raise ValueError("Invalid panel mode.")
-    return contruct_panel(header, options, footer)
-
-
 def selection_panel(attacker):
     letters =    "abcd"
     header =     "Select a unit:"
@@ -44,6 +26,22 @@ def ability_panel(selected_unit):
         if ability:
             options[letters[x]] = ability
             ui_options.append(f"{letters[x]}. {ability}")
+    panel = contruct_panel(header, ui_options, footer)
+    return panel, options
+
+
+def attack_panel(defender, selected_ability):
+    letters =    "abcd"
+    header =     "Inflict on:"
+    options =    {}
+    ui_options = []
+    footer =     "e. Skip"
+
+    for x, unit in enumerate(defender):
+        if unit:
+            if selected_ability in unit.active_effects:
+                options[letters[x]] = unit
+                ui_options.append(f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)")
     panel = contruct_panel(header, ui_options, footer)
     return panel, options
 
