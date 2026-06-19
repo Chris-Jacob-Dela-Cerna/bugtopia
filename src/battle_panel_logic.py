@@ -35,11 +35,11 @@ def attack_panel(defender, selected_ability):
     header =     "Inflict on:"
     options =    {}
     ui_options = []
-    footer =     "e. Skip"
+    footer =     "e. Back"
 
     for x, unit in enumerate(defender):
         if unit:
-            if selected_ability in unit.active_effects:
+            if selected_ability not in unit.active_effects:
                 options[letters[x]] = unit
                 ui_options.append(f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)")
     panel = contruct_panel(header, ui_options, footer)
