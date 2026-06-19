@@ -25,6 +25,17 @@ class Unit:
             "lastStand":    {"display": "LST"},
         }
     }
+    multipliers = {
+        "burn":       {"health": 0, "defence": 0, "attack": 0},
+        "enrage":     {"health": 0, "defence": 0, "attack": 0},
+        "harden":     {"health": 0, "defence": 0, "attack": 0},
+        "lastStand":  {"health": 0, "defence": 0, "attack": 0},
+        "pierce":     {"health": 0, "defence": 0, "attack": 0},
+        "poison":     {"health": 0, "defence": 0, "attack": 0},
+        "regen":      {"health": 0, "defence": 0, "attack": 0},
+        "weaken":     {"health": 0, "defence": 0, "attack": 0}
+    }
+
     def __init__(self, units_data, unit_idx=0, trait_idx=0):
         unit = units_data[unit_idx]
         unit_name = unit['name']
@@ -64,7 +75,7 @@ class Unit:
         self._abilities = abilities
 
         actives = Unit.ability_data['active']
-        self._active_abilities = [ability for ability in abilities if ability in actives['instant'] or ability in actives['lingering']]
+        self._active_abilities = [ability for ability in abilities if ability in actives['instant'] or ability in actives['ticking']]
         self._passive_abilities = [ability for ability in abilities if ability in Unit.ability_data['passive']]
 
         self._active_buffs = []
@@ -99,7 +110,12 @@ class Unit:
         return self._base_defence
     @property
     def defence(self):
-        return round(self._defence, 1)
+        base_multiplier = 1.00
+        for ability in Unit.multipliers.keys():
+            if ability['defence']:
+                base_multiplier += ability['defence']
+        defence = self._defence * base_multiplier
+        return round(defence, 1)
 
 
 
@@ -108,7 +124,12 @@ class Unit:
         return self._base_attack
     @property
     def attack(self):
-        return round(self._attack, 1)
+        base_multiplier = 1.00
+        for ability in Unit.multipliers.keys():
+            if ability['attack']:
+                base_multiplier += ability['attack']
+        attack = self._attack * base_multiplier
+        return round(attack, 1)
 
 
 
@@ -207,11 +228,9 @@ class Unit:
         if damage <= 0:
             damage = 1
         self._health -= damage
-        self.check_if_alive()
 
     def true_damage(self, attack):
         self._health -= attack
-        self.check_if_alive()
 
 
 
@@ -221,7 +240,7 @@ class Unit:
 
     def check_if_burned(self):
         ability = "burn"
-        state = Unit.ability_data['ticking'][ability]['state']
+        state = Unit.ability_data['active']['ticking'][ability]['state']
         if state > 0:
             state -= 1
             self.damage(self._base_health * 0.30)
@@ -233,16 +252,16 @@ class Unit:
     def pierce(self):
         ability = "pierce"
         self.add_debuff(ability)
-        self._defence = self._base_defence - (self._base_defence * 0.50)
+        Unit.multipliers[ability]['defence'] = -0.50
 
     def check_if_pierced(self):
         ability = "pierce"
-        state = Unit.ability_data['ticking'][ability]['state']
+        state = Unit.ability_data['active']['ticking'][ability]['state']
         if state > 0:
             state -= 1
         elif state == 0:
             self.remove_debuff(ability)
-            self._defence = self._base_defence
+            Unit.multipliers[ability]['defence'] = 0
 
 
 
@@ -252,7 +271,7 @@ class Unit:
 
     def check_if_poisoned(self):
         ability = "poison"
-        state = Unit.ability_data['ticking'][ability]['state']
+        state = Unit.ability_data['active']['ticking'][ability]['state']
         if state > 0:
             state -= 1
             self.poison_damage()
@@ -262,7 +281,7 @@ class Unit:
     def poison_damage(self):
         max_damage = self._base_health * 0.15
         min_damage = self._base_health * 0.08
-        poison = Unit.ability_data['ticking']['poison']
+        poison = Unit.ability_data['active']['poison']
         remaining_turns = 1 - (poison['state'] / poison['duration'])
         total_damage = min_damage + ((max_damage - min_damage) * remaining_turns)
         total_hp = self._health - total_damage
@@ -276,48 +295,48 @@ class Unit:
     def weaken(self):
         ability = "weaken"
         self.add_debuff(ability)
-        self._attack = self._base_attack - (self._base_attack * 0.30)
+        Unit.multipliers[ability]['attack'] = -0.30
 
     def check_if_weakened(self):
         ability = "weaken"
-        state = Unit.ability_data['ticking'][ability]['state']
+        state = Unit.ability_data['active']['ticking'][ability]['state']
         if state > 0:
             state -= 1
         elif state == 0:
             self.remove_debuff(ability)
-            self._attack = self._base_attack
+            Unit.multipliers[ability]['attack'] = 0
 
 
 
     def enrage(self):
         ability = "enrage"
         self.add_buff(ability)
-        self._attack = self._base_attack + (self._base_attack * 0.30)
+        Unit.multipliers[ability]['attack'] = 0.30
 
     def check_if_enraged(self):
         ability = "enrage"
-        state = Unit.ability_data['ticking'][ability]['state']
+        state = Unit.ability_data['active']['ticking'][ability]['state']
         if state > 0:
             state -= 1
         elif state == 0:
             self.remove_buff(ability)
-            self._attack = self._base_attack
+            Unit.multipliers[ability]['attack'] = 0
 
 
 
     def harden(self):
         ability = "harden"
         self.add_buff(ability)
-        self._defence = self._base_defence + (self._base_defence * 0.40)
+        Unit.multipliers[ability]['defence'] = 0.40
 
     def check_if_hardened(self):
         ability = "harden"
-        state = Unit.ability_data['ticking'][ability]['state']
+        state = Unit.ability_data['active']['ticking'][ability]['state']
         if state > 0:
             state -= 1
         elif state == 0:
             self.remove_buff(ability)
-            self._defence = self._base_defence
+            Unit.multipliers[ability]['defence'] = 0
 
 
 
@@ -357,7 +376,7 @@ class Unit:
 
     def check_if_regen(self):
         ability = "regen"
-        state = Unit.ability_data['ticking'][ability]['state']
+        state = Unit.ability_data['active']['ticking'][ability]['state']
         if state > 0:
             state -= 1
             self.heal(self._base_health * 0.10)
@@ -377,8 +396,9 @@ class Unit:
             self.add_state(ability)
 
     def add_state(self, ability):
-        if "state" in Unit.ability_data['ticking'][ability]:
-            Unit.ability_data['ticking'][ability]['state'] = Unit.ability_data['ticking'][ability]['duration']
+        ticking = Unit.ability_data['active']['ticking']
+        if ability in ticking:
+            ticking[ability]['state'] = ticking[ability]['duration']
 
 
 
@@ -393,8 +413,9 @@ class Unit:
             self.remove_state(ability)
     
     def remove_state(self, ability):
-        if "state" in Unit.ability_data['ticking'][ability]:
-            Unit.ability_data['ticking'][ability]['state'] = 0
+        ticking = Unit.ability_data['active']['ticking']
+        if ability in ticking:
+            ticking[ability]['state'] = 0
 
 
 
