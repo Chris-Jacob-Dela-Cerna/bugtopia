@@ -57,45 +57,46 @@ class Unit:
 
     def __init__(self, units_data, unit_idx=0, trait_idx=0):
         unit = units_data[unit_idx]
-        unit_name = unit['name']
         trait = unit['traits'][trait_idx]
-        trait_name = trait['name']
-        health = trait['stats']['health']
-        defence = trait['stats']['defence']
-        attack = trait['stats']['attack']
-        abilities = trait['abilities']
 
 
+        unit_name = unit['name']
         if len(unit_name) < 1 or len(unit_name) > 13:
             raise ValueError("Invalid unit name length. Range: 1-13")
         self._unit = unit_name
 
+        trait_name = trait['name']
         if len(trait_name) < 1 or len(trait_name) > 13:
             raise ValueError("Invalid trait name length. Range: 1-13")
         self._trait = trait_name
 
 
+        health = trait['stats']['health']
         if health < 1 or health > 9999999:
             raise ValueError("Invalid health value. Range: 1-9999999")
         self._base_health = health
         self._health = health
 
+        defence = trait['stats']['defence']
         if defence < 0 or defence > 999999:
             raise ValueError("Invalid defence value. Range: 0-999999")
         self._base_defence = defence
         self._defence = defence
 
+        attack = trait['stats']['attack']
         if attack < 0 or attack > 999999:
             raise ValueError("Invalid attack value. Range: 0-9999999")
         self._base_attack = attack
         self._attack = attack
 
 
+        abilities = trait['abilities']
         self._abilities = abilities
         self._active_abilities = [ability for ability in abilities if ability not in Unit.passives]
+        self._passive_abilities = [ability for ability in abilities if ability in Unit.passives]
         self._active_buffs = []
         self._active_debuffs = []
-        self._status = {
+        self._vital_status = {
             "full_hp": True,
             "alive": True
         }
@@ -140,11 +141,27 @@ class Unit:
 
     @property
     def abilities(self):
-        return sorted([ability for ability in self._abilities])
+        return sorted(self._abilities)
 
     @property
     def active_abilities(self):
-        return sorted([ability for ability in self._active_abilities])
+        return sorted(self._active_abilities)
+
+    @property
+    def passive_abilities(self):
+        return sorted(self._passive_abilities)
+
+    @property
+    def active_effects(self):
+        return sorted(self._active_buffs + self.active_debuffs)
+
+    @property
+    def active_buffs(self):
+        return sorted(self._active_buffs)
+
+    @property
+    def active_debuffs(self):
+        return sorted(self._active_debuffs)
 
 
 
@@ -178,12 +195,11 @@ class Unit:
 
 
 
-    def check_general_status(self):
+    def check_vital_status(self):
         self.check_if_alive()
         self.check_if_full_hp()
-        self.check_if_lastStand()
 
-    def check_applied_status(self):
+    def check_applied_effects(self):
         self.check_if_burned()
         self.check_if_enraged()
         self.check_if_hardened()
@@ -192,17 +208,20 @@ class Unit:
         self.check_if_regen()
         self.check_if_weakened()
 
+    def check_passives(self):
+        self.check_if_lastStand()
+
 
 
     def check_if_alive(self):
         if self._health <= 0:
-            self._status['alive'] = False
+            self._vital_status['alive'] = False
 
     def check_if_full_hp(self):
         if self._health == self._base_health:
-            self._status['full_hp'] = True
+            self._vital_status['full_hp'] = True
         else:
-            self._status['full_hp'] = False
+            self._vital_status['full_hp'] = False
             self.remove_status("healSelf")
 
 
@@ -230,7 +249,7 @@ class Unit:
         if state > 0:
             state -= 1
             self.damage(self._base_health * 0.30)
-        if state == 0:
+        elif state == 0:
             self.remove_debuff(ability)
 
 
@@ -245,7 +264,7 @@ class Unit:
         state = Unit.abilities['lingering'][ability]['state']
         if state > 0:
             state -= 1
-        if state == 0:
+        elif state == 0:
             self.remove_debuff(ability)
             self._defence = self._base_defence
 
@@ -261,7 +280,7 @@ class Unit:
         if state > 0:
             state -= 1
             self.poison_damage()
-        if state == 0:
+        elif state == 0:
             self.remove_debuff(ability)
 
     def poison_damage(self):
@@ -288,7 +307,7 @@ class Unit:
         state = Unit.abilities['lingering'][ability]['state']
         if state > 0:
             state -= 1
-        if state == 0:
+        elif state == 0:
             self.remove_debuff(ability)
             self._attack = self._base_attack
 
@@ -304,7 +323,7 @@ class Unit:
         state = Unit.abilities['lingering'][ability]['state']
         if state > 0:
             state -= 1
-        if state == 0:
+        elif state == 0:
             self.remove_buff(ability)
             self._attack = self._base_attack
 
@@ -320,7 +339,7 @@ class Unit:
         state = Unit.abilities['lingering'][ability]['state']
         if state > 0:
             state -= 1
-        if state == 0:
+        elif state == 0:
             self.remove_buff(ability)
             self._defence = self._base_defence
 
@@ -382,7 +401,7 @@ class Unit:
             self.add_state(ability)
 
     def add_state(self, ability):
-        if "state" in Unit.abilities['lingering'][ability].keys():
+        if "state" in Unit.abilities['lingering'][ability]:
             Unit.abilities['lingering'][ability]['state'] = Unit.abilities['lingering'][ability]['duration']
 
 
@@ -398,5 +417,5 @@ class Unit:
             self.remove_state(ability)
     
     def remove_state(self, ability):
-        if "state" in Unit.abilities['lingering'][ability].keys():
+        if "state" in Unit.abilities['lingering'][ability]:
             Unit.abilities['lingering'][ability]['state'] = 0
