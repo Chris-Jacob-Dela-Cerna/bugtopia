@@ -18,11 +18,25 @@ def run_per_turn_checks(decks):
                     deck[x] = None
 
 
+def check_self_ability(selected_unit, selected_ability):
+    self_abilities = ["enrage", "harden", "healSelf", "regen"]
+    if selected_ability in self_abilities:
+        if selected_unit.apply(selected_ability):
+            return True
+    return False
+
+
 def check_inflicting_ability(selected_unit, selected_ability, selected_target):
-    if selected_unit.apply(selected_ability):
+    instant_abilities = {
+        "attack":   lambda: selected_target.damage(selected_unit.attack),
+        "leech":    lambda: (
+            selected_unit.heal(selected_target.health * 0.10),
+            selected_target.true_damage(selected_target.health * 0.10),
+        )
+    }
+    if selected_ability in instant_abilities:
+        instant_abilities[selected_ability]()
         return True
-    elif selected_unit == "leech":
-        selected_unit.heal(selected_target._health * 0.05)
-        selected_target.true_damage(selected_target._health * 0.10)
+    elif selected_target.apply(selected_ability):
         return True
     return False

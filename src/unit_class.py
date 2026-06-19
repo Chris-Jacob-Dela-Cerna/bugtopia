@@ -110,11 +110,11 @@ class Unit:
     @property
     def defence(self):
         base_multiplier = 1.00
-        for ability in Unit.multipliers.keys():
-            if ability['defence']:
-                base_multiplier += ability['defence']
+        for ability in Unit.multipliers:
+            if Unit.multipliers[ability]['defence']:
+                base_multiplier += Unit.multipliers[ability]['defence']
         defence = self._defence * base_multiplier
-        return round(defence, 1)
+        return round(defence)
 
 
 
@@ -124,11 +124,11 @@ class Unit:
     @property
     def attack(self):
         base_multiplier = 1.00
-        for ability in Unit.multipliers.keys():
-            if ability['attack']:
-                base_multiplier += ability['attack']
+        for ability in Unit.multipliers:
+            if Unit.multipliers[ability]['attack']:
+                base_multiplier += Unit.multipliers[ability]['attack']
         attack = self._attack * base_multiplier
-        return round(attack, 1)
+        return round(attack)
 
 
 
@@ -161,13 +161,13 @@ class Unit:
     def show_buffs(self):
         statuses = []
         for buff in self._active_buffs:
-            statuses.append(Unit.ability_data['ticking'][buff]['display'])
+            statuses.append(Unit.ability_data['active']['ticking'][buff]['display'])
         return self.compile_statuses(statuses)
 
     def show_debuffs(self):
         statuses = []
         for debuff in self._active_debuffs:
-            statuses.append(Unit.ability_data['ticking'][debuff]['display'])
+            statuses.append(Unit.ability_data['active']['ticking'][debuff]['display'])
         return self.compile_statuses(statuses)
 
     def compile_statuses(self, statuses):
