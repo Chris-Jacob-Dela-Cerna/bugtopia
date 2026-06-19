@@ -18,10 +18,8 @@ def battle_logic(deck_1, deck_2):
     while True:
         turns += 1
         usl.run_per_turn_checks(players)
-        usl.run_per_turn_checks(players)
         player_turn_logic(player_1, player_2, turns)
 
-        usl.run_per_instance_checks(players)
         usl.run_per_instance_checks(players)
         player_turn_logic(player_2, player_1, turns)
 

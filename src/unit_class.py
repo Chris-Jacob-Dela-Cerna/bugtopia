@@ -257,12 +257,13 @@ class Unit:
 
     def tick_effect(self, ability):
         ticks = self._ability_data['active']['ticking'][ability]['ticks']
+        print(ticks)
         if ticks > 0:
-            ticks -= 1
+            self._ability_data['active']['ticking'][ability]['ticks'] -= 1
         if ticks == 0:
-            if ability in self._statuses['buffs']:
+            if ability in Unit.statuses['buffs']:
                 self.remove_buff(ability)
-            elif ability in self._statuses['debuffs']:
+            elif ability in Unit.statuses['debuffs']:
                 self.remove_debuff(ability)
 
 
