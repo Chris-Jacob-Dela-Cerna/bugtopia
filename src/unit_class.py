@@ -12,13 +12,13 @@ class Unit:
                 "leech":    {},
             },
             "ticking": {
-                "burn":     {"display": "BRN", "duration": 2, "state": 0},
-                "enrage":   {"display": "RGE", "duration": 2, "state": 0},
-                "harden":   {"display": "HRD", "duration": 2, "state": 0},
-                "pierce":   {"display": "PRC", "duration": 4, "state": 0},
-                "poison":   {"display": "PSN", "duration": 3, "state": 0},
-                "regen":    {"display": "RGN", "duration": 3, "state": 0},
-                "weaken":   {"display": "WKN", "duration": 3, "state": 0}
+                "burn":     {"display": "BRN", "duration": 2, "ticks": 0},
+                "enrage":   {"display": "RGE", "duration": 2, "ticks": 0},
+                "harden":   {"display": "HRD", "duration": 2, "ticks": 0},
+                "pierce":   {"display": "PRC", "duration": 4, "ticks": 0},
+                "poison":   {"display": "PSN", "duration": 3, "ticks": 0},
+                "regen":    {"display": "RGN", "duration": 3, "ticks": 0},
+                "weaken":   {"display": "WKN", "duration": 3, "ticks": 0}
             },
         },
         "passive": {
@@ -159,13 +159,6 @@ class Unit:
 
 
 
-    def can(self, ability):
-        if ability in self._abilities:
-            return True
-        return False
-
-
-
     def show_buffs(self):
         statuses = []
         for buff in self._active_buffs:
@@ -186,6 +179,13 @@ class Unit:
                     status_message += "|"
                 status_message += status
         return status_message
+
+
+
+    def can(self, ability):
+        if ability in self._abilities:
+            return True
+        return False
 
 
 
@@ -233,6 +233,44 @@ class Unit:
         self._health -= attack
 
 
+    def check_effects(self):
+        for effect in self.active_buffs:
+            self.apply_effect(effect)
+            self.tick_effect(effect, "buff")
+        for effect in self.active_buffs:
+            self.apply_effect(effect)
+            self.tick_effect(effect, "debuff")
+
+    def apply_effect(self, effect):
+        match effect:
+            case "burn":
+                self.damage(self._base_health * 0.30)
+            case "enrage":
+                Unit.multipliers[effect]['attack'] = 0.30
+            case "harden":
+                Unit.multipliers[effect]['defence'] = 0.40
+            case "pierce":
+                Unit.multipliers[effect]['defence'] = -0.50
+            case "poison":
+                self.poison_damage()
+            case "regen":
+                self.heal(self._base_health * 0.10)
+            case "weaken":
+                Unit.multipliers[effect]['attack'] = -0.30
+
+    def tick_effect(self, ability, effect_type):
+        ticks = Unit.ability_data['active']['ticking'][ability]['ticks']
+        if ticks > 0:
+            ticks -= 1
+        if ticks == 0:
+            if effect_type == "buff":
+                self.remove_buff(ability)
+            elif effect_type == "debuff":
+                self.remove_debuff(ability)
+
+
+
+
 
     def burn(self):
         ability = "burn"
@@ -240,11 +278,11 @@ class Unit:
 
     def check_if_burned(self):
         ability = "burn"
-        state = Unit.ability_data['active']['ticking'][ability]['state']
-        if state > 0:
-            state -= 1
+        ticks = Unit.ability_data['active']['ticking'][ability]['ticks']
+        if ticks > 0:
+            ticks -= 1
             self.damage(self._base_health * 0.30)
-        elif state == 0:
+        elif ticks == 0:
             self.remove_debuff(ability)
 
 
@@ -256,10 +294,10 @@ class Unit:
 
     def check_if_pierced(self):
         ability = "pierce"
-        state = Unit.ability_data['active']['ticking'][ability]['state']
-        if state > 0:
-            state -= 1
-        elif state == 0:
+        ticks = Unit.ability_data['active']['ticking'][ability]['ticks']
+        if ticks > 0:
+            ticks -= 1
+        elif ticks == 0:
             self.remove_debuff(ability)
             Unit.multipliers[ability]['defence'] = 0
 
@@ -271,18 +309,18 @@ class Unit:
 
     def check_if_poisoned(self):
         ability = "poison"
-        state = Unit.ability_data['active']['ticking'][ability]['state']
-        if state > 0:
-            state -= 1
+        ticks = Unit.ability_data['active']['ticking'][ability]['ticks']
+        if ticks > 0:
+            ticks -= 1
             self.poison_damage()
-        elif state == 0:
+        elif ticks == 0:
             self.remove_debuff(ability)
 
     def poison_damage(self):
         max_damage = self._base_health * 0.15
         min_damage = self._base_health * 0.08
         poison = Unit.ability_data['active']['poison']
-        remaining_turns = 1 - (poison['state'] / poison['duration'])
+        remaining_turns = 1 - (poison['ticks'] / poison['duration'])
         total_damage = min_damage + ((max_damage - min_damage) * remaining_turns)
         total_hp = self._health - total_damage
         if total_hp <= 0:
@@ -299,10 +337,10 @@ class Unit:
 
     def check_if_weakened(self):
         ability = "weaken"
-        state = Unit.ability_data['active']['ticking'][ability]['state']
-        if state > 0:
-            state -= 1
-        elif state == 0:
+        ticks = Unit.ability_data['active']['ticking'][ability]['ticks']
+        if ticks > 0:
+            ticks -= 1
+        elif ticks == 0:
             self.remove_debuff(ability)
             Unit.multipliers[ability]['attack'] = 0
 
@@ -315,10 +353,10 @@ class Unit:
 
     def check_if_enraged(self):
         ability = "enrage"
-        state = Unit.ability_data['active']['ticking'][ability]['state']
-        if state > 0:
-            state -= 1
-        elif state == 0:
+        ticks = Unit.ability_data['active']['ticking'][ability]['ticks']
+        if ticks > 0:
+            ticks -= 1
+        elif ticks == 0:
             self.remove_buff(ability)
             Unit.multipliers[ability]['attack'] = 0
 
@@ -331,10 +369,10 @@ class Unit:
 
     def check_if_hardened(self):
         ability = "harden"
-        state = Unit.ability_data['active']['ticking'][ability]['state']
-        if state > 0:
-            state -= 1
-        elif state == 0:
+        ticks = Unit.ability_data['active']['ticking'][ability]['ticks']
+        if ticks > 0:
+            ticks -= 1
+        elif ticks == 0:
             self.remove_buff(ability)
             Unit.multipliers[ability]['defence'] = 0
 
@@ -376,11 +414,11 @@ class Unit:
 
     def check_if_regen(self):
         ability = "regen"
-        state = Unit.ability_data['active']['ticking'][ability]['state']
-        if state > 0:
-            state -= 1
+        ticks = Unit.ability_data['active']['ticking'][ability]['ticks']
+        if ticks > 0:
+            ticks -= 1
             self.heal(self._base_health * 0.10)
-        elif state == 0:
+        elif ticks == 0:
             self.remove_buff(ability)
 
 
@@ -388,34 +426,34 @@ class Unit:
     def add_buff(self, ability):
         if ability not in self._active_buffs:
             self._active_buffs.append(ability)
-            self.add_state(ability)
+            self.add_ticks(ability)
 
     def add_debuff(self, ability):
         if ability not in self._active_debuffs:
             self._active_debuffs.append(ability)
-            self.add_state(ability)
+            self.add_ticks(ability)
 
-    def add_state(self, ability):
+    def add_ticks(self, ability):
         ticking = Unit.ability_data['active']['ticking']
         if ability in ticking:
-            ticking[ability]['state'] = ticking[ability]['duration']
+            ticking[ability]['ticks'] = ticking[ability]['duration']
 
 
 
     def remove_buff(self, ability):
         if ability in self._active_buffs:
             self._active_buffs.remove(ability)
-            self.remove_state(ability)
+            self.remove_ticks(ability)
 
     def remove_debuff(self, ability):
         if ability in self._active_debuffs:
             self._active_debuffs.remove(ability)
-            self.remove_state(ability)
+            self.remove_ticks(ability)
     
-    def remove_state(self, ability):
+    def remove_ticks(self, ability):
         ticking = Unit.ability_data['active']['ticking']
         if ability in ticking:
-            ticking[ability]['state'] = 0
+            ticking[ability]['ticks'] = 0
 
 
 
