@@ -1,14 +1,9 @@
 
 
-def get_control_panel_data(current_player, enemy_player, panel_mode=0, unit=None, ability=None):
+def get_control_panel_data(attacker, defender, panel_mode=0, unit=None, ability=None):
     letters = "abcd"
-    if panel_mode == 0:
-        header = "Select a unit:"
-        options = [f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)" for x, unit in enumerate(current_player) if unit]
-        footer = "e. Skip"
 
-
-    elif panel_mode == 1:
+    if panel_mode == 1:
         header = "Choose an ability:"
         options = [f"{letters[x]}. {ability}" for x, ability in enumerate(unit.abilities) if ability not in unit.blocked_abilities]
         footer = "e. Back"
@@ -17,7 +12,7 @@ def get_control_panel_data(current_player, enemy_player, panel_mode=0, unit=None
     elif panel_mode == 2:
         header = "Inflict on:"
         options = []
-        for x, unit in enumerate(enemy_player):
+        for x, unit in enumerate(defender):
             if unit:
                 if ability not in unit.blocked_abilities:
                     options.append(f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)")
@@ -25,6 +20,23 @@ def get_control_panel_data(current_player, enemy_player, panel_mode=0, unit=None
     else:
         raise ValueError("Invalid panel mode.")
     return contruct_panel(header, options, footer)
+
+
+def selection_panel(attacker):
+    letters =    "abcd"
+    header =     "Select a unit:"
+    options =    {}
+    ui_options = []
+    footer =     "e. Skip"
+    for x, unit in enumerate(attacker):
+        if unit:
+            options[letters[x]] = unit
+            ui_options.append(f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)")
+    panel = contruct_panel(header, options, footer)
+    return panel, options
+
+
+
 
 
 def contruct_panel(header, options, footer):

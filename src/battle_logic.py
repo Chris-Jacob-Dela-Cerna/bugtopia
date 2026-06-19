@@ -28,36 +28,30 @@ def battle_logic(deck_1, deck_2):
 
 
 def player_turn_logic(attacker, defender, turns):
+    global panel_mode
     panel_mode = 0
-    unit = None
-    ability = None
-    target = None
+    selected_unit = None
+    selected_ability = None
+    selected_target = None
     letters = "abcd"
 
     while True:
-        control_panel_data = bpl.get_control_panel_data(attacker, defender, panel_mode, unit, ability)
-        battle_ui = bs.convert_battle_ui(attacker, defender, control_panel_data, turns)
-        uh.display(battle_ui)
-        chosen = input("    >>> ").strip().lower()
-
         if panel_mode == 0:
-            options = {letters[x]: unit for x, unit in enumerate(attacker) if unit}
-
-            if chosen in options.keys():
-                unit = options[chosen]
+            panel, options = bpl.selection_panel(attacker)
+            chosen = load_battle_ui(attacker, defender, panel, turns)
+            if chosen in options:
+                selected_unit = options[chosen]
                 panel_mode = 1
                 continue
-
             elif chosen == "e":
                 break
 
 
-
         elif panel_mode == 1:
-            options = {letters[x]: ability for x, ability in enumerate(unit.abilities) if ability and ability not in unit.blocked_abilities}
+            options = {letters[x]: ability for x, ability in enumerate(selected_unit.abilities) if ability and ability not in selected_unit.blocked_abilities}
             if chosen in options.keys():
-                ability = options[chosen]
-                if usl.check_self_ability(unit, ability):
+                selected_ability = options[chosen]
+                if usl.check_self_ability(unit, selected_ability):
                     panel_mode = 0
                     break
                 panel_mode = 2
@@ -73,11 +67,11 @@ def player_turn_logic(attacker, defender, turns):
             options = {}
             for x, unit in enumerate(defender):
                 if unit:
-                    if ability not in unit.blocked_abilities:
+                    if selected_ability not in unit.blocked_abilities:
                         options[letters[x]] = unit
             if chosen in options.keys():
                 target = options[chosen]
-                if usl.check_inflicting_ability(unit, ability, target):
+                if usl.check_inflicting_ability(unit, selected_ability, target):
                     panel_mode = 0
                     break
                 continue
@@ -89,3 +83,9 @@ def player_turn_logic(attacker, defender, turns):
 def convert_player_deck(deck, units_data):
     deck_units_idx = [gu.get_unit_idx(unit_slot, units_data) for unit_slot in deck]
     return [uc.Unit(units_data, *unit_idx) for unit_idx in deck_units_idx]
+
+
+def load_battle_ui(attacker, defender, panel, turns):
+    battle_ui = bs.convert_battle_ui(attacker, defender, panel, turns)
+    uh.display(battle_ui)
+    return input("    >>> ").strip().lower()
