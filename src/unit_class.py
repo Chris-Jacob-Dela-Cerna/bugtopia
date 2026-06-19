@@ -186,11 +186,21 @@ class Unit:
             return True
         return False
 
-    def apply(self, ability):
+    def apply(self, ability, damage=None):
         if ability in Unit.statuses['buffs']:
             self.add_buff(ability)
+            return True
         elif ability in Unit.statuses['debuffs']:
             self.add_debuff(ability)
+            return True
+        match ability:
+            case "attack":
+                self.damage(damage)
+                return True
+            case "healSelf":
+                self.healSelf()
+                return True
+        return False
 
 
 

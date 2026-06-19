@@ -48,8 +48,7 @@ def player_turn_logic(attacker, defender, turns):
             chosen = load_battle_ui(attacker, defender, panel, turns)
             if chosen in options:
                 selected_ability = options[chosen]
-                if usl.check_self_ability(selected_unit, selected_ability):
-                    panel_mode = 0
+                if selected_unit.apply(selected_ability):
                     break
                 else:
                     panel_mode = 2
@@ -64,7 +63,6 @@ def player_turn_logic(attacker, defender, turns):
             if chosen in options:
                 selected_target = options[chosen]
                 if usl.check_inflicting_ability(selected_unit, selected_ability, selected_target):
-                    panel_mode = 0
                     break
                 else:
                     continue

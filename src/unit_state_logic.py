@@ -18,19 +18,6 @@ def run_per_turn_checks(decks):
                     deck[x] = None
 
 
-def check_self_ability(selected_unit, ability):
-    self_abilities = {
-        "enrage": lambda: selected_unit.enrage(),
-        "harden": lambda: selected_unit.harden(),
-        "healSelf": lambda: selected_unit.heal_self(),
-        "regen": lambda: selected_unit.regen()
-    }
-    if ability in self_abilities:
-        self_abilities[ability]()
-        return True
-    return False
-
-
 def check_inflicting_ability(selected_unit, ability, selected_target):
     inflicting_abilities = {
         "attack": lambda: selected_target.damage(selected_unit.attack),
