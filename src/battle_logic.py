@@ -46,22 +46,19 @@ def player_turn_logic(attacker, defender, turns):
             elif chosen == "e":
                 break
 
-
         elif panel_mode == 1:
-            options = {letters[x]: ability for x, ability in enumerate(selected_unit.abilities) if ability and ability not in selected_unit.blocked_abilities}
-            if chosen in options.keys():
+            panel, options = bpl.ability_panel(selected_unit)
+            if chosen in options:
                 selected_ability = options[chosen]
                 if usl.check_self_ability(unit, selected_ability):
                     panel_mode = 0
                     break
-                panel_mode = 2
-                continue
-
+                else:
+                    panel_mode = 2
+                    continue
             elif chosen == "e":
                 panel_mode = 0
                 continue
-
-
 
         elif panel_mode == 2:
             options = {}

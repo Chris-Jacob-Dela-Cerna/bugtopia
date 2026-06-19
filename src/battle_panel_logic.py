@@ -3,13 +3,9 @@
 def get_control_panel_data(attacker, defender, panel_mode=0, unit=None, ability=None):
     letters = "abcd"
 
-    if panel_mode == 1:
-        header = "Choose an ability:"
-        options = [f"{letters[x]}. {ability}" for x, ability in enumerate(unit.abilities) if ability not in unit.blocked_abilities]
-        footer = "e. Back"
 
 
-    elif panel_mode == 2:
+    if panel_mode == 2:
         header = "Inflict on:"
         options = []
         for x, unit in enumerate(defender):
@@ -28,15 +24,28 @@ def selection_panel(attacker):
     options =    {}
     ui_options = []
     footer =     "e. Skip"
+
     for x, unit in enumerate(attacker):
         if unit:
             options[letters[x]] = unit
             ui_options.append(f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)")
-    panel = contruct_panel(header, options, footer)
+    panel = contruct_panel(header, ui_options, footer)
     return panel, options
 
 
-
+def ability_panel(selected_unit):
+    letters =    "abcd"
+    header =     "Choose an ability:"
+    options =    {}
+    ui_options = []
+    footer =     "e. Back"
+    
+    for x, ability in enumerate(selected_unit.active_abilities):
+        if ability:
+            options[letters[x]] = ability
+            ui_options.append(f"{letters[x]}. {ability}")
+    panel = contruct_panel(header, ui_options, footer)
+    return panel, options
 
 
 def contruct_panel(header, options, footer):
