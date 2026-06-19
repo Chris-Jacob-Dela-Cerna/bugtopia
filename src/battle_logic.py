@@ -1,6 +1,7 @@
 
 
 from src import get_unit_idx as gu
+from src import unit_state_logic as usl
 from src import unit_class as uc
 from ui import battle_screen as bs
 from ui import prompt as pr
@@ -12,43 +13,26 @@ def battle_logic(deck_1, deck_2):
     units_data = aj.load_json_data("units_default.json")
     player_1 = convert_player_deck(deck_1, units_data)
     player_2 = convert_player_deck(deck_2, units_data)
-    turn = 1
+    players = [player_1, player_2]
+    turn = 0
     while True:
+        turn += 1
+        usl.run_per_turn_checks(players)
+        usl.run_per_turn_checks(players)
+
         uh.display(pr.prompt("Player 1"))
         input("                ")
-        player_battle_turn(player_1, player_2, turn, 1)
+        player_turn_logic(player_1, player_2, turn, 1)
 
-        for x, unit in enumerate(player_1):
-            if unit:
-                unit.check_general_status()
-                if not unit._status['alive']:
-                    player_1[x] = None
-        for x, unit in enumerate(player_2):
-            if unit:
-                unit.check_general_status()
-                if not unit._status['alive']:
-                    player_2[x] = None
+        usl.run_per_instance_checks(players)
+        usl.run_per_instance_checks(players)
 
         uh.display(pr.prompt("Player 2"))
         input("                ")
-        player_battle_turn(player_2, player_1, turn, 2)
-
-        for x, unit in enumerate(player_1):
-            if unit:
-                unit.check_general_status()
-                unit.check_applied_status()
-                if not unit._status['alive']:
-                    player_1[x] = None
-        for x, unit in enumerate(player_2):
-            if unit:
-                unit.check_general_status()
-                unit.check_applied_status()
-                if not unit._status['alive']:
-                    player_2[x] = None
-        turn += 1
+        player_turn_logic(player_2, player_1, turn, 2)
 
 
-def player_battle_turn(current_player, enemy_player, turn, player_turn):
+def player_turn_logic(current_player, enemy_player, turn, player_turn):
     panel_mode = 0
     selected_unit = None
     selected_ability = None
@@ -74,7 +58,7 @@ def player_battle_turn(current_player, enemy_player, turn, player_turn):
             options = {letters[x]: ability for x, ability in enumerate(selected_unit.abilities) if ability and ability not in selected_unit.blocked_abilities}
             if chosen in options.keys():
                 selected_ability = options[chosen]
-                if check_self_ability(selected_unit, selected_ability):
+                if usl.check_self_ability(selected_unit, selected_ability):
                     panel_mode = 0
                     break
                 panel_mode = 2
@@ -91,7 +75,7 @@ def player_battle_turn(current_player, enemy_player, turn, player_turn):
                         options[letters[x]] = unit
             if chosen in options.keys():
                 selected_target = options[chosen]
-                if check_inflicting_ability(selected_unit, selected_ability, selected_target):
+                if usl.check_inflicting_ability(selected_unit, selected_ability, selected_target):
                     panel_mode = 0
                     break
                 continue
@@ -148,35 +132,7 @@ def get_control_panel_data(current_player, enemy_player, panel_mode=0, selected_
 
 
 
-def check_self_ability(selected_unit, ability):
-    self_abilities = {
-        "enrage": lambda: selected_unit.enrage(),
-        "harden": lambda: selected_unit.harden(),
-        "healSelf": lambda: selected_unit.heal_self(),
-        "regen": lambda: selected_unit.regen()
-    }
-    if ability in self_abilities:
-        self_abilities[ability]()
-        return True
-    return False
 
-
-def check_inflicting_ability(selected_unit, ability, selected_target):
-    inflicting_abilities = {
-        "attack": lambda: selected_target.damage(selected_unit.attack),
-        "burn": lambda: selected_target.burn(),
-        "leech": lambda: (
-            selected_unit.heal(selected_target._health * 0.05),
-            selected_target.true_damage(selected_target._health * 0.10),
-        ),
-        "pierce": lambda: selected_target.pierce(),
-        "poison": lambda: selected_target.poison(),
-        "weaken": lambda: selected_target.weaken(),
-    }
-    if ability in inflicting_abilities:
-        inflicting_abilities[ability]()
-        return True
-    return False
 
 
 def convert_player_deck(deck, units_data):

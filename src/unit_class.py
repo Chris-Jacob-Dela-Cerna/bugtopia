@@ -194,6 +194,19 @@ class Unit:
 
 
 
+    def per_instance_checks(self):
+        self.check_vital_status()
+        self.check_passives()
+        self.gate_abilities()
+
+    def per_turn_checks(self):
+        self.check_effects()
+        self.check_vital_status()
+        self.check_passives()
+        self.gate_abilities()
+
+
+
     def check_vital_status(self):
         self.check_if_alive()
         self.check_if_full_hp()
