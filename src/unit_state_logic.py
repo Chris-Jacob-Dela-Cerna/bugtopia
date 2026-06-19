@@ -18,19 +18,11 @@ def run_per_turn_checks(decks):
                     deck[x] = None
 
 
-def check_inflicting_ability(selected_unit, ability, selected_target):
-    inflicting_abilities = {
-        "attack": lambda: selected_target.damage(selected_unit.attack),
-        "burn": lambda: selected_target.burn(),
-        "leech": lambda: (
-            selected_unit.heal(selected_target._health * 0.05),
-            selected_target.true_damage(selected_target._health * 0.10),
-        ),
-        "pierce": lambda: selected_target.pierce(),
-        "poison": lambda: selected_target.poison(),
-        "weaken": lambda: selected_target.weaken(),
-    }
-    if ability in inflicting_abilities:
-        inflicting_abilities[ability]()
+def check_inflicting_ability(selected_unit, selected_ability, selected_target):
+    if selected_unit.apply(selected_ability):
+        return True
+    elif selected_unit == "leech":
+        selected_unit.heal(selected_target._health * 0.05)
+        selected_target.true_damage(selected_target._health * 0.10)
         return True
     return False
