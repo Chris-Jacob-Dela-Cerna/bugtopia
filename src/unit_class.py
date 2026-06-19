@@ -1,5 +1,6 @@
 
 
+import copy
 from millify import millify
 
 
@@ -21,10 +22,6 @@ class Unit:
             "lastStand":    {"display": "LST"},
         }
     }
-    statuses = {
-        "buffs":      ["enrage", "harden", "regen"],
-        "debuffs":    ["burn", "pierce", "poison", "weaken" ]
-    }
     multipliers = {
         "burn":       {"health": 0, "defence": 0, "attack": 0},
         "enrage":     {"health": 0, "defence": 0, "attack": 0},
@@ -34,6 +31,10 @@ class Unit:
         "poison":     {"health": 0, "defence": 0, "attack": 0},
         "regen":      {"health": 0, "defence": 0, "attack": 0},
         "weaken":     {"health": 0, "defence": 0, "attack": 0}
+    }
+    statuses = {
+        "buffs":      ["enrage", "harden", "regen"],
+        "debuffs":    ["burn", "pierce", "poison", "weaken" ]
     }
     def __init__(self, units_data, unit_idx=0, trait_idx=0):
         unit = units_data[unit_idx]
@@ -73,9 +74,12 @@ class Unit:
         abilities = trait['abilities']
         self._abilities = abilities
 
-        actives = Unit.ability_data['active']
+        self._ability_data = copy.deepcopy(Unit.ability_data)
+        self._multipliers = copy.deepcopy(Unit.multipliers)
+
+        actives = self._ability_data['active']
         self._active_abilities = [ability for ability in abilities if ability in actives['instant'] or ability in actives['ticking']]
-        self._passive_abilities = [ability for ability in abilities if ability in Unit.ability_data['passive']]
+        self._passive_abilities = [ability for ability in abilities if ability in self._ability_data['passive']]
 
         self._active_buffs = []
         self._active_debuffs = []
@@ -110,9 +114,9 @@ class Unit:
     @property
     def defence(self):
         base_multiplier = 1.00
-        for ability in Unit.multipliers:
-            if Unit.multipliers[ability]['defence']:
-                base_multiplier += Unit.multipliers[ability]['defence']
+        for ability in self.multipliers:
+            if self._multipliers[ability]['defence']:
+                base_multiplier += self._multipliers[ability]['defence']
         defence = self._defence * base_multiplier
         return round(defence)
 
@@ -124,9 +128,9 @@ class Unit:
     @property
     def attack(self):
         base_multiplier = 1.00
-        for ability in Unit.multipliers:
-            if Unit.multipliers[ability]['attack']:
-                base_multiplier += Unit.multipliers[ability]['attack']
+        for ability in self._multipliers:
+            if self._multipliers[ability]['attack']:
+                base_multiplier += self._multipliers[ability]['attack']
         attack = self._attack * base_multiplier
         return round(attack)
 
@@ -161,13 +165,13 @@ class Unit:
     def show_buffs(self):
         statuses = []
         for buff in self._active_buffs:
-            statuses.append(Unit.ability_data['active']['ticking'][buff]['display'])
+            statuses.append(self._ability_data['active']['ticking'][buff]['display'])
         return self.compile_statuses(statuses)
 
     def show_debuffs(self):
         statuses = []
         for debuff in self._active_debuffs:
-            statuses.append(Unit.ability_data['active']['ticking'][debuff]['display'])
+            statuses.append(self._ability_data['active']['ticking'][debuff]['display'])
         return self.compile_statuses(statuses)
 
     def compile_statuses(self, statuses):
@@ -252,13 +256,13 @@ class Unit:
                 self.heal(self._base_health * 0.10)
 
     def tick_effect(self, ability):
-        ticks = Unit.ability_data['active']['ticking'][ability]['ticks']
+        ticks = self._ability_data['active']['ticking'][ability]['ticks']
         if ticks > 0:
             ticks -= 1
         if ticks == 0:
-            if ability in Unit.statuses['buffs']:
+            if ability in self._statuses['buffs']:
                 self.remove_buff(ability)
-            elif ability in Unit.statuses['debuffs']:
+            elif ability in self._statuses['debuffs']:
                 self.remove_debuff(ability)
 
 
@@ -299,7 +303,7 @@ class Unit:
     def poison_damage(self):
         max_damage = self._base_health * 0.15
         min_damage = self._base_health * 0.08
-        poison = Unit.ability_data['active']['ticking']['poison']
+        poison = self._ability_data['active']['ticking']['poison']
         remaining_turns = 1 - (poison['ticks'] / poison['duration'])
         total_damage = min_damage + ((max_damage - min_damage) * remaining_turns)
         total_hp = self._health - total_damage
@@ -344,22 +348,22 @@ class Unit:
             self.add_multiplier_effect(ability)
 
     def add_ticks(self, ability):
-        ticking = Unit.ability_data['active']['ticking']
+        ticking = self._ability_data['active']['ticking']
         if ability in ticking:
             ticking[ability]['ticks'] = ticking[ability]['duration']
 
     def add_multiplier_effect(self, effect):
         match effect:
             case "enrage":
-                Unit.multipliers[effect]['attack'] =   0.30
+                self._multipliers[effect]['attack'] =   0.30
             case "harden":
-                Unit.multipliers[effect]['defence'] =  0.40
+                self._multipliers[effect]['defence'] =  0.40
             case "lastStand":
-                Unit.multipliers[effect]['attack'] =   0.50
+                self._multipliers[effect]['attack'] =   0.50
             case "pierce":
-                Unit.multipliers[effect]['defence'] = -0.50
+                self._multipliers[effect]['defence'] = -0.50
             case "weaken":
-                Unit.multipliers[effect]['attack'] =  -0.30
+                self._multipliers[effect]['attack'] =  -0.30
 
 
 
@@ -376,22 +380,22 @@ class Unit:
             self.remove_multiplier_effect(ability)
     
     def remove_ticks(self, ability):
-        ticking = Unit.ability_data['active']['ticking']
+        ticking = self._ability_data['active']['ticking']
         if ability in ticking:
             ticking[ability]['ticks'] = 0
 
     def remove_multiplier_effect(self, effect):
         match effect:
             case "enrage":
-                Unit.multipliers[effect]['attack'] =  0
+                self._multipliers[effect]['attack'] =  0
             case "harden":
-                Unit.multipliers[effect]['defence'] = 0
+                self._multipliers[effect]['defence'] = 0
             case "pierce":
-                Unit.multipliers[effect]['defence'] = 0
+                self._multipliers[effect]['defence'] = 0
             case "weaken":
-                Unit.multipliers[effect]['attack'] =  0
+                self._multipliers[effect]['attack'] =  0
             case "weaken":
-                Unit.multipliers[effect]['attack'] =  0
+                self._multipliers[effect]['attack'] =  0
 
 
 
