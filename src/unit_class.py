@@ -6,11 +6,7 @@ from millify import millify
 class Unit:
     ability_data = {
         "active": {
-            "instant": {
-                "attack":   {},
-                "healSelf": {},
-                "leech":    {},
-            },
+            "instant":      ["attack", "healSelf", "leech"],
             "ticking": {
                 "burn":     {"display": "BRN", "duration": 2, "ticks": 0},
                 "enrage":   {"display": "RGE", "duration": 2, "ticks": 0},
@@ -190,6 +186,12 @@ class Unit:
             return True
         return False
 
+    def apply(self, ability):
+        if ability in Unit.statuses['buffs']:
+            self.add_buff(ability)
+        elif ability in Unit.statuses['debuffs']:
+            self.add_debuff(ability)
+
 
 
     def check_vital_status(self):
@@ -235,11 +237,20 @@ class Unit:
                 self.remove_buff(ability)
             elif ability in Unit.statuses['debuffs']:
                 self.remove_debuff(ability)
-    
+
 
 
     def check_passives(self):
-        self.check_if_lastStand()
+        for ability in self._passive_abilities:
+            match ability:
+                case "lastStand":
+                    self.lastStand()
+
+    def lastStand(self):
+        if self._health < self._base_health * 0.30:
+            self.add_multiplier_effect("lastStand")
+        else:
+            self.remove_multiplier_effect("lastStand")
 
 
 
@@ -252,19 +263,10 @@ class Unit:
     def true_damage(self, attack):
         self._health -= attack
 
-
-    def apply(self, ability):
-        if ability in Unit.statuses['buffs']:
-            self.add_buff(ability)
-        elif ability in Unit.statuses['debuffs']:
-            self.add_debuff(ability)
-
-
-
     def poison_damage(self):
         max_damage = self._base_health * 0.15
         min_damage = self._base_health * 0.08
-        poison = Unit.ability_data['active']['poison']
+        poison = Unit.ability_data['active']['ticking']['poison']
         remaining_turns = 1 - (poison['ticks'] / poison['duration'])
         total_damage = min_damage + ((max_damage - min_damage) * remaining_turns)
         total_hp = self._health - total_damage
@@ -272,8 +274,6 @@ class Unit:
             self._health = 1
         else:
             self._health = total_hp
-
-
 
     def healSelf(self):
         if "weaken" in self._active_debuffs or "poison" in self._active_debuffs:
@@ -293,15 +293,6 @@ class Unit:
             self.check_if_full_hp()
         else:
             self._health = total_hp
-
-
-
-    def check_if_lastStand(self):
-        if self.can("lastStand"):
-            if self._health < self._base_health * 0.30:
-                self._attack = self._base_attack + (self._base_attack * 0.50)
-            else:
-                self._attack = self._base_attack
 
 
 
@@ -325,15 +316,15 @@ class Unit:
     def add_multiplier_effect(self, effect):
         match effect:
             case "enrage":
-                Unit.multipliers[effect]['attack'] = 0.30
+                Unit.multipliers[effect]['attack'] =   0.30
             case "harden":
-                Unit.multipliers[effect]['defence'] = 0.40
+                Unit.multipliers[effect]['defence'] =  0.40
             case "lastStand":
-                Unit.multipliers[effect]['attack'] = 0.50
+                Unit.multipliers[effect]['attack'] =   0.50
             case "pierce":
                 Unit.multipliers[effect]['defence'] = -0.50
             case "weaken":
-                Unit.multipliers[effect]['attack'] = -0.30
+                Unit.multipliers[effect]['attack'] =  -0.30
 
 
 
@@ -357,15 +348,15 @@ class Unit:
     def remove_multiplier_effect(self, effect):
         match effect:
             case "enrage":
-                Unit.multipliers[effect]['attack'] = 0
+                Unit.multipliers[effect]['attack'] =  0
             case "harden":
                 Unit.multipliers[effect]['defence'] = 0
             case "pierce":
                 Unit.multipliers[effect]['defence'] = 0
             case "weaken":
-                Unit.multipliers[effect]['attack'] = 0
+                Unit.multipliers[effect]['attack'] =  0
             case "weaken":
-                Unit.multipliers[effect]['attack'] = 0
+                Unit.multipliers[effect]['attack'] =  0
 
 
 
