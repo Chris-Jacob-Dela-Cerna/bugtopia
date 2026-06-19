@@ -284,11 +284,11 @@ class Unit:
     
     def gate_abilities(self):
         if self._vital_status['full_hp']:
-            self.add_active_ability("healSelf")
-            self.add_active_ability("leech")
-        else:
             self.remove_active_ability("healSelf")
             self.remove_active_ability("leech")
+        else:
+            self.add_active_ability("healSelf")
+            self.add_active_ability("leech")
 
 
 

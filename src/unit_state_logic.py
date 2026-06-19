@@ -30,8 +30,8 @@ def check_inflicting_ability(selected_unit, selected_ability, selected_target):
     instant_abilities = {
         "attack":   lambda: selected_target.damage(selected_unit.attack),
         "leech":    lambda: (
-            selected_unit.heal(selected_target.health * 0.10),
-            selected_target.true_damage(selected_target.health * 0.10),
+            selected_unit.heal(selected_target._health * 0.5),
+            selected_target.true_damage(selected_target._health * 0.15),
         )
     }
     if selected_ability in instant_abilities:
