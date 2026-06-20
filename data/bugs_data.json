@@ -1,7 +1,7 @@
 [
     {
         "name": "Ant",
-        "species": [
+        "traits": [
             {
                 "name": "fire",
                 "stats": {
@@ -10,7 +10,7 @@
                     "attack": 50
                 },
                 "abilities": [
-                    "shell",
+                    "attack",
                     "burn",
                     "sting",
                     ""
@@ -26,7 +26,7 @@
                 "abilities": [
                     "attack",
                     "venom",
-                    "sacrifice",
+                    "rupture",
                     ""
                 ]
             },
@@ -39,8 +39,8 @@
                 },
                 "abilities": [
                     "attack",
-                    "thorns",
-                    "rupture",
+                    "weaken",
+                    "regen",
                     ""
                 ]
             }
@@ -48,7 +48,7 @@
     },
     {
         "name": "Beetle",
-        "species": [
+        "traits": [
             {
                 "name": "bombardier",
                 "stats": {
@@ -73,7 +73,7 @@
                 "abilities": [
                     "attack",
                     "pierce",
-                    "corrode",
+                    "rupture",
                     ""
                 ]
             },
@@ -95,7 +95,7 @@
     },
     {
         "name": "Spider",
-        "species": [
+        "traits": [
             {
                 "name": "black widow",
                 "stats": {
@@ -142,7 +142,7 @@
     },
     {
         "name": "Wasp",
-        "species": [
+        "traits": [
             {
                 "name": "yellow jacket",
                 "stats": {
@@ -189,7 +189,7 @@
     },
     {
         "name": "Grasshopper",
-        "species": [
+        "traits": [
             {
                 "name": "locust",
                 "stats": {
@@ -200,7 +200,7 @@
                 "abilities": [
                     "attack",
                     "weaken",
-                    "corrode",
+                    "sting",
                     ""
                 ]
             },
@@ -236,7 +236,7 @@
     },
     {
         "name": "Mantis",
-        "species": [
+        "traits": [
             {
                 "name": "orchid",
                 "stats": {
@@ -261,7 +261,7 @@
                 "abilities": [
                     "attack",
                     "pierce",
-                    "rupture",
+                    "sting",
                     ""
                 ]
             },
@@ -283,7 +283,7 @@
     },
     {
         "name": "Fly",
-        "species": [
+        "traits": [
             {
                 "name": "horse",
                 "stats": {
@@ -330,7 +330,7 @@
     },
     {
         "name": "Cockroach",
-        "species": [
+        "traits": [
             {
                 "name": "german",
                 "stats": {
@@ -341,7 +341,7 @@
                 "abilities": [
                     "attack",
                     "regen",
-                    "corrode",
+                    "thorns",
                     ""
                 ]
             },
@@ -377,7 +377,7 @@
     },
     {
         "name": "Scorpion",
-        "species": [
+        "traits": [
             {
                 "name": "bark",
                 "stats": {
@@ -388,7 +388,7 @@
                 "abilities": [
                     "attack",
                     "venom",
-                    "corrode",
+                    "sting",
                     ""
                 ]
             },
@@ -424,7 +424,7 @@
     },
     {
         "name": "Centipede",
-        "species": [
+        "traits": [
             {
                 "name": "house",
                 "stats": {
@@ -471,7 +471,7 @@
     },
     {
         "name": "Termite",
-        "species": [
+        "traits": [
             {
                 "name": "nasute",
                 "stats": {
@@ -518,7 +518,7 @@
     },
     {
         "name": "Dragonfly",
-        "species": [
+        "traits": [
             {
                 "name": "skimmer",
                 "stats": {
