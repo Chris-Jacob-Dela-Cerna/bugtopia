@@ -10,9 +10,9 @@
                     "attack": 50
                 },
                 "abilities": [
-                    "attack",
+                    "shell",
                     "burn",
-                    "corrode",
+                    "sting",
                     ""
                 ]
             },
@@ -39,8 +39,8 @@
                 },
                 "abilities": [
                     "attack",
-                    "weaken",
-                    "regen",
+                    "thorns",
+                    "rupture",
                     ""
                 ]
             }

@@ -28,13 +28,13 @@ def check_self_ability(selected_unit, selected_ability):
 
 def check_inflicting_ability(selected_unit, selected_ability, selected_target):
     instant_abilities = {
-        "attack":    lambda: selected_target.damage(selected_unit.attack),
+        "attack":    lambda: selected_target.attack_damage(selected_unit.attack, selected_unit),
         "leech":     lambda: (
             selected_unit.heal(selected_target._health * 0.5),
             selected_target.true_damage(selected_target._health * 0.15),
         ),
         "sacrifice": lambda: (
-            selected_target.damage(selected_unit._health * 0.30),
+            selected_target.attack_damage(selected_unit._health * 0.30, selected_unit),
             selected_unit.true_damage(selected_unit._health * 0.30)
         ),
         "sting":     lambda: selected_target.true_damage(selected_target._health * 0.20)

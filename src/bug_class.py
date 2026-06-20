@@ -2,6 +2,7 @@
 
 import copy
 from millify import millify
+from random import randint
 
 
 class Bug:
@@ -15,11 +16,14 @@ class Bug:
                 "pierce":   {"display": "PRC", "duration": 3, "ticks": 0},
                 "venom":    {"display": "PSN", "duration": 2, "ticks": 0},
                 "regen":    {"display": "RGN", "duration": 2, "ticks": 0},
+                "rupture":  {"display": "RPT", "duration": 2, "ticks": 0},
+                "shell":    {"display": "SHL", "duration": 1, "ticks": 0},
                 "weaken":   {"display": "WKN", "duration": 2, "ticks": 0}
             },
         },
         "passive": {
             "lastStand":    {"display": "LST"},
+            "thorns":       {"display": "TRN"}
         }
     }
     multipliers = {
@@ -33,8 +37,8 @@ class Bug:
         "weaken":     {"health": 0, "defence": 0, "attack": 0}
     }
     statuses = {
-        "buffs":      ["enrage", "harden", "regen"],
-        "debuffs":    ["burn", "pierce", "venom", "weaken" ]
+        "buffs":      ["enrage", "harden", "regen", "shell"],
+        "debuffs":    ["burn", "pierce", "rupture", "venom", "weaken"]
     }
     def __init__(self, units_data, family_idx=0, species_idx=0):
         family = units_data[family_idx]
@@ -281,7 +285,7 @@ class Bug:
             self.remove_multiplier_effect("lastStand")
 
 
-    
+
     def gate_abilities(self):
         if self._vital_status['full_hp']:
             self.remove_active_ability("healSelf")
@@ -292,8 +296,20 @@ class Bug:
 
 
 
-    def damage(self, attack):
-        damage = attack - self._defence
+    def attack_damage(self, damage, selected_unit):
+        if "thorns" in self._passive_abilities:
+            selected_unit.damage(damage * 0.50)
+        if "shell" in self.active_effects:
+            if randint(1, 100) <= 40:
+                damage = 0
+        if "rupture" in self.active_effects:
+            damage = damage * 1.20
+        self.damage(damage)
+        
+
+
+    def damage(self, damage):
+        damage = damage - self._defence
         if damage <= 0:
             damage = 1
         self._health -= damage
