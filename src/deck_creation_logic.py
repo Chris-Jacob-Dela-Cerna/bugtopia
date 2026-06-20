@@ -2,7 +2,6 @@
 
 import re
 from src import deck_saving_logic as ds
-from src import get_pages as gp
 from ui import deck_creation as cd
 from utils import access_json as aj
 from utils import ui_helpers as uh
@@ -10,7 +9,7 @@ from utils import ui_helpers as uh
 
 def deck_creation_logic():
     bugs_data = aj.load_json_data("bugs_data.json")
-    pages_data = gp.get_pages_data(bugs_data)
+    pages_data = get_pages_data(bugs_data)
     deck = deck_creator(pages_data)
     if not deck:
         return
@@ -24,7 +23,7 @@ def deck_creator(pages_data):
     deck = []
     show_help = False
     while True:
-        page_ui = cd.convert_page_ui(ui_data=pages_data, idx=page, deck=deck, show_help=show_help)
+        page_ui = cd.render_page_ui(ui_data=pages_data, idx=page, deck=deck, show_help=show_help)
         uh.display(page_ui)
         chosen = input("    >>> ").strip().lower()
 
@@ -42,6 +41,20 @@ def deck_creator(pages_data):
         
         page = handle_page(chosen, page, visible_page, total_pages)
         deck = handle_deck(chosen, deck, pages_data)
+
+
+def get_pages_data(data):
+    pages = []
+    for idx, bug in enumerate(data):
+        page = {
+            "name": bug["name"],
+            "idx": idx,
+            "species": []
+        }
+        for species in bug["species"]:
+            page["species"].append(species)
+        pages.append(page)
+    return pages
 
 
 def handle_page(chosen, page, visible_page, total_pages):

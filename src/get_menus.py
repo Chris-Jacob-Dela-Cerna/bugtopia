@@ -5,8 +5,7 @@ def get_main_menu():
         "header": "Main Menu",
         "options": {
             "a": "Play",
-            "b": "Credits",
-            "c": "Quit"
+            "b": "Quit"
         }
     }
 

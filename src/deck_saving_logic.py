@@ -9,7 +9,7 @@ from utils import ui_helpers as uh
 
 def deck_saving_logic(deck):
     menu_data = gm.get_save_deck_menu()
-    menu_ui = mn.convert_menu_ui(menu_data)
+    menu_ui = mn.render_menu_ui(menu_data)
     while True:
         uh.display(menu_ui)
         chosen = input("                 >>> ").strip()

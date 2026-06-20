@@ -411,8 +411,6 @@ class Bug:
                 self._multipliers[effect]['defence'] = 0
             case "weaken":
                 self._multipliers[effect]['attack'] =  0
-            case "weaken":
-                self._multipliers[effect]['attack'] =  0
 
 
 

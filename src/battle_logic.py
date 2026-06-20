@@ -75,6 +75,6 @@ def convert_player_deck(deck, bugs_data):
 
 
 def load_battle_ui(attacker, defender, panel, turns):
-    battle_ui = bs.convert_battle_ui(attacker, defender, panel, turns)
+    battle_ui = bs.render_battle_ui(attacker, defender, panel, turns)
     uh.display(battle_ui)
     return input("    >>> ").strip().lower()

@@ -3,7 +3,7 @@
 from utils.ui_helpers import fit
 
 
-def convert_battle_ui(current_deck, enemy_deck, control_panel_data, turns):
+def render_battle_ui(current_deck, enemy_deck, control_panel_data, turns):
     ui = []
     ui.append("  ╭────────────────────────────────────────────────────────╮")
     ui.append("  | Enemy                                                  |")

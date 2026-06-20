@@ -11,7 +11,7 @@ def selection_panel(attacker):
         if bug:
             options[letters[x]] = bug
             ui_options.append(f"{letters[x]}. {bug.species} {bug.family} ({bug.health} HP)")
-    panel = contruct_panel(header, ui_options, footer)
+    panel = contruct_panels(header, ui_options, footer)
     return panel, options
 
 
@@ -26,7 +26,7 @@ def ability_panel(selected_bug):
         if ability:
             options[letters[x]] = ability
             ui_options.append(f"{letters[x]}. {ability}")
-    panel = contruct_panel(header, ui_options, footer)
+    panel = contruct_panels(header, ui_options, footer)
     return panel, options
 
 
@@ -42,11 +42,11 @@ def attack_panel(defender, selected_ability):
             if selected_ability not in bug.active_effects:
                 options[letters[x]] = bug
                 ui_options.append(f"{letters[x]}. {bug.species} {bug.family} ({bug.health} HP)")
-    panel = contruct_panel(header, ui_options, footer)
+    panel = contruct_panels(header, ui_options, footer)
     return panel, options
 
 
-def contruct_panel(header, options, footer):
+def contruct_panels(header, options, footer):
     if len(options) < 4:
         options.extend(["" for _ in range(4 - len(options))])
     options.append(footer)

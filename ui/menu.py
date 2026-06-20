@@ -3,7 +3,7 @@
 from utils.ui_helpers import fit
 
 
-def convert_menu_ui(ui_data):
+def render_menu_ui(ui_data):
     ui = []
     ui.append("               ╭──────────────────────────────╮")
     ui.append(fit(ui_data['header'], 28, "               │ ", " |"))
