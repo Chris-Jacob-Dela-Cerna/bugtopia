@@ -7,15 +7,15 @@ from millify import millify
 class Bug:
     ability_data = {
         "active": {
-            "instant":      ["attack", "healSelf", "leech"],
+            "instant":      ["attack", "healSelf", "leech", "sacrifice", "sting"],
             "ticking": {
-                "burn":     {"display": "BRN", "duration": 2, "ticks": 0},
-                "enrage":   {"display": "RGE", "duration": 2, "ticks": 0},
-                "harden":   {"display": "HRD", "duration": 2, "ticks": 0},
-                "pierce":   {"display": "PRC", "duration": 4, "ticks": 0},
-                "poison":   {"display": "PSN", "duration": 3, "ticks": 0},
-                "regen":    {"display": "RGN", "duration": 3, "ticks": 0},
-                "weaken":   {"display": "WKN", "duration": 3, "ticks": 0}
+                "burn":     {"display": "BRN", "duration": 1, "ticks": 0},
+                "enrage":   {"display": "RGE", "duration": 1, "ticks": 0},
+                "harden":   {"display": "HRD", "duration": 1, "ticks": 0},
+                "pierce":   {"display": "PRC", "duration": 3, "ticks": 0},
+                "venom":   {"display": "PSN", "duration": 2, "ticks": 0},
+                "regen":    {"display": "RGN", "duration": 2, "ticks": 0},
+                "weaken":   {"display": "WKN", "duration": 2, "ticks": 0}
             },
         },
         "passive": {
@@ -28,13 +28,13 @@ class Bug:
         "harden":     {"health": 0, "defence": 0, "attack": 0},
         "lastStand":  {"health": 0, "defence": 0, "attack": 0},
         "pierce":     {"health": 0, "defence": 0, "attack": 0},
-        "poison":     {"health": 0, "defence": 0, "attack": 0},
+        "venom":     {"health": 0, "defence": 0, "attack": 0},
         "regen":      {"health": 0, "defence": 0, "attack": 0},
         "weaken":     {"health": 0, "defence": 0, "attack": 0}
     }
     statuses = {
         "buffs":      ["enrage", "harden", "regen"],
-        "debuffs":    ["burn", "pierce", "poison", "weaken" ]
+        "debuffs":    ["burn", "pierce", "venom", "weaken" ]
     }
     def __init__(self, units_data, family_idx=0, species_idx=0):
         family = units_data[family_idx]
@@ -42,6 +42,7 @@ class Bug:
         if len(family_name) < 1 or len(family_name) > 13:
             raise ValueError("Invalid family name length. Range: 1-13")
         self._family = family_name
+        
 
         species = family['species'][species_idx]
         species_name = species['name']
@@ -249,9 +250,9 @@ class Bug:
     def apply_ticking_effect(self, effect):
         match effect:
             case "burn":
-                self.damage(self._base_health * 0.30)
-            case "poison":
-                self.poison_damage()
+                self.damage(self._base_health * 0.25)
+            case "venom":
+                self.venom_damage()
             case "regen":
                 self.heal(self._base_health * 0.10)
 
@@ -291,6 +292,11 @@ class Bug:
 
 
 
+    def attack(self, damage, selected_unit):
+        
+
+
+
     def damage(self, attack):
         damage = attack - self._defence
         if damage <= 0:
@@ -300,11 +306,11 @@ class Bug:
     def true_damage(self, attack):
         self._health -= attack
 
-    def poison_damage(self):
+    def venom_damage(self):
         max_damage = self._base_health * 0.15
         min_damage = self._base_health * 0.08
-        poison = self._ability_data['active']['ticking']['poison']
-        remaining_turns = 1 - (poison['ticks'] / poison['duration'])
+        venom = self._ability_data['active']['ticking']['venom']
+        remaining_turns = 1 - (venom['ticks'] / venom['duration'])
         total_damage = min_damage + ((max_damage - min_damage) * remaining_turns)
         total_hp = self._health - total_damage
         if total_hp <= 0:
@@ -315,9 +321,9 @@ class Bug:
 
 
     def healSelf(self):
-        if "weaken" in self._active_debuffs or "poison" in self._active_debuffs:
+        if "weaken" in self._active_debuffs or "venom" in self._active_debuffs:
             self.remove_debuff("weaken")
-            self.remove_debuff("poison")
+            self.remove_debuff("venom")
         else:
             max_heal = self._base_health * 0.30
             min_heal = self._base_health * 0.01
