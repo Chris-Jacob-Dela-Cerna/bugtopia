@@ -2,13 +2,13 @@
 
 def get_pages_data(data):
     pages = []
-    for idx, unit in enumerate(data):
+    for idx, bug in enumerate(data):
         page = {
-            "name": unit["name"],
+            "name": bug["name"],
             "idx": idx,
-            "traits": []
+            "species": []
         }
-        for trait in unit["traits"]:
-            page["traits"].append(trait)
+        for species in bug["species"]:
+            page["species"].append(species)
         pages.append(page)
     return pages

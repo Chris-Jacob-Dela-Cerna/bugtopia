@@ -1,7 +1,7 @@
 [
     {
         "name": "Ant",
-        "traits": [
+        "species": [
             {
                 "name": "fire",
                 "stats": {
@@ -48,7 +48,7 @@
     },
     {
         "name": "Beetle",
-        "traits": [
+        "species": [
             {
                 "name": "bombardier",
                 "stats": {
@@ -95,7 +95,7 @@
     },
     {
         "name": "Spider",
-        "traits": [
+        "species": [
             {
                 "name": "black widow",
                 "stats": {
@@ -142,7 +142,7 @@
     },
     {
         "name": "Wasp",
-        "traits": [
+        "species": [
             {
                 "name": "yellow jacket",
                 "stats": {
@@ -189,7 +189,7 @@
     },
     {
         "name": "Grasshopper",
-        "traits": [
+        "species": [
             {
                 "name": "locust",
                 "stats": {
@@ -236,7 +236,7 @@
     },
     {
         "name": "Mantis",
-        "traits": [
+        "species": [
             {
                 "name": "orchid",
                 "stats": {
@@ -283,7 +283,7 @@
     },
     {
         "name": "Fly",
-        "traits": [
+        "species": [
             {
                 "name": "horse",
                 "stats": {
@@ -330,7 +330,7 @@
     },
     {
         "name": "Cockroach",
-        "traits": [
+        "species": [
             {
                 "name": "german",
                 "stats": {
@@ -377,7 +377,7 @@
     },
     {
         "name": "Scorpion",
-        "traits": [
+        "species": [
             {
                 "name": "bark",
                 "stats": {
@@ -424,7 +424,7 @@
     },
     {
         "name": "Centipede",
-        "traits": [
+        "species": [
             {
                 "name": "house",
                 "stats": {
@@ -471,7 +471,7 @@
     },
     {
         "name": "Termite",
-        "traits": [
+        "species": [
             {
                 "name": "nasute",
                 "stats": {
@@ -518,7 +518,7 @@
     },
     {
         "name": "Dragonfly",
-        "traits": [
+        "species": [
             {
                 "name": "skimmer",
                 "stats": {

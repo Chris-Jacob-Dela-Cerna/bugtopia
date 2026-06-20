@@ -45,9 +45,9 @@ def get_deck_rows(deck):
                 rows[x] = row
                 continue
             elif x == 0:
-                row += fit(slot.unit, 13, f"{y + 1}) ", " | ") 
+                row += fit(slot.family, 13, f"{y + 1}) ", " | ") 
             elif x == 1:
-                row += fit(slot.trait, 13, "T: ", " | ")
+                row += fit(slot.species, 13, "S: ", " | ")
             elif x == 2:
                 row += fit(f"{slot.health}/{slot.base_health}", 13, "H: ", " | ")
             elif x == 3:

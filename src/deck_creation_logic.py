@@ -9,8 +9,8 @@ from utils import ui_helpers as uh
 
 
 def deck_creation_logic():
-    units_data = aj.load_json_data("units_default.json")
-    pages_data = gp.get_pages_data(units_data)
+    bugs_data = aj.load_json_data("bugs_data.json")
+    pages_data = gp.get_pages_data(bugs_data)
     deck = deck_creator(pages_data)
     if not deck:
         return
@@ -58,15 +58,15 @@ def handle_page(chosen, page, visible_page, total_pages):
 
 def handle_deck(chosen, deck, pages_data):
     if len(deck) <= 2:
-        if unit_code := re.search(r"^([0-9]{1,3})([a-c])$", chosen):
-            unit_number = int(unit_code.group(1)) - 1
-            unit_trait = unit_code.group(2)
+        if bug_id := re.search(r"^([0-9]{1,3})([a-c])$", chosen):
+            bug_idx = int(bug_id.group(1)) - 1
+            bug_family = bug_id.group(2)
             options = {
                 "a": "T1",
                 "b": "T2",
                 "c": "T3"
             }
-            deck.append(f"{options[unit_trait]}-{pages_data[unit_number]["name"].title()}")
+            deck.append(f"{options[bug_family]}-{pages_data[bug_idx]["name"].title()}")
     if chosen == "d" and deck:
         del deck[-1]
     return deck

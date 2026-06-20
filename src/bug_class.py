@@ -4,7 +4,7 @@ import copy
 from millify import millify
 
 
-class Unit:
+class Bug:
     ability_data = {
         "active": {
             "instant":      ["attack", "healSelf", "leech"],
@@ -36,46 +36,46 @@ class Unit:
         "buffs":      ["enrage", "harden", "regen"],
         "debuffs":    ["burn", "pierce", "poison", "weaken" ]
     }
-    def __init__(self, units_data, unit_idx=0, trait_idx=0):
-        unit = units_data[unit_idx]
-        unit_name = unit['name']
-        if len(unit_name) < 1 or len(unit_name) > 13:
-            raise ValueError("Invalid unit name length. Range: 1-13")
-        self._unit = unit_name
+    def __init__(self, units_data, family_idx=0, species_idx=0):
+        family = units_data[family_idx]
+        family_name = family['name']
+        if len(family_name) < 1 or len(family_name) > 13:
+            raise ValueError("Invalid family name length. Range: 1-13")
+        self._family = family_name
 
-        trait = unit['traits'][trait_idx]
-        trait_name = trait['name']
-        if len(trait_name) < 1 or len(trait_name) > 13:
-            raise ValueError("Invalid trait name length. Range: 1-13")
-        self._trait = trait_name
+        species = family['species'][species_idx]
+        species_name = species['name']
+        if len(species_name) < 1 or len(species_name) > 13:
+            raise ValueError("Invalid bug name length. Range: 1-13")
+        self._species = species_name
 
 
-        health = trait['stats']['health']
+        health = species['stats']['health']
         if health < 1 or health > 9999999:
             raise ValueError("Invalid health value. Range: 1-9999999")
         self._base_health = health
         self._health = health
 
 
-        defence = trait['stats']['defence']
+        defence = species['stats']['defence']
         if defence < 0 or defence > 999999:
             raise ValueError("Invalid defence value. Range: 0-999999")
         self._base_defence = defence
         self._defence = defence
 
 
-        attack = trait['stats']['attack']
+        attack = species['stats']['attack']
         if attack < 0 or attack > 999999:
             raise ValueError("Invalid attack value. Range: 0-9999999")
         self._base_attack = attack
         self._attack = attack
 
 
-        abilities = trait['abilities']
+        abilities = species['abilities']
         self._abilities = abilities
 
-        self._ability_data = copy.deepcopy(Unit.ability_data)
-        self._multipliers = copy.deepcopy(Unit.multipliers)
+        self._ability_data = copy.deepcopy(Bug.ability_data)
+        self._multipliers = copy.deepcopy(Bug.multipliers)
 
         actives = self._ability_data['active']
         self._active_abilities = [ability for ability in abilities if ability in actives['instant'] or ability in actives['ticking']]
@@ -91,11 +91,11 @@ class Unit:
 
 
     @property
-    def unit(self):
-        return self._unit.title()
+    def family(self):
+        return self._family.title()
     @property
-    def trait(self):
-        return self._trait.title()
+    def species(self):
+        return self._species.title()
 
 
 
@@ -191,10 +191,10 @@ class Unit:
         return False
 
     def apply(self, ability, damage=None):
-        if ability in Unit.statuses['buffs']:
+        if ability in Bug.statuses['buffs']:
             self.add_buff(ability)
             return True
-        elif ability in Unit.statuses['debuffs']:
+        elif ability in Bug.statuses['debuffs']:
             self.add_debuff(ability)
             return True
         match ability:
@@ -257,13 +257,12 @@ class Unit:
 
     def tick_effect(self, ability):
         ticks = self._ability_data['active']['ticking'][ability]['ticks']
-        print(ticks)
         if ticks > 0:
             self._ability_data['active']['ticking'][ability]['ticks'] -= 1
         if ticks == 0:
-            if ability in Unit.statuses['buffs']:
+            if ability in Bug.statuses['buffs']:
                 self.remove_buff(ability)
-            elif ability in Unit.statuses['debuffs']:
+            elif ability in Bug.statuses['debuffs']:
                 self.remove_debuff(ability)
 
 

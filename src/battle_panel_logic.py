@@ -2,27 +2,27 @@
 
 def selection_panel(attacker):
     letters =    "abcd"
-    header =     "Select a unit:"
+    header =     "Select a bug:"
     options =    {}
     ui_options = []
     footer =     "e. Skip"
 
-    for x, unit in enumerate(attacker):
-        if unit:
-            options[letters[x]] = unit
-            ui_options.append(f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)")
+    for x, bug in enumerate(attacker):
+        if bug:
+            options[letters[x]] = bug
+            ui_options.append(f"{letters[x]}. {bug.species} {bug.family} ({bug.health} HP)")
     panel = contruct_panel(header, ui_options, footer)
     return panel, options
 
 
-def ability_panel(selected_unit):
+def ability_panel(selected_bug):
     letters =    "abcd"
     header =     "Choose an ability:"
     options =    {}
     ui_options = []
     footer =     "e. Back"
     
-    for x, ability in enumerate(selected_unit.active_abilities):
+    for x, ability in enumerate(selected_bug.active_abilities):
         if ability:
             options[letters[x]] = ability
             ui_options.append(f"{letters[x]}. {ability}")
@@ -37,11 +37,11 @@ def attack_panel(defender, selected_ability):
     ui_options = []
     footer =     "e. Back"
 
-    for x, unit in enumerate(defender):
-        if unit:
-            if selected_ability not in unit.active_effects:
-                options[letters[x]] = unit
-                ui_options.append(f"{letters[x]}. {unit.trait} {unit.unit} ({unit.health} HP)")
+    for x, bug in enumerate(defender):
+        if bug:
+            if selected_ability not in bug.active_effects:
+                options[letters[x]] = bug
+                ui_options.append(f"{letters[x]}. {bug.species} {bug.family} ({bug.health} HP)")
     panel = contruct_panel(header, ui_options, footer)
     return panel, options
 

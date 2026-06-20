@@ -13,8 +13,8 @@ def convert_page_ui(ui_data, idx=0, deck=[], show_help=False):
     current_page = page['idx'] + 1
     ui.append(fit(f"{current_page}) {page['name']}", 54, "  | ", " |"))
 
-    ui.append("  | Traits:                                                |")
-    ui.extend(convert_trait_stats_ui(page))
+    ui.append("  | Bugs:                                                  |")
+    ui.extend(convert_bug_stats_ui(page))
 
     ui.append("  | Abilities:                                             |")
     ability_list = get_abilities(page)
@@ -34,22 +34,22 @@ def convert_page_ui(ui_data, idx=0, deck=[], show_help=False):
     return ui
 
 
-def convert_trait_stats_ui(page):
+def convert_bug_stats_ui(page):
     options = "abc"
     rows = ["  |", "  |", "  |", "  |"]
     for x in range(3):
-        current_trait = page['traits'][x]
-        rows[0] += fit(f"{options[x]}. {current_trait['name'].title()}", 16, " ", " |")
-        rows[1] += fit(current_trait['stats']['health'], 12, " HP: ", " |")
-        rows[2] += fit(current_trait['stats']['defence'], 11, " DEF: ", " |")
-        rows[3] += fit(current_trait['stats']['attack'], 11, " ATK: ", " |")
+        current_species = page['species'][x]
+        rows[0] += fit(f"{options[x]}. {current_species['name'].title()}", 16, " ", " |")
+        rows[1] += fit(current_species['stats']['health'], 12, " HP: ", " |")
+        rows[2] += fit(current_species['stats']['defence'], 11, " DEF: ", " |")
+        rows[3] += fit(current_species['stats']['attack'], 11, " ATK: ", " |")
     return rows
 
 
 def get_abilities(page):
     ability_list = []
     for x in range(3):
-        ability_list.append([_ for _ in page['traits'][x]['abilities']])
+        ability_list.append([_ for _ in page['species'][x]['abilities']])
     return ability_list
 
 
@@ -90,7 +90,7 @@ def get_help_state(show_help):
     if show_help:
         return [
             "    To change page -> type 'e', 'r', or the page number", 
-            "    To select -> type unit-trait, ex: '1b', 2a, or '3c'", 
+            "    To select -> type unit-bug, ex: '1b', 2a, or '3c'", 
             "    To undo -> type 'd'",
             "    To finish -> type 'f'",
             "    To go back -> type 'b'"
