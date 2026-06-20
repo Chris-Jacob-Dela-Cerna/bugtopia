@@ -1,6 +1,8 @@
 
 
+import sys
 from src import main_logic
+from ui import splashes as spl
 
 
 def main():
@@ -8,4 +10,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        spl.show_goodbye()

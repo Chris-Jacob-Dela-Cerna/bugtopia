@@ -1,17 +1,16 @@
 
 
-import sys
 from src import battle_logic as bl
 from src import deck_creation_logic as dc
 from src import get_menus as gm
 from ui import menu as mn
 from ui import prompt as pr
-from ui import title as tt
+from ui import splashes as spl
 from utils import ui_helpers as uh
 
 
 def main_menu():
-    tt.show_title()
+    spl.show_title()
 
     menu_data = gm.get_main_menu()
     menu_ui = mn.render_menu_ui(menu_data)
@@ -19,11 +18,11 @@ def main_menu():
         uh.display(menu_ui)
         chosen = input("                 >>> ").strip()
         if chosen in menu_data["options"]:
-            route = {
-            "a": player_decks,
-            "b": sys.exit
-            }
-            route[chosen]()
+            match chosen:
+                case "a":
+                    player_decks()
+                case "b":
+                    spl.show_goodbye()
 
 
 def player_decks():
