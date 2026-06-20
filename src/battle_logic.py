@@ -5,6 +5,7 @@ from src import get_bug_idx as gb
 from src import bug_state_logic as bsl
 from src import bug_class as bc
 from ui import battle_screen as bs
+from ui import splashes as spl
 from utils import access_json as aj
 from utils import ui_helpers as uh
 
@@ -17,9 +18,11 @@ def battle_logic(deck_1, deck_2):
     turns = 0
     while True:
         turns += 1
+        spl.ready_player(1)
         bsl.run_per_turn_checks(players)
         player_turn_logic(player_1, player_2, turns)
 
+        spl.ready_player(2)
         bsl.run_per_instance_checks(players)
         player_turn_logic(player_2, player_1, turns)
 
