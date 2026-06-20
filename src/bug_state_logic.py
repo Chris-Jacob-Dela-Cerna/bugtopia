@@ -18,6 +18,17 @@ def run_per_turn_checks(decks):
                     deck[x] = None
 
 
+def check_winner(decks, deck1, deck2):
+    if all(x is None for x in decks):
+        return "      It's tied!      "
+    elif all(x is None for x in deck1):
+        return "    Player 2 wins!    "
+    elif all(x is None for x in deck2):
+        return "    Player 1 wins!    "
+    else:
+        return False
+
+
 def check_self_ability(selected_unit, selected_ability):
     self_abilities = ["enrage", "harden", "healSelf", "regen", "shell"]
     if selected_ability in self_abilities:

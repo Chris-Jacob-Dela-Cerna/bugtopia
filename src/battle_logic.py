@@ -20,11 +20,16 @@ def battle_logic(deck_1, deck_2):
         turns += 1
         spl.ready_player(1)
         bsl.run_per_turn_checks(players)
+        if message := bsl.check_winner(players, player_1, player_2):
+            break
         player_turn_logic(player_1, player_2, turns)
 
         spl.ready_player(2)
         bsl.run_per_instance_checks(players)
+        if message := bsl.check_winner(players, player_1, player_2):
+            break
         player_turn_logic(player_2, player_1, turns)
+    spl.show_winner(message)
 
 
 def player_turn_logic(attacker, defender, turns):
