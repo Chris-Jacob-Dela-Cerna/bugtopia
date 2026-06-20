@@ -13,7 +13,7 @@ class Bug:
                 "enrage":   {"display": "RGE", "duration": 1, "ticks": 0},
                 "harden":   {"display": "HRD", "duration": 1, "ticks": 0},
                 "pierce":   {"display": "PRC", "duration": 3, "ticks": 0},
-                "venom":   {"display": "PSN", "duration": 2, "ticks": 0},
+                "venom":    {"display": "PSN", "duration": 2, "ticks": 0},
                 "regen":    {"display": "RGN", "duration": 2, "ticks": 0},
                 "weaken":   {"display": "WKN", "duration": 2, "ticks": 0}
             },
@@ -28,7 +28,7 @@ class Bug:
         "harden":     {"health": 0, "defence": 0, "attack": 0},
         "lastStand":  {"health": 0, "defence": 0, "attack": 0},
         "pierce":     {"health": 0, "defence": 0, "attack": 0},
-        "venom":     {"health": 0, "defence": 0, "attack": 0},
+        "venom":      {"health": 0, "defence": 0, "attack": 0},
         "regen":      {"health": 0, "defence": 0, "attack": 0},
         "weaken":     {"health": 0, "defence": 0, "attack": 0}
     }
@@ -289,11 +289,6 @@ class Bug:
         else:
             self.add_active_ability("healSelf")
             self.add_active_ability("leech")
-
-
-
-    def attack(self, damage, selected_unit):
-        
 
 
 

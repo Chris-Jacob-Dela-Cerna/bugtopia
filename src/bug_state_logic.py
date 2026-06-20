@@ -19,7 +19,7 @@ def run_per_turn_checks(decks):
 
 
 def check_self_ability(selected_unit, selected_ability):
-    self_abilities = ["enrage", "harden", "healSelf", "regen"]
+    self_abilities = ["enrage", "harden", "healSelf", "regen", "shell"]
     if selected_ability in self_abilities:
         if selected_unit.apply(selected_ability):
             return True
