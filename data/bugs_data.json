@@ -12,21 +12,21 @@
                 "abilities": [
                     "attack",
                     "burn",
-                    "sting",
+                    "rupture",
                     ""
                 ]
             },
             {
                 "name": "bullet",
                 "stats": {
-                    "health": 118,
+                    "health": 128,
                     "defence": 10,
                     "attack": 42
                 },
                 "abilities": [
                     "attack",
+                    "sting",
                     "venom",
-                    "rupture",
                     ""
                 ]
             },
@@ -52,28 +52,28 @@
             {
                 "name": "bombardier",
                 "stats": {
-                    "health": 155,
-                    "defence": 26,
-                    "attack": 28
+                    "health": 122,
+                    "defence": 17,
+                    "attack": 38
                 },
                 "abilities": [
                     "attack",
                     "burn",
-                    "harden",
+                    "pierce",
                     ""
                 ]
             },
             {
                 "name": "stag",
                 "stats": {
-                    "health": 112,
-                    "defence": 12,
-                    "attack": 48
+                    "health": 155,
+                    "defence": 26,
+                    "attack": 28
                 },
                 "abilities": [
                     "attack",
-                    "pierce",
                     "rupture",
+                    "harden",
                     ""
                 ]
             },
@@ -146,27 +146,27 @@
             {
                 "name": "yellow jacket",
                 "stats": {
-                    "health": 105,
+                    "health": 110,
                     "defence": 9,
                     "attack": 50
                 },
                 "abilities": [
                     "attack",
                     "enrage",
-                    "rupture",
+                    "sting",
                     ""
                 ]
             },
             {
                 "name": "paper",
                 "stats": {
-                    "health": 122,
+                    "health": 105,
                     "defence": 12,
                     "attack": 30
                 },
                 "abilities": [
                     "attack",
-                    "venom",
+                    "sting",
                     "healSelf",
                     ""
                 ]
@@ -174,14 +174,14 @@
             {
                 "name": "hornet",
                 "stats": {
-                    "health": 108,
-                    "defence": 10,
-                    "attack": 50
+                    "health": 124,
+                    "defence": 16,
+                    "attack": 40
                 },
                 "abilities": [
                     "attack",
-                    "pierce",
-                    "enrage",
+                    "harden",
+                    "sting",
                     ""
                 ]
             }
@@ -191,7 +191,7 @@
         "name": "Grasshopper",
         "species": [
             {
-                "name": "locust",
+                "name": "cricket",
                 "stats": {
                     "health": 105,
                     "defence": 9,
@@ -200,14 +200,14 @@
                 "abilities": [
                     "attack",
                     "weaken",
-                    "sting",
+                    "healSelf",
                     ""
                 ]
             },
             {
-                "name": "katydid",
+                "name": "locust",
                 "stats": {
-                    "health": 145,
+                    "health": 135,
                     "defence": 16,
                     "attack": 20
                 },
@@ -219,7 +219,7 @@
                 ]
             },
             {
-                "name": "cricket",
+                "name": "katydid",
                 "stats": {
                     "health": 160,
                     "defence": 20,
@@ -228,7 +228,7 @@
                 "abilities": [
                     "attack",
                     "harden",
-                    "weaken",
+                    "thorns",
                     ""
                 ]
             }
@@ -254,7 +254,7 @@
             {
                 "name": "praying",
                 "stats": {
-                    "health": 105,
+                    "health": 115,
                     "defence": 9,
                     "attack": 50
                 },
@@ -301,13 +301,13 @@
             {
                 "name": "robber",
                 "stats": {
-                    "health": 105,
+                    "health": 145,
                     "defence": 9,
                     "attack": 50
                 },
                 "abilities": [
                     "attack",
-                    "burn",
+                    "leech",
                     "sacrifice",
                     ""
                 ]
@@ -315,13 +315,13 @@
             {
                 "name": "bot",
                 "stats": {
-                    "health": 195,
+                    "health": 165,
                     "defence": 18,
                     "attack": 16
                 },
                 "abilities": [
                     "attack",
-                    "venom",
+                    "healSelf",
                     "weaken",
                     "regen"
                 ]
@@ -387,7 +387,7 @@
                 },
                 "abilities": [
                     "attack",
-                    "venom",
+                    "rupture",
                     "sting",
                     ""
                 ]
@@ -396,13 +396,13 @@
                 "name": "death stalker",
                 "stats": {
                     "health": 100,
-                    "defence": 8,
+                    "defence": 10,
                     "attack": 50
                 },
                 "abilities": [
                     "attack",
                     "venom",
-                    "sacrifice",
+                    "rupture",
                     ""
                 ]
             },
@@ -416,7 +416,7 @@
                 "abilities": [
                     "attack",
                     "harden",
-                    "rupture",
+                    "lastStand",
                     ""
                 ]
             }
@@ -444,19 +444,19 @@
                 "stats": {
                     "health": 128,
                     "defence": 12,
-                    "attack": 46
+                    "attack": 36
                 },
                 "abilities": [
                     "attack",
                     "pierce",
-                    "weaken",
+                    "thorns",
                     ""
                 ]
             },
             {
                 "name": "giant",
                 "stats": {
-                    "health": 220,
+                    "health": 268,
                     "defence": 16,
                     "attack": 36
                 },
@@ -477,7 +477,7 @@
                 "stats": {
                     "health": 100,
                     "defence": 8,
-                    "attack": 38
+                    "attack": 48
                 },
                 "abilities": [
                     "attack",
@@ -491,21 +491,21 @@
                 "stats": {
                     "health": 132,
                     "defence": 13,
-                    "attack": 48
+                    "attack": 38
                 },
                 "abilities": [
                     "attack",
-                    "rupture",
-                    "burn",
+                    "weaken",
+                    "pierce",
                     ""
                 ]
             },
             {
                 "name": "dampwood",
                 "stats": {
-                    "health": 345,
-                    "defence": 34,
-                    "attack": 10
+                    "health": 220,
+                    "defence": 28,
+                    "attack": 15
                 },
                 "abilities": [
                     "attack",
@@ -522,9 +522,9 @@
             {
                 "name": "skimmer",
                 "stats": {
-                    "health": 135,
+                    "health": 105,
                     "defence": 13,
-                    "attack": 36
+                    "attack": 35
                 },
                 "abilities": [
                     "attack",
@@ -536,9 +536,9 @@
             {
                 "name": "darner",
                 "stats": {
-                    "health": 105,
+                    "health": 135,
                     "defence": 9,
-                    "attack": 50
+                    "attack": 40
                 },
                 "abilities": [
                     "attack",
@@ -557,7 +557,7 @@
                 "abilities": [
                     "attack",
                     "pierce",
-                    "burn",
+                    "rupture",
                     ""
                 ]
             }
