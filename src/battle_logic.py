@@ -22,17 +22,17 @@ def battle_logic(deck_1, deck_2):
         if message := bsl.check_winner(players, player_1, player_2):
             break
         spl.ready_player(1)
-        player_turn_logic(player_1, player_2, turns)
+        player_turn_logic(player_1, player_2, state=[turns, [1, 2]])
 
         bsl.run_per_instance_checks(players)
         if message := bsl.check_winner(players, player_1, player_2):
             break
         spl.ready_player(2)
-        player_turn_logic(player_2, player_1, turns)
+        player_turn_logic(player_2, player_1, state=[turns, [2, 1]])
     spl.show_winner(message)
 
 
-def player_turn_logic(attacker, defender, turns):
+def player_turn_logic(attacker, defender, state):
     panel_mode = 0
     selected_bug = None
     selected_ability = None
@@ -40,8 +40,8 @@ def player_turn_logic(attacker, defender, turns):
 
     while True:
         if panel_mode == 0:
-            panel, options = bpl.selection_panel(attacker)
-            chosen = load_battle_ui(attacker, defender, panel, turns)
+            control_panel, options = bpl.selection_panel(attacker)
+            chosen = load_battle_ui(attacker, defender, control_panel, state)
             if chosen in options:
                 selected_bug = options[chosen]
                 panel_mode = 1
@@ -50,8 +50,8 @@ def player_turn_logic(attacker, defender, turns):
                 break
 
         elif panel_mode == 1:
-            panel, options = bpl.ability_panel(selected_bug)
-            chosen = load_battle_ui(attacker, defender, panel, turns)
+            control_panel, options = bpl.ability_panel(selected_bug)
+            chosen = load_battle_ui(attacker, defender, control_panel, state)
             if chosen in options:
                 selected_ability = options[chosen]
                 if bsl.check_self_ability(selected_bug, selected_ability):
@@ -64,8 +64,8 @@ def player_turn_logic(attacker, defender, turns):
                 continue
 
         elif panel_mode == 2:
-            panel, options = bpl.attack_panel(defender, selected_ability)
-            chosen = load_battle_ui(attacker, defender, panel, turns)
+            control_panel, options = bpl.attack_panel(defender, selected_ability)
+            chosen = load_battle_ui(attacker, defender, control_panel, state)
             if chosen in options:
                 selected_target = options[chosen]
                 if bsl.check_inflicting_ability(selected_bug, selected_ability, selected_target):

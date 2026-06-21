@@ -3,26 +3,26 @@
 from utils.ui_helpers import fit
 
 
-def render_battle_ui(current_deck, enemy_deck, control_panel_data, turns):
+def render_battle_ui(attacker, defender, control_panel, state):
     ui = []
     ui.append(f"{"\n" * 35}")
     ui.append("  ╭────────────────────────────────────────────────────────╮")
-    ui.append("  | Enemy                                                  |")
+    ui.append(f"  | Player {state[1][1]} (Enemy)                                       |")
     ui.append("  |────────────────────────────────────────────────────────|")
 
-    ui.extend(get_deck_rows(enemy_deck))
+    ui.extend(get_deck_rows(defender))
 
     ui.append("  ╰────────────────────────────────────────────────────────╯")
-    ui.append(f"  Turn {turns}")
+    ui.append(f"  Turn {state[0]}")
     ui.append("  ╭────────────────────────────────────────────────────────╮")
 
-    ui.extend(get_deck_rows(current_deck))
+    ui.extend(get_deck_rows(attacker))
 
     ui.append("  |────────────────────────────────────────────────────────|")
-    ui.append("  | You                                                    |")
+    ui.append(f"  | Player {state[1][0]} (You)                                         |")
     ui.append("  |────────────────────────────────────────────────────────|")
 
-    ui.extend(get_control_panel_rows(control_panel_data))
+    ui.extend(get_control_panel_rows(control_panel))
 
     ui.append("  ╰────────────────────────────────────────────────────────╯")
     return ui
