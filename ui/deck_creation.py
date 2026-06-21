@@ -29,8 +29,8 @@ def render_page_ui(ui_data, idx=0, deck=[], show_help=False):
     ui.append("  |────────────────────────────────────────────────────────|")
     slots = get_slots(deck)
     ui.append(f"  | {slots[0]} | {slots[1]} | {slots[2]} |")
-    ui.append("  ╰────────────────────────────────────────────────────────╯")
 
+    ui.append("  ╰────────────────────────────────────────────────────────╯")
     ui.extend(get_help_state(show_help))
     return ui
 
