@@ -92,7 +92,7 @@ def get_help_state(show_help):
         return [
             "    To change page -> type 'q', 'e', or the page number", 
             "    To select -> type unit-bug, ex: '1b', 2a, or '3c'",
-            "    To select randomly -> type 'r'"
+            "    To select randomly -> type 'r'",
             "    To undo -> type 'd'",
             "    To finish -> type 'f'",
             "    To go back -> type 'b'"

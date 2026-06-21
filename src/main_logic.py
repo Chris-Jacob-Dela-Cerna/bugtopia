@@ -2,6 +2,7 @@
 
 from src import battle_logic as bl
 from src import deck_creation_logic as dc
+from src import deck_selection_logic as ds
 from src import get_menus as gm
 from ui import menu as mn
 from ui import prompt as pr
@@ -42,7 +43,7 @@ def player_menu(player_number):
         if chosen in menu_data["options"]:
             route = {
             "a": dc.deck_creation_logic,
-            "b": lambda: print("To be implemented."),
+            "b": ds.deck_selection_logic,
             "c": lambda: "Back"
             }
             result = route[chosen]()

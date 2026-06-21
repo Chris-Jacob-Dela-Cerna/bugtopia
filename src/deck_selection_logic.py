@@ -1,17 +1,18 @@
 
 
 from src import deck_creation_logic as dcl
+from src import get_bug_idx as gb
 from ui import deck_selection as ds
 from utils import access_json as aj
 from utils import ui_helpers as uh
 
 
-def deck_creation_logic():
+def deck_selection_logic():
     raw_decks_data = aj.load_json_data("saved_decks.json")
     if not raw_decks_data:
         return
     decks_data = convert_decks_data(raw_decks_data)
-    deck = deck_selector(decks_data)
+    deck = deck_selector(raw_decks_data, decks_data)
     if not deck:
         return
     return deck
@@ -24,7 +25,7 @@ def deck_selector(raw_decks_data, decks_data):
     while True:
         deck_ui = ds.render_deck_ui(decks_data, page, show_help)
         uh.display(deck_ui)
-        chosen = input("    >>> ").strip().lower()
+        chosen = input("             >>> ").strip().lower()
 
         visible_page = page + 1
         show_help = False
@@ -42,4 +43,16 @@ def deck_selector(raw_decks_data, decks_data):
 
 
 def convert_decks_data(raw_decks_data):
-    ...
+    bugs_data = aj.load_json_data("bugs_data.json")
+    decks_data = []
+    for saved_deck in raw_decks_data:
+        saved_deck_data = {
+            "name": saved_deck['name'], 
+            "deck": []
+        }
+        for bug_slot in saved_deck['deck']:
+            family_idx, species_idx = gb.get_bug_idx(bug_slot, bugs_data)
+            bug = bugs_data[family_idx]
+            saved_deck_data['deck'].append(f"{bug['species'][species_idx]['name'].title()} {bug['name'].title()}")
+        decks_data.append(saved_deck_data)
+    return decks_data

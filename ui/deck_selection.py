@@ -26,9 +26,9 @@ def render_deck_ui(decks_data, idx, show_help):
 
 def convert_deck_data(deck):
     rows = []
-    rows.append(fit(f"", 36, "            | ", " |"))
+    rows.append(fit(deck['name'], 36, "           | ", " |"))
     for bug in deck['deck']:
-        rows.append(fit(bug, 34, "            | - ", " |"))
+        rows.append(fit(bug, 34, "           | - ", " |"))
     return rows
 
 
@@ -47,9 +47,9 @@ def get_page_option(current_page, total_pages):
 def get_help_state(show_help):
     if show_help:
         return [
-            "             To change page -> type 'q', 'e'"
-            "             or the page number"
-            "             To select -> type 'f'"
+            "             To change page -> type 'q', 'e'",
+            "             or the page number",
+            "             To select -> type 'f'",
             "             To go back -> type 'b'"
         ]
     else:
