@@ -24,16 +24,6 @@ def render_deck_ui(decks_data, idx, show_help):
     return ui
 
 
-example = {
-    "name": "Deck Name",
-    "deck": [
-        "bug",
-        "bug2",
-        "bug3"
-    ]
-}
-
-
 def convert_deck_data(deck):
     rows = []
     rows.append(fit(f"", 36, "            | ", " |"))
