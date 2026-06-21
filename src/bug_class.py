@@ -11,18 +11,18 @@ class Bug:
             "instant":      ["attack", "healSelf", "leech", "sacrifice", "sting"],
             "ticking": {
                 "burn":     {"display": "BRN", "duration": 1, "ticks": 0},
-                "enrage":   {"display": "RGE", "duration": 1, "ticks": 0},
+                "enrage":   {"display": "RGE", "duration": 2, "ticks": 0},
                 "harden":   {"display": "HRD", "duration": 2, "ticks": 0},
                 "pierce":   {"display": "PRC", "duration": 3, "ticks": 0},
                 "regen":    {"display": "RGN", "duration": 2, "ticks": 0},
                 "rupture":  {"display": "RPT", "duration": 2, "ticks": 0},
-                "shell":    {"display": "SHL", "duration": 1, "ticks": 0},
+                "shell":    {"display": "SHL", "duration": 2, "ticks": 0},
                 "venom":    {"display": "VNM", "duration": 2, "ticks": 0},
-                "weaken":   {"display": "WKN", "duration": 2, "ticks": 0}
+                "weaken":   {"display": "WKN", "duration": 3, "ticks": 0}
             },
         },
         "passive": {
-            "lastStand":    {"display": "LST"},
+            "lastStand":    {"display": "LSD"},
             "thorns":       {"display": "TRN"}
         }
     }

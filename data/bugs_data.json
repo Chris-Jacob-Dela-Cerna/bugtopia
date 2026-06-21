@@ -246,7 +246,7 @@
                 },
                 "abilities": [
                     "attack",
-                    "weaken",
+                    "pierce",
                     "leech",
                     ""
                 ]
@@ -558,6 +558,147 @@
                     "attack",
                     "pierce",
                     "rupture",
+                    ""
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Butterfly",
+        "species": [
+            {
+                "name": "monarch",
+                "stats": {
+                    "health": 155,
+                    "defence": 20,
+                    "attack": 28
+                },
+                "abilities": [
+                    "attack",
+                    "thorns",
+                    "rupture",
+                    ""
+                ]
+            },
+            {
+                "name": "glasswing",
+                "stats": {
+                    "health": 120,
+                    "defence": 13,
+                    "attack": 36
+                },
+                "abilities": [
+                    "attack",
+                    "shell",
+                    "venom",
+                    ""
+                ]
+            },
+            {
+                "name": "swallowtail",
+                "stats": {
+                    "health": 115,
+                    "defence": 12,
+                    "attack": 40
+                },
+                "abilities": [
+                    "attack",
+                    "burn",
+                    "healSelf",
+                    ""
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Moth",
+        "species": [
+            {
+                "name": "luna",
+                "stats": {
+                    "health": 145,
+                    "defence": 16,
+                    "attack": 24
+                },
+                "abilities": [
+                    "attack",
+                    "weaken",
+                    "shell",
+                    ""
+                ]
+            },
+            {
+                "name": "death hawk",
+                "stats": {
+                    "health": 108,
+                    "defence": 10,
+                    "attack": 48
+                },
+                "abilities": [
+                    "attack",
+                    "venom",
+                    "sacrifice",
+                    ""
+                ]
+            },
+            {
+                "name": "atlas",
+                "stats": {
+                    "health": 260,
+                    "defence": 26,
+                    "attack": 14
+                },
+                "abilities": [
+                    "attack",
+                    "regen",
+                    "harden",
+                    ""
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Assassin Bug",
+        "species": [
+            {
+                "name": "wheel",
+                "stats": {
+                    "health": 130,
+                    "defence": 12,
+                    "attack": 42
+                },
+                "abilities": [
+                    "attack",
+                    "venom",
+                    "weaken",
+                    ""
+                ]
+            },
+            {
+                "name": "red spotted",
+                "stats": {
+                    "health": 112,
+                    "defence": 10,
+                    "attack": 46
+                },
+                "abilities": [
+                    "attack",
+                    "leech",
+                    "rupture",
+                    ""
+                ]
+            },
+            {
+                "name": "horrid king",
+                "stats": {
+                    "health": 148,
+                    "defence": 14,
+                    "attack": 38
+                },
+                "abilities": [
+                    "attack",
+                    "sting",
+                    "thorns",
                     ""
                 ]
             }
