@@ -6,7 +6,7 @@ from utils.ui_helpers import fit
 def render_page_ui(ui_data, idx=0, deck=[], show_help=False):
     page = ui_data[idx]
     ui = []
-    ui.append(f"{"\n" * 30}")
+    ui.append(f"{"\n" * 35}")
     ui.append("  ╭────────────────────────────────────────────────────────╮")
     ui.append("  | Create your deck:                                      |")
     ui.append("  |────────────────────────────────────────────────────────|")
@@ -91,7 +91,8 @@ def get_help_state(show_help):
     if show_help:
         return [
             "    To change page -> type 'e', 'r', or the page number", 
-            "    To select -> type unit-bug, ex: '1b', 2a, or '3c'", 
+            "    To select -> type unit-bug, ex: '1b', 2a, or '3c'",
+            "    To select randomly -> type 'r'" 
             "    To undo -> type 'd'",
             "    To finish -> type 'f'",
             "    To go back -> type 'b'"

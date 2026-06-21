@@ -5,7 +5,7 @@ from utils.ui_helpers import fit
 
 def render_battle_ui(current_deck, enemy_deck, control_panel_data, turns):
     ui = []
-    ui.append(f"{"\n" * 30}")
+    ui.append(f"{"\n" * 35}")
     ui.append("  ╭────────────────────────────────────────────────────────╮")
     ui.append("  | Enemy                                                  |")
     ui.append("  |────────────────────────────────────────────────────────|")

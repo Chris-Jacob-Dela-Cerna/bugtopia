@@ -1,6 +1,7 @@
 
 
 import re
+import random as rd
 from src import deck_saving_logic as ds
 from ui import deck_creation as cd
 from utils import access_json as aj
@@ -32,6 +33,8 @@ def deck_creator(pages_data):
         if not chosen:
             continue
 
+        if chosen == "r":
+            chosen = f"{rd.randint(1, total_pages)}{rd.choice("abc")}"
         if chosen == "h":
             show_help = True
         if chosen == "b":
