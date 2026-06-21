@@ -24,7 +24,7 @@ def deck_creator(pages_data):
     deck = []
     show_help = False
     while True:
-        page_ui = cd.render_page_ui(ui_data=pages_data, idx=page, deck=deck, show_help=show_help)
+        page_ui = cd.render_page_ui(pages_data, page, deck, show_help)
         uh.display(page_ui)
         chosen = input("    >>> ").strip().lower()
 
