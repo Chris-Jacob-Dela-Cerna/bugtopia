@@ -12,12 +12,12 @@ class Bug:
             "ticking": {
                 "burn":     {"display": "BRN", "duration": 1, "ticks": 0},
                 "enrage":   {"display": "RGE", "duration": 1, "ticks": 0},
-                "harden":   {"display": "HRD", "duration": 1, "ticks": 0},
+                "harden":   {"display": "HRD", "duration": 2, "ticks": 0},
                 "pierce":   {"display": "PRC", "duration": 3, "ticks": 0},
-                "venom":    {"display": "PSN", "duration": 2, "ticks": 0},
                 "regen":    {"display": "RGN", "duration": 2, "ticks": 0},
                 "rupture":  {"display": "RPT", "duration": 2, "ticks": 0},
                 "shell":    {"display": "SHL", "duration": 1, "ticks": 0},
+                "venom":    {"display": "PSN", "duration": 2, "ticks": 0},
                 "weaken":   {"display": "WKN", "duration": 2, "ticks": 0}
             },
         },
@@ -32,12 +32,12 @@ class Bug:
         "harden":     {"health": 0, "defence": 0, "attack": 0},
         "lastStand":  {"health": 0, "defence": 0, "attack": 0},
         "pierce":     {"health": 0, "defence": 0, "attack": 0},
-        "venom":      {"health": 0, "defence": 0, "attack": 0},
         "regen":      {"health": 0, "defence": 0, "attack": 0},
+        "venom":      {"health": 0, "defence": 0, "attack": 0},
         "weaken":     {"health": 0, "defence": 0, "attack": 0}
     }
     statuses = {
-        "buffs":      ["enrage", "harden", "regen", "shell"],
+        "buffs":      ["enrage", "harden", "lastStand", "regen", "shell"],
         "debuffs":    ["burn", "pierce", "rupture", "venom", "weaken"]
     }
     def __init__(self, units_data, family_idx=0, species_idx=0):
@@ -258,7 +258,7 @@ class Bug:
             case "venom":
                 self.venom_damage()
             case "regen":
-                self.heal(self._base_health * 0.10)
+                self.heal(self._base_health * 0.07)
 
     def tick_effect(self, ability):
         ticks = self._ability_data['active']['ticking'][ability]['ticks']
@@ -315,6 +315,8 @@ class Bug:
         self._health -= damage
 
     def true_damage(self, attack):
+        if "rupture" in self.active_effects:
+            damage = damage * 1.20
         self._health -= attack
 
     def venom_damage(self):
@@ -332,11 +334,12 @@ class Bug:
 
 
     def healSelf(self):
-        if "weaken" in self._active_debuffs or "venom" in self._active_debuffs:
+        if "weaken" in self._active_debuffs or "venom" in self._active_debuffs or "rupture" in self._active_debuffs:
             self.remove_debuff("weaken")
             self.remove_debuff("venom")
+            self.remove_debuff("rupture")
         else:
-            max_heal = self._base_health * 0.30
+            max_heal = self._base_health * 0.20
             min_heal = self._base_health * 0.01
             missing_hp = 1 - (self._health / self._base_health)
             total_heal = min_heal + ((max_heal - min_heal) * missing_hp)

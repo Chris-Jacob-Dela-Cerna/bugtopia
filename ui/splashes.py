@@ -19,7 +19,7 @@ def show_title():
 
 
 def show_goodbye():
-    input(
+    print(
         "\n"
         r"                            __  __ " "\n"
         r"                           /\ \/\ \ " "\n"
