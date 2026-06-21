@@ -48,6 +48,7 @@ def get_help_state(show_help):
     if show_help:
         return [
             "             To change page -> type 'q', 'e'"
+            "             or the page number"
             "             To select -> type 'f'"
             "             To go back -> type 'b'"
         ]

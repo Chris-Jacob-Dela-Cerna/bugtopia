@@ -29,7 +29,7 @@ def save_deck(deck):
         if deck_name:
             decks_data.append({
                 "name": deck_name,
-                "slots": deck
+                "deck": deck
             })
             aj.dump_json_data("saved_decks.json", decks_data)
             starting_battle_ui = pr.prompt("Deck saved.")
