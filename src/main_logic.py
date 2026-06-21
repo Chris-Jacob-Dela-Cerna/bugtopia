@@ -54,7 +54,5 @@ def player_menu(player_number):
 
 
 def battle(deck_1, deck_2):
-    starting_battle_ui = pr.prompt("Starting battle...")
-    uh.display(starting_battle_ui)
-    input("                ")
+    pr.prompt("Starting battle...")
     bl.battle_logic(deck_1, deck_2)

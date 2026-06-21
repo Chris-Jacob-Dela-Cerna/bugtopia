@@ -11,9 +11,7 @@ from utils import ui_helpers as uh
 def deck_selection_logic():
     raw_decks_data = aj.load_json_data("saved_decks.json")
     if not raw_decks_data:
-        message = pr.prompt("No decks currently saved...")
-        uh.display(message)
-        input("                 ")
+        pr.prompt("No decks currently saved...")
         return
     decks_data = convert_decks_data(raw_decks_data)
     deck = deck_selector(raw_decks_data, decks_data)
