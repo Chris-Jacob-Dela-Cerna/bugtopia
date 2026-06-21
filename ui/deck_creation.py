@@ -6,6 +6,7 @@ from utils.ui_helpers import fit
 def render_page_ui(ui_data, idx=0, deck=[], show_help=False):
     page = ui_data[idx]
     ui = []
+    ui.append(f"{"\n" * 30}")
     ui.append("  ╭────────────────────────────────────────────────────────╮")
     ui.append("  | Create your deck:                                      |")
     ui.append("  |────────────────────────────────────────────────────────|")

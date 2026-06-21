@@ -17,7 +17,7 @@ class Bug:
                 "regen":    {"display": "RGN", "duration": 2, "ticks": 0},
                 "rupture":  {"display": "RPT", "duration": 2, "ticks": 0},
                 "shell":    {"display": "SHL", "duration": 1, "ticks": 0},
-                "venom":    {"display": "PSN", "duration": 2, "ticks": 0},
+                "venom":    {"display": "VNM", "duration": 2, "ticks": 0},
                 "weaken":   {"display": "WKN", "duration": 2, "ticks": 0}
             },
         },
@@ -300,7 +300,7 @@ class Bug:
         if "thorns" in self._passive_abilities:
             selected_unit.damage(damage * 0.50)
         if "shell" in self.active_effects:
-            if randint(1, 100) <= 40:
+            if randint(1, 100) <= 70:
                 damage = 0
         if "rupture" in self.active_effects:
             damage = damage * 1.20
@@ -314,10 +314,10 @@ class Bug:
             damage = 1
         self._health -= damage
 
-    def true_damage(self, attack):
+    def true_damage(self, damage):
         if "rupture" in self.active_effects:
             damage = damage * 1.20
-        self._health -= attack
+        self._health -= damage
 
     def venom_damage(self):
         max_damage = self._base_health * 0.15
