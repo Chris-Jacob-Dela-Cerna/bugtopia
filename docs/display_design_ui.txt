@@ -85,7 +85,7 @@ Deck Creation UI
     To undo -> type 'd'
     To finish -> type 'f'
     To go back -> type 'b'
-    Type 'help' to view all options.
+    Type 'h' to view all options.
     >>> 
 
 Save Deck UI
@@ -99,6 +99,24 @@ Save Deck UI
                │                              |
                ╰──────────────────────────────╯
                  >>> 
+
+Load Deck UI
+
+           ╭──────────────────────────────────────╮
+           | Select your deck:                    |
+           |──────────────────────────────────────|           
+           | Beetle Mayhem                        |
+           | - Hercules Beetle                    |
+           | - Stag Beetle                        |
+           | - Bombardier Beetle                  |
+           |──────────────────────────────────────|
+           | <<< (q) | Page 1/12        | (e) >>> |
+           ╰──────────────────────────────────────╯
+             To change page -> type 'q', 'e'
+             To select -> type 'f'
+             To go back -> type 'b'
+             Type 'h' to view all options.
+             >>> 
 
 Name Deck UI
                ╭──────────────────────────────╮
@@ -188,12 +206,4 @@ Winner UI
                ║  ║                        ║  ║
                ║  ╚════════════════════════╝  ║
                ╚══════════════════════════════╝
-                 >>>
-
-
-  ╭───────────────────────────────╮
-  | Beetle Mayhem                 |   /<<<</
-  | - Hercules Beetle             | /<<<</
-  | - Stag Beetle                 | \<<<<\
-  | - Bombardier Beetle           |   \<<<<\
-  ╰───────────────────────────────╯
+                 >>> 

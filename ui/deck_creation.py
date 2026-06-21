@@ -69,11 +69,11 @@ def get_page_option(current_page, total_pages):
     if current_page == 1:
         back_option = "                "
     else:
-        back_option = "    <<< Back (e)"
+        back_option = "    <<< Back (q)"
     if current_page == total_pages:
         next_option = "                "
     else:
-        next_option = "Next (r) >>>    "
+        next_option = "Next (e) >>>    "
     return back_option, next_option
 
 
@@ -90,9 +90,9 @@ def get_slots(deck):
 def get_help_state(show_help):
     if show_help:
         return [
-            "    To change page -> type 'e', 'r', or the page number", 
+            "    To change page -> type 'q', 'e', or the page number", 
             "    To select -> type unit-bug, ex: '1b', 2a, or '3c'",
-            "    To select randomly -> type 'r'" 
+            "    To select randomly -> type 'r'"
             "    To undo -> type 'd'",
             "    To finish -> type 'f'",
             "    To go back -> type 'b'"

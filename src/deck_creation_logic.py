@@ -61,9 +61,9 @@ def get_pages_data(data):
 
 
 def handle_page(chosen, page, visible_page, total_pages):
-    if chosen == "e" and visible_page > 1:
+    if chosen == "q" and visible_page > 1:
         page -= 1
-    if chosen == "r" and visible_page < total_pages:
+    if chosen == "e" and visible_page < total_pages:
         page += 1
     if page_number := re.search(r"^([0-9]{1,3})$", chosen):
         selected_page = int(page_number.group(1)) - 1
