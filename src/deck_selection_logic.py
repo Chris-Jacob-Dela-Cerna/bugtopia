@@ -3,6 +3,7 @@
 from src import deck_creation_logic as dcl
 from src import get_bug_idx as gb
 from ui import deck_selection as ds
+from ui import prompt as pr
 from utils import access_json as aj
 from utils import ui_helpers as uh
 
@@ -10,6 +11,9 @@ from utils import ui_helpers as uh
 def deck_selection_logic():
     raw_decks_data = aj.load_json_data("saved_decks.json")
     if not raw_decks_data:
+        message = pr.prompt("No decks currently saved...")
+        uh.display(message)
+        input("                 ")
         return
     decks_data = convert_decks_data(raw_decks_data)
     deck = deck_selector(raw_decks_data, decks_data)

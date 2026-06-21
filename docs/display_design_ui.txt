@@ -101,7 +101,6 @@ Save Deck UI
                  >>> 
 
 Load Deck UI
-
            ╭──────────────────────────────────────╮
            | Select your deck:                    |
            |──────────────────────────────────────|           
@@ -117,6 +116,11 @@ Load Deck UI
              To go back -> type 'b'
              Type 'h' to view all options.
              >>> 
+
+No Decks
+               ╭──────────────────────────────╮
+               │ No decks currently saved...  |
+               ╰──────────────────────────────╯
 
 Name Deck UI
                ╭──────────────────────────────╮
