@@ -31,12 +31,12 @@ def check_winner(decks, deck1, deck2):
 
 def check_self_ability(selected_unit, selected_ability):
     if selected_ability in selected_unit.all_self_abilities:
-        if selected_unit.apply(selected_unit, selected_ability):
+        if selected_unit.apply_self(selected_ability):
             return True
     return False
 
 
 def check_inflicting_ability(selected_unit, selected_ability, selected_target):
-    if selected_target.apply(selected_unit, selected_ability):
+    if selected_target.apply_inflict(selected_unit, selected_ability):
         return True
     return False

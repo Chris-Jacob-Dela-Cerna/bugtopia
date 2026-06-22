@@ -275,23 +275,28 @@ class Bug:
             self.add_active_ability("leech")
 
 
-
-    def apply(self, selected_unit, ability):
+    def apply_self(self, ability):
         if ability in Bug.statuses['buffs']:
             self.add_buff(ability)
             return True
-        elif ability in Bug.statuses['debuffs']:
+        match ability:
+            case "healSelf":
+                self.healSelf()
+                return True
+        return False
+
+
+
+    def apply_inflict(self, selected_unit, ability):
+        if ability in Bug.statuses['debuffs']:
             self.add_debuff(ability)
             return True
         match ability:
             case "attack":
                 self.attack_damage(selected_unit.attack, selected_unit)
                 return True
-            case "healSelf":
-                self.healSelf()
-                return True
             case "leech":
-                selected_unit.heal(self._health * 0.08)
+                selected_unit.heal(self._health * 0.075)
                 self.true_damage(self._health * 0.15)
                 return True
             case "sacrifice":
@@ -302,7 +307,7 @@ class Bug:
                 self.true_damage(self._health * 0.20)
                 return True
         return False
-
+    
 
 
     def attack_damage(self, damage, selected_unit):
