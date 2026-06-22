@@ -8,7 +8,7 @@ from random import randint
 class Bug:
     ability_data = {
         "active": {
-            "instant":      ["attack", "healSelf", "leech", "sacrifice", "sting"],
+            "instant":      ["attack", "healSelf", "leech", "sacrifice", "shed", "sting"],
             "ticking": {
                 "burn":     {"display": "BRN", "duration": 1, "ticks": 0},
                 "enrage":   {"display": "RGE", "duration": 2, "ticks": 0},
@@ -16,6 +16,7 @@ class Bug:
                 "pierce":   {"display": "PRC", "duration": 3, "ticks": 0},
                 "regen":    {"display": "RGN", "duration": 2, "ticks": 0},
                 "rupture":  {"display": "RPT", "duration": 2, "ticks": 0},
+                "sap":      {"display": "SAP", "duration": 2, "ticks": 0},
                 "shell":    {"display": "SHL", "duration": 2, "ticks": 0},
                 "venom":    {"display": "VNM", "duration": 2, "ticks": 0},
                 "weaken":   {"display": "WKN", "duration": 3, "ticks": 0}
@@ -36,10 +37,10 @@ class Bug:
         "venom":      {"health": 0, "defence": 0, "attack": 0},
         "weaken":     {"health": 0, "defence": 0, "attack": 0}
     }
-    self_abilities = ["enrage", "harden", "healSelf", "regen", "shell"]
+    self_abilities = ["enrage", "harden", "healSelf", "regen", "shed", "shell"]
     statuses = {
         "buffs":      ["enrage", "harden", "lastStand", "regen", "shell"],
-        "debuffs":    ["burn", "pierce", "rupture", "venom", "weaken"]
+        "debuffs":    ["burn", "pierce", "rupture", "sap", "venom", "weaken"]
     }
     def __init__(self, units_data, family_idx=0, species_idx=0):
         family = units_data[family_idx]
@@ -173,7 +174,12 @@ class Bug:
     def show_buffs(self):
         statuses = []
         for buff in self._active_buffs:
-            statuses.append(self._ability_data['active']['ticking'][buff]['display'])
+            ticking = self._ability_data['active']['ticking']
+            passive = self._ability_data['passive']
+            if buff in ticking:
+                statuses.append(ticking[buff]['display'])
+            elif buff in self._passive_abilities:
+                statuses.append(passive[buff]['display'])
         return self.compile_statuses(statuses)
 
     def show_debuffs(self):
@@ -241,14 +247,15 @@ class Bug:
                 self.heal(self._base_health * 0.08)
 
     def tick_effect(self, ability):
-        ticks = self._ability_data['active']['ticking'][ability]['ticks']
-        if ticks > 0:
-            self._ability_data['active']['ticking'][ability]['ticks'] -= 1
-        if ticks == 0:
-            if ability in Bug.statuses['buffs']:
-                self.remove_buff(ability)
-            elif ability in Bug.statuses['debuffs']:
-                self.remove_debuff(ability)
+        if ability not in self._ability_data['passive']:
+            ticks = self._ability_data['active']['ticking'][ability]['ticks']
+            if ticks > 0:
+                self._ability_data['active']['ticking'][ability]['ticks'] -= 1
+            if ticks == 0:
+                if ability in Bug.statuses['buffs']:
+                    self.remove_buff(ability)
+                elif ability in Bug.statuses['debuffs']:
+                    self.remove_debuff(ability)
 
 
 
@@ -259,10 +266,15 @@ class Bug:
                     self.lastStand()
 
     def lastStand(self):
+        ability = "lastStand"
         if self._health < self._base_health * 0.30:
-            self.add_multiplier_effect("lastStand")
+            if ability not in self._active_buffs:
+                self._active_buffs.append(ability)
+                self.add_multiplier_effect(ability)
         else:
-            self.remove_multiplier_effect("lastStand")
+            if ability in self._active_buffs:
+                self._active_buffs.remove(ability)
+                self.remove_multiplier_effect(ability)
 
 
 
@@ -282,6 +294,11 @@ class Bug:
         match ability:
             case "healSelf":
                 self.healSelf()
+                return True
+            case "shed":
+                self._base_attack += self._base_defence
+                self._base_defence = 0
+                self.remove_active_ability("shed")
                 return True
         return False
 
@@ -307,7 +324,7 @@ class Bug:
                 self.true_damage(self._health * 0.20)
                 return True
         return False
-    
+
 
 
     def attack_damage(self, damage, selected_unit):
@@ -424,6 +441,8 @@ class Bug:
                 self._multipliers[effect]['attack'] =  0
             case "harden":
                 self._multipliers[effect]['defence'] = 0
+            case "lastStand":
+                self._multipliers[effect]['attack'] =  0
             case "pierce":
                 self._multipliers[effect]['defence'] = 0
             case "weaken":
