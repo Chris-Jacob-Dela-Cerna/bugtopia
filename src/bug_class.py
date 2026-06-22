@@ -25,6 +25,7 @@ class Bug:
         "passive": {
             "ambush":       {"display": "AMB"},
             "lastStand":    {"display": "LSD"},
+            "molt":         {"display": "MLT"},
             "thorns":       {"display": "TRN"}
         }
     }
@@ -37,7 +38,7 @@ class Bug:
     }
     self_abilities = ["enrage", "harden", "healSelf", "regen", "shed", "shell"]
     statuses = {
-        "buffs":      ["ambush, ""enrage", "harden", "lastStand", "regen", "shell", "thorns"],
+        "buffs":      ["ambush", "enrage", "harden", "lastStand", "molt", "regen", "shell", "thorns"],
         "debuffs":    ["burn", "pierce", "rupture", "sap", "venom", "weaken"]
     }
     def __init__(self, units_data, family_idx=0, species_idx=0):
@@ -238,7 +239,7 @@ class Bug:
     def apply_ticking_effect(self, effect):
         match effect:
             case "burn":
-                self.damage(self._base_health * 0.25, self.defence)
+                self.damage(self._base_health * 0.25)
             case "venom":
                 self.venom_damage()
             case "regen":
@@ -260,11 +261,13 @@ class Bug:
     def check_passives(self):
         for ability in self._passive_abilities:
             match ability:
+                case "ambush":
+                    self.add_buff(ability)
                 case "lastStand":
                     self.lastStand(ability)
+                case "molt":
+                    self.molt(ability)
                 case "thorns":
-                    self.add_buff(ability)
-                case "ambush":
                     self.add_buff(ability)
 
     def lastStand(self, ability):
@@ -272,6 +275,14 @@ class Bug:
             self.add_buff(ability)
         else:
             self.remove_buff(ability)
+
+    def molt(self, ability):
+        if self._health < self._base_health * 0.10:
+            self._health += self._base_health * 0.40
+            self._passive_abilities.remove(ability)
+            self.remove_buff(ability)
+        else:
+            self.add_buff(ability)
 
 
 
@@ -330,17 +341,17 @@ class Bug:
         if "shell" in self.active_effects:
             if randint(1, 100) <= 70:
                 damage = 0
-        defence = self.defence
         if "ambush" in selected_unit._passive_abilities:
             selected_unit._passive_abilities.remove("ambush")
             selected_unit.remove_buff("ambush")
-            defence = 0
-        self.damage(damage, defence)
+            self.true_damage(damage)
+        else:
+            self.damage(damage)
 
-    def damage(self, damage, defence):
+    def damage(self, damage):
         if "rupture" in self.active_effects:
             damage = damage * 1.20
-        damage = damage - defence
+        damage = damage - self.defence
         if damage <= 0:
             damage = 1
         self._health -= damage
@@ -400,14 +411,14 @@ class Bug:
     def add_debuff(self, ability):
         if ability not in self._active_debuffs:
             self._active_debuffs.append(ability)
-            if ability not in self.ability_data['passive']:
-                self.add_ticks(ability)
+            self.add_ticks(ability)
             self.add_multiplier_effect(ability)
 
     def add_ticks(self, ability):
-        ticking = self._ability_data['active']['ticking']
-        if ability in ticking:
-            ticking[ability]['ticks'] = ticking[ability]['duration']
+        if ability not in self.ability_data['passive']:
+            ticking = self._ability_data['active']['ticking']
+            if ability in ticking:
+                ticking[ability]['ticks'] = ticking[ability]['duration']
 
     def add_multiplier_effect(self, effect):
         match effect:
@@ -427,8 +438,7 @@ class Bug:
     def remove_buff(self, ability):
         if ability in self._active_buffs:
             self._active_buffs.remove(ability)
-            if ability not in self.ability_data['passive']:
-                self.remove_ticks(ability)
+            self.remove_ticks(ability)
             self.remove_multiplier_effect(ability)
 
     def remove_debuff(self, ability):
@@ -436,11 +446,12 @@ class Bug:
             self._active_debuffs.remove(ability)
             self.remove_ticks(ability)
             self.remove_multiplier_effect(ability)
-    
+
     def remove_ticks(self, ability):
-        ticking = self._ability_data['active']['ticking']
-        if ability in ticking:
-            ticking[ability]['ticks'] = 0
+        if ability not in self.ability_data['passive']:
+            ticking = self._ability_data['active']['ticking']
+            if ability in ticking:
+                ticking[ability]['ticks'] = 0
 
     def remove_multiplier_effect(self, effect):
         match effect:
