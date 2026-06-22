@@ -41,7 +41,7 @@ def convert_bug_stats_ui(page):
     for x in range(3):
         current_species = page['species'][x]
         rows[0] += fit(f"{options[x]}. {current_species['name'].title()}", 16, " ", " |")
-        rows[1] += fit(current_species['stats']['health'], 12, " HP: ", " |")
+        rows[1] += fit(current_species['stats']['health'], 11, " HP:  ", " |")
         rows[2] += fit(current_species['stats']['defence'], 11, " DEF: ", " |")
         rows[3] += fit(current_species['stats']['attack'], 11, " ATK: ", " |")
     return rows

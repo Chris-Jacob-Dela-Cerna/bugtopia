@@ -11,13 +11,13 @@ class Bug:
             "instant":      ["attack", "healSelf", "leech", "sacrifice", "shed", "sting"],
             "ticking": {
                 "burn":     {"display": "BRN", "duration": 1, "ticks": 0},
-                "enrage":   {"display": "RGE", "duration": 2, "ticks": 0},
-                "harden":   {"display": "HRD", "duration": 2, "ticks": 0},
+                "enrage":   {"display": "RGE", "duration": 4, "ticks": 0},
+                "harden":   {"display": "HRD", "duration": 4, "ticks": 0},
                 "pierce":   {"display": "PRC", "duration": 3, "ticks": 0},
                 "regen":    {"display": "RGN", "duration": 2, "ticks": 0},
-                "rupture":  {"display": "RPT", "duration": 2, "ticks": 0},
-                "sap":      {"display": "SAP", "duration": 2, "ticks": 0},
-                "shell":    {"display": "SHL", "duration": 2, "ticks": 0},
+                "rupture":  {"display": "RPT", "duration": 3, "ticks": 0},
+                "sap":      {"display": "SAP", "duration": 3, "ticks": 0},
+                "shell":    {"display": "SHL", "duration": 3, "ticks": 0},
                 "venom":    {"display": "VNM", "duration": 2, "ticks": 0},
                 "weaken":   {"display": "WKN", "duration": 3, "ticks": 0}
             },
@@ -350,7 +350,7 @@ class Bug:
 
     def damage(self, damage):
         if "rupture" in self.active_effects:
-            damage = damage * 1.20
+            damage = damage * 1.25
         damage = damage - self.defence
         if damage <= 0:
             damage = 1
@@ -358,7 +358,7 @@ class Bug:
 
     def true_damage(self, damage):
         if "rupture" in self.active_effects:
-            damage = damage * 1.20
+            damage = damage * 1.25
         self._health -= damage
 
     def venom_damage(self):

@@ -24,7 +24,7 @@ def ability_panel(selected_bug):
     
     for x, ability in enumerate(selected_bug.active_abilities):
         if ability:
-            if ability not in selected_bug.active_effects:
+            if ability not in selected_bug.active_buffs:
                 options[letters[x]] = ability
                 ui_options.append(f"{letters[x]}. {ability}")
     panel = contruct_panels(header, ui_options, footer)
