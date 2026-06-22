@@ -11,6 +11,7 @@ class Bug:
             "instant":      ["attack", "healSelf", "leech", "sacrifice", "shed", "sting"],
             "ticking": {
                 "burn":     {"display": "BRN", "duration": 1, "ticks": 0},
+                "corrode":  {"display": "CRD", "duration": 5, "ticks": 0},
                 "enrage":   {"display": "RGE", "duration": 4, "ticks": 0},
                 "harden":   {"display": "HRD", "duration": 4, "ticks": 0},
                 "pierce":   {"display": "PRC", "duration": 3, "ticks": 0},
@@ -19,7 +20,8 @@ class Bug:
                 "sap":      {"display": "SAP", "duration": 3, "ticks": 0},
                 "shell":    {"display": "SHL", "duration": 3, "ticks": 0},
                 "venom":    {"display": "VNM", "duration": 2, "ticks": 0},
-                "weaken":   {"display": "WKN", "duration": 3, "ticks": 0}
+                "weaken":   {"display": "WKN", "duration": 3, "ticks": 0},
+                "wither":   {"display": "WTH", "duration": 4, "ticks": 0}
             },
         },
         "passive": {
@@ -39,7 +41,7 @@ class Bug:
     self_abilities = ["enrage", "harden", "healSelf", "regen", "shed", "shell"]
     statuses = {
         "buffs":      ["ambush", "enrage", "harden", "lastStand", "molt", "regen", "shell", "thorns"],
-        "debuffs":    ["burn", "pierce", "rupture", "sap", "venom", "weaken"]
+        "debuffs":    ["burn", "corrode", "pierce", "rupture", "sap", "venom", "weaken", "wither"]
     }
     def __init__(self, units_data, family_idx=0, species_idx=0):
         family = units_data[family_idx]
@@ -240,10 +242,16 @@ class Bug:
         match effect:
             case "burn":
                 self.damage(self._base_health * 0.25)
+            case "corrode":
+                if self._base_defence > 0:
+                    self._base_defence -= 1
             case "venom":
                 self.venom_damage()
             case "regen":
                 self.heal(self._base_health * 0.08)
+            case "wither":
+                self._base_health -= self._health * 0.05
+                self.true_damage(self._health * 0.05)
 
     def tick_effect(self, ability):
         if ability not in self._ability_data['passive']:

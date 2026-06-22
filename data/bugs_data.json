@@ -59,7 +59,7 @@
                 "abilities": [
                     "attack",
                     "burn",
-                    "pierce",
+                    "corrode",
                     ""
                 ]
             },
@@ -322,7 +322,7 @@
                 "abilities": [
                     "attack",
                     "sap",
-                    "weaken",
+                    "wither",
                     "regen"
                 ]
             }
@@ -496,7 +496,7 @@
                 "abilities": [
                     "attack",
                     "regen",
-                    "pierce",
+                    "corrode",
                     ""
                 ]
             },
@@ -604,7 +604,7 @@
                 "abilities": [
                     "attack",
                     "burn",
-                    "weaken",
+                    "wither",
                     ""
                 ]
             }
