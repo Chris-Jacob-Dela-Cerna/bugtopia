@@ -39,7 +39,7 @@ class Bug:
     }
     self_abilities = ["enrage", "harden", "healSelf", "regen", "shed", "shell"]
     statuses = {
-        "buffs":      ["enrage", "harden", "lastStand", "regen", "shell"],
+        "buffs":      ["enrage", "harden", "lastStand", "regen", "shell", "thorns"],
         "debuffs":    ["burn", "pierce", "rupture", "sap", "venom", "weaken"]
     }
     def __init__(self, units_data, family_idx=0, species_idx=0):
@@ -263,18 +263,15 @@ class Bug:
         for ability in self._passive_abilities:
             match ability:
                 case "lastStand":
-                    self.lastStand()
+                    self.lastStand(ability)
+                case "thorns":
+                    self.add_buff(ability)
 
-    def lastStand(self):
-        ability = "lastStand"
+    def lastStand(self, ability):
         if self._health < self._base_health * 0.30:
-            if ability not in self._active_buffs:
-                self._active_buffs.append(ability)
-                self.add_multiplier_effect(ability)
+            self.add_buff(ability)
         else:
-            if ability in self._active_buffs:
-                self._active_buffs.remove(ability)
-                self.remove_multiplier_effect(ability)
+            self.remove_buff(ability)
 
 
 
@@ -395,7 +392,8 @@ class Bug:
     def add_debuff(self, ability):
         if ability not in self._active_debuffs:
             self._active_debuffs.append(ability)
-            self.add_ticks(ability)
+            if ability not in self.ability_data['passive']:
+                self.add_ticks(ability)
             self.add_multiplier_effect(ability)
 
     def add_ticks(self, ability):
@@ -421,7 +419,8 @@ class Bug:
     def remove_buff(self, ability):
         if ability in self._active_buffs:
             self._active_buffs.remove(ability)
-            self.remove_ticks(ability)
+            if ability not in self.ability_data['passive']:
+                self.remove_ticks(ability)
             self.remove_multiplier_effect(ability)
 
     def remove_debuff(self, ability):
