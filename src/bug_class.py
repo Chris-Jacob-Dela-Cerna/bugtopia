@@ -36,6 +36,7 @@ class Bug:
         "venom":      {"health": 0, "defence": 0, "attack": 0},
         "weaken":     {"health": 0, "defence": 0, "attack": 0}
     }
+    self_abilities = ["enrage", "harden", "healSelf", "regen", "shell"]
     statuses = {
         "buffs":      ["enrage", "harden", "lastStand", "regen", "shell"],
         "debuffs":    ["burn", "pierce", "rupture", "venom", "weaken"]
@@ -66,14 +67,12 @@ class Bug:
         if defence < 0 or defence > 999999:
             raise ValueError("Invalid defence value. Range: 0-999999")
         self._base_defence = defence
-        self._defence = defence
 
 
         attack = species['stats']['attack']
         if attack < 0 or attack > 999999:
             raise ValueError("Invalid attack value. Range: 0-9999999")
         self._base_attack = attack
-        self._attack = attack
 
 
         abilities = species['abilities']
@@ -122,7 +121,7 @@ class Bug:
         for ability in self.multipliers:
             if self._multipliers[ability]['defence']:
                 base_multiplier += self._multipliers[ability]['defence']
-        defence = self._defence * base_multiplier
+        defence = self._base_defence * base_multiplier
         return round(defence)
 
 
@@ -136,7 +135,7 @@ class Bug:
         for ability in self._multipliers:
             if self._multipliers[ability]['attack']:
                 base_multiplier += self._multipliers[ability]['attack']
-        attack = self._attack * base_multiplier
+        attack = self._base_attack * base_multiplier
         return round(attack)
 
 
@@ -165,6 +164,10 @@ class Bug:
     def active_debuffs(self):
         return sorted(self._active_debuffs)
 
+    @property
+    def all_self_abilities(self):
+        return Bug.self_abilities
+
 
 
     def show_buffs(self):
@@ -187,29 +190,6 @@ class Bug:
                     status_message += "|"
                 status_message += status
         return status_message
-
-
-
-    def can(self, ability):
-        if ability in self._abilities:
-            return True
-        return False
-
-    def apply(self, ability, damage=None):
-        if ability in Bug.statuses['buffs']:
-            self.add_buff(ability)
-            return True
-        elif ability in Bug.statuses['debuffs']:
-            self.add_debuff(ability)
-            return True
-        match ability:
-            case "attack":
-                self.damage(damage)
-                return True
-            case "healSelf":
-                self.healSelf()
-                return True
-        return False
 
 
 
@@ -258,7 +238,7 @@ class Bug:
             case "venom":
                 self.venom_damage()
             case "regen":
-                self.heal(self._base_health * 0.07)
+                self.heal(self._base_health * 0.08)
 
     def tick_effect(self, ability):
         ticks = self._ability_data['active']['ticking'][ability]['ticks']
@@ -296,20 +276,47 @@ class Bug:
 
 
 
+    def apply(self, selected_unit, ability):
+        if ability in Bug.statuses['buffs']:
+            self.add_buff(ability)
+            return True
+        elif ability in Bug.statuses['debuffs']:
+            self.add_debuff(ability)
+            return True
+        match ability:
+            case "attack":
+                self.attack_damage(selected_unit.attack, selected_unit)
+                return True
+            case "healSelf":
+                self.healSelf()
+                return True
+            case "leech":
+                selected_unit.heal(self._health * 0.08)
+                self.true_damage(self._health * 0.15)
+                return True
+            case "sacrifice":
+                self.attack_damage(selected_unit._health * 0.30, selected_unit),
+                selected_unit.true_damage(selected_unit._health * 0.30)
+                return True
+            case 'sting':
+                self.true_damage(self._health * 0.20)
+                return True
+        return False
+
+
+
     def attack_damage(self, damage, selected_unit):
         if "thorns" in self._passive_abilities:
             selected_unit.damage(damage * 0.50)
         if "shell" in self.active_effects:
             if randint(1, 100) <= 70:
                 damage = 0
-        if "rupture" in self.active_effects:
-            damage = damage * 1.20
         self.damage(damage)
-        
-
 
     def damage(self, damage):
-        damage = damage - self._defence
+        if "rupture" in self.active_effects:
+            damage = damage * 1.20
+        damage = damage - self.defence
         if damage <= 0:
             damage = 1
         self._health -= damage
@@ -321,7 +328,7 @@ class Bug:
 
     def venom_damage(self):
         max_damage = self._base_health * 0.15
-        min_damage = self._base_health * 0.08
+        min_damage = self._base_health * 0.09
         venom = self._ability_data['active']['ticking']['venom']
         remaining_turns = 1 - (venom['ticks'] / venom['duration'])
         total_damage = min_damage + ((max_damage - min_damage) * remaining_turns)
@@ -339,13 +346,15 @@ class Bug:
             self.remove_debuff("venom")
             self.remove_debuff("rupture")
         else:
-            max_heal = self._base_health * 0.20
+            max_heal = self._base_health * 0.30
             min_heal = self._base_health * 0.01
             missing_hp = 1 - (self._health / self._base_health)
             total_heal = min_heal + ((max_heal - min_heal) * missing_hp)
             self.heal(total_heal)
 
     def heal(self, total_heal):
+        if total_heal > 30:
+            total_heal = 30
         total_hp = self._health + total_heal
         if total_hp >= self._base_health:
             self._health = self._base_health
