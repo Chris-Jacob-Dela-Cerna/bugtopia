@@ -28,13 +28,10 @@ class Bug:
         }
     }
     multipliers = {
-        "burn":       {"health": 0, "defence": 0, "attack": 0},
         "enrage":     {"health": 0, "defence": 0, "attack": 0},
         "harden":     {"health": 0, "defence": 0, "attack": 0},
         "lastStand":  {"health": 0, "defence": 0, "attack": 0},
         "pierce":     {"health": 0, "defence": 0, "attack": 0},
-        "regen":      {"health": 0, "defence": 0, "attack": 0},
-        "venom":      {"health": 0, "defence": 0, "attack": 0},
         "weaken":     {"health": 0, "defence": 0, "attack": 0}
     }
     self_abilities = ["enrage", "harden", "healSelf", "regen", "shed", "shell"]
@@ -310,8 +307,8 @@ class Bug:
                 self.attack_damage(selected_unit.attack, selected_unit)
                 return True
             case "leech":
-                selected_unit.heal(self._health * 0.075)
-                self.true_damage(self._health * 0.15)
+                selected_unit.heal(self._health * 0.10)
+                self.true_damage(self._health * 0.10)
                 return True
             case "sacrifice":
                 self.attack_damage(selected_unit._health * 0.30, selected_unit),
@@ -374,6 +371,9 @@ class Bug:
     def heal(self, total_heal):
         if total_heal > 30:
             total_heal = 30
+        if "sap" in self._active_debuffs:
+            total_heal = total_heal * 0.50
+
         total_hp = self._health + total_heal
         if total_hp >= self._base_health:
             self._health = self._base_health
