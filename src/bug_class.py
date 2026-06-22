@@ -23,6 +23,7 @@ class Bug:
             },
         },
         "passive": {
+            "ambush":       {"display": "AMB"},
             "lastStand":    {"display": "LSD"},
             "thorns":       {"display": "TRN"}
         }
@@ -36,7 +37,7 @@ class Bug:
     }
     self_abilities = ["enrage", "harden", "healSelf", "regen", "shed", "shell"]
     statuses = {
-        "buffs":      ["enrage", "harden", "lastStand", "regen", "shell", "thorns"],
+        "buffs":      ["ambush, ""enrage", "harden", "lastStand", "regen", "shell", "thorns"],
         "debuffs":    ["burn", "pierce", "rupture", "sap", "venom", "weaken"]
     }
     def __init__(self, units_data, family_idx=0, species_idx=0):
@@ -237,7 +238,7 @@ class Bug:
     def apply_ticking_effect(self, effect):
         match effect:
             case "burn":
-                self.damage(self._base_health * 0.25)
+                self.damage(self._base_health * 0.25, self.defence)
             case "venom":
                 self.venom_damage()
             case "regen":
@@ -262,6 +263,8 @@ class Bug:
                 case "lastStand":
                     self.lastStand(ability)
                 case "thorns":
+                    self.add_buff(ability)
+                case "ambush":
                     self.add_buff(ability)
 
     def lastStand(self, ability):
@@ -321,18 +324,23 @@ class Bug:
 
 
 
-    def attack_damage(self, damage, selected_unit):
+    def attack_damage(self, damage, selected_unit=None):
         if "thorns" in self._passive_abilities:
             selected_unit.damage(damage * 0.50)
         if "shell" in self.active_effects:
             if randint(1, 100) <= 70:
                 damage = 0
-        self.damage(damage)
+        defence = self.defence
+        if "ambush" in selected_unit._passive_abilities:
+            selected_unit._passive_abilities.remove("ambush")
+            selected_unit.remove_buff("ambush")
+            defence = 0
+        self.damage(damage, defence)
 
-    def damage(self, damage):
+    def damage(self, damage, defence):
         if "rupture" in self.active_effects:
             damage = damage * 1.20
-        damage = damage - self.defence
+        damage = damage - defence
         if damage <= 0:
             damage = 1
         self._health -= damage
