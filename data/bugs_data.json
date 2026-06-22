@@ -27,21 +27,21 @@
                     "attack",
                     "sting",
                     "venom",
-                    "ambush"
+                    ""
                 ]
             },
             {
                 "name": "leaf cutter",
                 "stats": {
                     "health": 185,
-                    "defence": 22,
-                    "attack": 18
+                    "defence": 20,
+                    "attack": 22
                 },
                 "abilities": [
                     "attack",
                     "weaken",
-                    "regen",
-                    ""
+                    "thorns",
+                    "sacrifice"
                 ]
             }
         ]
@@ -87,7 +87,7 @@
                 "abilities": [
                     "attack",
                     "lastStand",
-                    "sacrifice",
+                    "shed",
                     "molt"
                 ]
             }
@@ -120,7 +120,7 @@
                 "abilities": [
                     "attack",
                     "enrage",
-                    "healSelf",
+                    "ambush",
                     ""
                 ]
             },
@@ -129,13 +129,13 @@
                 "stats": {
                     "health": 210,
                     "defence": 18,
-                    "attack": 20
+                    "attack": 24
                 },
                 "abilities": [
                     "attack",
-                    "leech",
+                    "thorns",
                     "regen",
-                    "shell"
+                    ""
                 ]
             }
         ]
@@ -167,7 +167,7 @@
                 "abilities": [
                     "attack",
                     "sting",
-                    "healSelf",
+                    "weaken",
                     ""
                 ]
             },
@@ -201,7 +201,7 @@
                     "attack",
                     "weaken",
                     "healSelf",
-                    ""
+                    "thorns"
                 ]
             },
             {
@@ -214,7 +214,7 @@
                 "abilities": [
                     "attack",
                     "healSelf",
-                    "shell",
+                    "rupture",
                     ""
                 ]
             },
@@ -248,7 +248,7 @@
                     "attack",
                     "pierce",
                     "leech",
-                    ""
+                    "ambush"
                 ]
             },
             {
@@ -261,7 +261,7 @@
                 "abilities": [
                     "attack",
                     "pierce",
-                    "sting",
+                    "rupture",
                     ""
                 ]
             },
@@ -308,7 +308,7 @@
                 "abilities": [
                     "attack",
                     "leech",
-                    "sacrifice",
+                    "venom",
                     ""
                 ]
             },
@@ -321,7 +321,7 @@
                 },
                 "abilities": [
                     "attack",
-                    "healSelf",
+                    "sap",
                     "weaken",
                     "regen"
                 ]
@@ -341,7 +341,7 @@
                 "abilities": [
                     "attack",
                     "regen",
-                    "thorns",
+                    "weaken",
                     ""
                 ]
             },
@@ -350,7 +350,7 @@
                 "stats": {
                     "health": 230,
                     "defence": 28,
-                    "attack": 16
+                    "attack": 18
                 },
                 "abilities": [
                     "attack",
@@ -364,13 +364,13 @@
                 "stats": {
                     "health": 310,
                     "defence": 24,
-                    "attack": 12
+                    "attack": 16
                 },
                 "abilities": [
                     "attack",
                     "regen",
                     "lastStand",
-                    ""
+                    "molt"
                 ]
             }
         ]
@@ -389,7 +389,7 @@
                     "attack",
                     "rupture",
                     "sting",
-                    ""
+                    "ambush"
                 ]
             },
             {
@@ -411,13 +411,13 @@
                 "stats": {
                     "health": 265,
                     "defence": 28,
-                    "attack": 22
+                    "attack": 26
                 },
                 "abilities": [
                     "attack",
                     "harden",
                     "lastStand",
-                    ""
+                    "sacrifice"
                 ]
             }
         ]
@@ -463,7 +463,7 @@
                 "abilities": [
                     "attack",
                     "pierce",
-                    "lastStand",
+                    "enrage",
                     ""
                 ]
             }
@@ -483,7 +483,7 @@
                     "attack",
                     "burn",
                     "weaken",
-                    ""
+                    "sap"
                 ]
             },
             {
@@ -495,7 +495,7 @@
                 },
                 "abilities": [
                     "attack",
-                    "weaken",
+                    "regen",
                     "pierce",
                     ""
                 ]
@@ -505,12 +505,12 @@
                 "stats": {
                     "health": 220,
                     "defence": 28,
-                    "attack": 15
+                    "attack": 18
                 },
                 "abilities": [
                     "attack",
                     "harden",
-                    "shell",
+                    "thorns",
                     "regen"
                 ]
             }
@@ -530,7 +530,7 @@
                     "attack",
                     "leech",
                     "healSelf",
-                    ""
+                    "shell"
                 ]
             },
             {
@@ -543,7 +543,7 @@
                 "abilities": [
                     "attack",
                     "enrage",
-                    "sacrifice",
+                    "pierce",
                     ""
                 ]
             },
@@ -575,8 +575,8 @@
                 },
                 "abilities": [
                     "attack",
-                    "thorns",
-                    "rupture",
+                    "venom",
+                    "shell",
                     ""
                 ]
             },
@@ -590,7 +590,7 @@
                 "abilities": [
                     "attack",
                     "shell",
-                    "venom",
+                    "leech",
                     ""
                 ]
             },
@@ -604,7 +604,7 @@
                 "abilities": [
                     "attack",
                     "burn",
-                    "healSelf",
+                    "weaken",
                     ""
                 ]
             }
@@ -624,7 +624,7 @@
                     "attack",
                     "weaken",
                     "shell",
-                    ""
+                    "regen"
                 ]
             },
             {
@@ -637,7 +637,7 @@
                 "abilities": [
                     "attack",
                     "venom",
-                    "sacrifice",
+                    "shell",
                     ""
                 ]
             },
@@ -646,13 +646,13 @@
                 "stats": {
                     "health": 260,
                     "defence": 26,
-                    "attack": 14
+                    "attack": 16
                 },
                 "abilities": [
                     "attack",
                     "regen",
-                    "harden",
-                    ""
+                    "sacrifice",
+                    "molt"
                 ]
             }
         ]
@@ -670,7 +670,7 @@
                 "abilities": [
                     "attack",
                     "venom",
-                    "weaken",
+                    "leech",
                     ""
                 ]
             },
@@ -697,7 +697,7 @@
                 },
                 "abilities": [
                     "attack",
-                    "sting",
+                    "sap",
                     "thorns",
                     ""
                 ]
