@@ -34,7 +34,7 @@ def deck_creator(pages_data):
             continue
 
         if chosen == "r":
-            chosen = f"{rd.randint(visible_page, total_pages)}{rd.choice("abc")}"
+            chosen = f"{rd.randint(1, total_pages)}{rd.choice("abc")}"
         if chosen == "h":
             show_help = True
         if chosen == "b":
