@@ -11,7 +11,7 @@ class Bug:
             "instant":      ["attack", "healSelf", "leech", "sacrifice", "shed", "sting"],
             "ticking": {
                 "burn":     {"display": "BRN", "duration": 1, "ticks": 0},
-                "corrode":  {"display": "CRD", "duration": 5, "ticks": 0},
+                "corrode":  {"display": "CRD", "duration": 4, "ticks": 0},
                 "enrage":   {"display": "RGE", "duration": 4, "ticks": 0},
                 "harden":   {"display": "HRD", "duration": 4, "ticks": 0},
                 "pierce":   {"display": "PRC", "duration": 3, "ticks": 0},

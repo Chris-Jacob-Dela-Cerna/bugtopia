@@ -160,9 +160,9 @@
             {
                 "name": "paper",
                 "stats": {
-                    "health": 105,
+                    "health": 125,
                     "defence": 12,
-                    "attack": 30
+                    "attack": 34
                 },
                 "abilities": [
                     "attack",
@@ -368,7 +368,7 @@
                 },
                 "abilities": [
                     "attack",
-                    "regen",
+                    "healSelf",
                     "lastStand",
                     "molt"
                 ]
