@@ -22,9 +22,8 @@ def deck_saving_logic(deck):
 
 def save_deck(deck):
     decks_data = aj.load_json_data("saved_decks.json")
-    prompt_name_ui = pr.prompt("Enter a name for your deck")
     while True:
-        uh.display(prompt_name_ui)
+        pr.prompt("Enter a name for your deck")
         deck_name = input("                 >>> ").strip()
         if deck_name:
             decks_data.append({
