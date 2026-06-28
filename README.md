@@ -1,6 +1,4 @@
 # Bugtopia
-**Version 1.0.1** · Python terminal bug battle game
-
 Bugtopia is a terminal program. It is a text-based, deck-building, turn-based bug battle game. Yes, that is a lot of words — and every one of them is accurate.
 
 Two players each pick 3 bugs from a roster of 45, build their deck, and fight. The last player with bugs standing wins. Everything happens in the command line, in black and white, and somehow it still feels like a battle.
